@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://cy4jcnbx1f25d"]
+
+[ext_resource type="Script" path="res://scene/chess/pieceTemplate/piece_template.gd" id="1_w1fhx"]
+[ext_resource type="Texture2D" uid="uid://csp7g6hme6js6" path="res://texture/Chess/chess2.png" id="2_614fx"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_8j5rn"]
+font_size = 25
+
+[node name="PieceTemplate" type="Node2D"]
+script = ExtResource("1_w1fhx")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("2_614fx")
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+label_settings = SubResource("LabelSettings_8j5rn")
+horizontal_alignment = 1
+vertical_alignment = 1

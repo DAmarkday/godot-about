@@ -1,0 +1,27 @@
+[gd_scene load_steps=6 format=3 uid="uid://cipwnkfgcdgsh"]
+
+[ext_resource type="PackedScene" uid="uid://ckdingh5txht1" path="res://scene/enemy/snake/Body.tscn" id="1_8mhiw"]
+[ext_resource type="Shader" path="res://scene/enemy/snake/Body.gdshader" id="2_gg7c6"]
+[ext_resource type="Texture2D" uid="uid://6m32ocraiy1k" path="res://texture/boss/snake/sTail.png" id="2_gntaf"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0ldry"]
+resource_local_to_scene = true
+shader = ExtResource("2_gg7c6")
+shader_parameter/flash_amount = 0.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jy4n8"]
+radius = 3.99997
+height = 15.9999
+
+[node name="Tail" instance=ExtResource("1_8mhiw")]
+
+[node name="Sprite2D" parent="." index="0"]
+material = SubResource("ShaderMaterial_0ldry")
+position = Vector2(0, 0)
+texture = ExtResource("2_gntaf")
+offset = Vector2(-0.948261, -0.111705)
+
+[node name="CollisionShape2D" parent="Area2D" index="0"]
+position = Vector2(-1, 0)
+rotation = -1.57469
+shape = SubResource("CapsuleShape2D_jy4n8")

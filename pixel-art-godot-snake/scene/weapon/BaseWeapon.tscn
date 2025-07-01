@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://bsmw81hlgdfts"]
+
+[ext_resource type="Script" path="res://scene/weapon/base_weapon.gd" id="1_3gda1"]
+[ext_resource type="Texture2D" uid="uid://rsfj2l2m4kxo" path="res://texture/Guns/gun1.png" id="1_e7njq"]
+
+[node name="BaseWeapon" type="Node2D"]
+script = ExtResource("1_3gda1")
+weapon_rof = 0.3
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-1, -1)
+texture = ExtResource("1_e7njq")
+offset = Vector2(4, 0)
+
+[node name="BulletPoint" type="Node2D" parent="."]
+position = Vector2(9, -2)
+
+[node name="ShootAudio" type="AudioStreamPlayer2D" parent="."]

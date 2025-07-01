@@ -1,0 +1,17 @@
+[gd_scene load_steps=5 format=3 uid="uid://cl615hgkn5keu"]
+
+[ext_resource type="PackedScene" uid="uid://ckdingh5txht1" path="res://scene/enemy/snake/Body.tscn" id="1_0hgn5"]
+[ext_resource type="Texture2D" uid="uid://bbm2jopr0jd01" path="res://texture/boss/snake/shead.png" id="1_trs4u"]
+[ext_resource type="Shader" path="res://scene/enemy/snake/Body.gdshader" id="2_ab3sg"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ahna8"]
+resource_local_to_scene = true
+shader = ExtResource("2_ab3sg")
+shader_parameter/flash_amount = 0.0
+
+[node name="Body" instance=ExtResource("1_0hgn5")]
+
+[node name="Sprite2D" parent="." index="0"]
+material = SubResource("ShaderMaterial_ahna8")
+position = Vector2(8.07773, -0.0224638)
+texture = ExtResource("1_trs4u")

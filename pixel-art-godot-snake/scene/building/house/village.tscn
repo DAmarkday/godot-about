@@ -1,0 +1,40 @@
+[gd_scene load_steps=6 format=3 uid="uid://dpe255b6qy03e"]
+
+[ext_resource type="Script" path="res://scene/building/house/area_2d.gd" id="1_1jdht"]
+[ext_resource type="Texture2D" uid="uid://k3yk6h3l7jkt" path="res://texture/building/house/House_Yellow.png" id="2_63pow"]
+
+[sub_resource type="GDScript" id="GDScript_48k3s"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_26wea"]
+size = Vector2(72, 83)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_i2eq0"]
+friction = 0.0
+
+[node name="Village" type="Node2D"]
+script = SubResource("GDScript_48k3s")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 9
+collision_mask = 9
+monitorable = false
+script = ExtResource("1_1jdht")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, 12.5)
+shape = SubResource("RectangleShape2D_26wea")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 2
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("2_63pow")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+physics_material_override = SubResource("PhysicsMaterial_i2eq0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+visible = false
+position = Vector2(0, 11.5)
+shape = SubResource("RectangleShape2D_26wea")
+
+[connection signal="area_entered" from="Area2D" to="Area2D" method="_on_area_entered"]

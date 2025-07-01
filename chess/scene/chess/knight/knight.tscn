@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://dopok2fil7ujf"]
+
+[ext_resource type="PackedScene" uid="uid://cy4jcnbx1f25d" path="res://scene/chess/pieceTemplate/pieceTemplate.tscn" id="1_k5xru"]
+[ext_resource type="Script" path="res://scene/chess/knight/knight.gd" id="2_cxpsd"]
+
+[node name="PieceTemplate" instance=ExtResource("1_k5xru")]
+script = ExtResource("2_cxpsd")
