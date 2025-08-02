@@ -121,9 +121,16 @@ func add_piece(piece: Node2D, grid_pos: Vector2i):
 	if not cell.is_visible:
 		push_error("目标格子不可用: ", grid_pos)
 		return
+	if not cell.container.is_empty():
+		push_error("目标格子已有棋子: ", grid_pos)
+		return
 	cell.container.push_back(piece)
 	piece.global_position = grid_to_pixel_position(grid_pos)
 	grid_node.add_child(piece)
+	# 初始化棋子，传递棋盘信息
+	if piece.has_method("initialize"):
+		piece.initialize(grid_cells, grid_size)
+		piece.set_piece_position(grid_pos)
 
 func grid_to_pixel_position(grid_pos: Vector2i) -> Vector2:
 	# 将棋盘坐标转换为像素坐标（中心点）
@@ -170,14 +177,28 @@ func select_npc_in_cell(npc: Node2D, cell: Cell):
 	if cell.cell_node:
 		cell.cell_node.color = Color(0, 1, 0)  # 绿色高亮
 	highlight_cell_lines(cell.grid_position)
+	highlight_move_range(npc)  # 高亮可移动范围
 
 func move_piece(piece, target: Vector2i):
 	# 移动棋子到目标格子
-	var old_pos = piece.pos if piece.has_method("get_pos") else Vector2i.ZERO
-	piece.set_piece_position(target) if piece.has_method("set_piece_position") else null
+	var old_pos = piece.get_pos() if piece.has_method("get_pos") else Vector2i.ZERO
 	if is_valid_grid_position(old_pos):
-		(grid_cells[old_pos.x][old_pos.y] as Cell).container.erase(piece)
-	(grid_cells[target.x][target.y] as Cell).container.append(piece)
+		var old_cell = grid_cells[old_pos.x][old_pos.y] as Cell
+		if old_cell.container.has(piece):
+			old_cell.container.erase(piece)
+		else:
+			push_warning("棋子不在旧格子的容器中: ", old_pos)
+	
+	var target_cell = grid_cells[target.x][target.y] as Cell
+	if not target_cell.container.is_empty():
+		if target_cell.container[0] == piece:
+			target_cell.container.erase(piece)  # 清空目标格子中的自身引用
+		else:
+			push_error("目标格子已有其他棋子: ", target)
+			return
+	
+	target_cell.container.append(piece)
+	piece.set_piece_position(target) if piece.has_method("set_piece_position") else null
 	piece.global_position = grid_to_pixel_position(target)
 
 func highlight_cell_lines(cell_pos: Vector2i):
@@ -206,6 +227,7 @@ func clear_selection():
 	if selected_cell and selected_cell.cell_node:
 		selected_cell.cell_node.color = Color(0.2, 0.2, 0.2)
 	clear_highlight_lines()
+	clear_move_range_highlights()
 	selected_cell = null
 	selected_npc = null
 
@@ -214,3 +236,41 @@ func clear_highlight_lines():
 	for line in highlight_lines:
 		line.queue_free()
 	highlight_lines.clear()
+	
+
+var move_range_highlights: Array = []  # 存储可移动范围的高亮节点
+func get_move_range(piece: Node2D) -> Array[Vector2i]:
+	# 获取棋子的可移动范围
+	var move_range: Array[Vector2i] = []
+	if not piece.has_method("is_valid_move"):
+		return move_range
+	
+	var current_pos = piece.pos if piece.has_method("get_pos") else Vector2i.ZERO
+	# 检查所有可能的格子（10x10范围内）
+	for x in range(grid_size.x):
+		for y in range(grid_size.y):
+			var target = Vector2i(x, y)
+			if piece.is_valid_move(target):
+				move_range.append(target)
+	return move_range
+
+func highlight_move_range(piece: Node2D):
+	# 高亮显示可移动范围
+	clear_move_range_highlights()
+	var move_range = get_move_range(piece)
+	for pos in move_range:
+		var cell = grid_cells[pos.x][pos.y] as Cell
+		if cell and cell.is_visible and cell.cell_node:
+			var highlight = ColorRect.new()
+			highlight.size = Vector2(cell_size, cell_size)
+			highlight.position = cell.actual_position
+			highlight.color = Color(0, 0.5, 1, 0.5)  # 蓝色半透明
+			highlight.z_index = 2  # 高于瓦片，低于网格线
+			grid_node.add_child(highlight)
+			move_range_highlights.append(highlight)
+
+func clear_move_range_highlights():
+	# 清除可移动范围的高亮
+	for highlight in move_range_highlights:
+		highlight.queue_free()
+	move_range_highlights.clear()
