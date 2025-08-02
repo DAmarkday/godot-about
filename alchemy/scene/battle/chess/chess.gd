@@ -17,12 +17,14 @@ class Cell:
 		cell_node = ColorRect.new()
 		cell_node.size = Vector2(cell_size, cell_size)
 		cell_node.position = Vector2(x * cell_size, y * cell_size)
+		cell_grid_position = Vector2i(x, y)
+		cell_actual_position = Vector2(x * cell_size, y * cell_size)
 		cell_node.color = Color(0.2, 0.2, 0.2)
 		
 # 网格是多少个Cell
 var grid_size = Vector2i(10, 10)	
 var cell_size = 64
-var selected_cell = Vector2i(-1, -1)
+var selected_cell = null # 选中的格子
 var highlight_lines = []
 var grid_cells:Array[Array]=[]
 var grid_node:Node2D
@@ -131,23 +133,36 @@ func _input(event):
 		var cell_x = int(mouse_pos.x / cell_size)
 		var cell_y = int(mouse_pos.y / cell_size)
 		if cell_x >= 0 and cell_x < grid_size.x and cell_y >= 0 and cell_y < grid_size.y:
-			handle_click(Vector2i(cell_x, cell_y))
+			handle_click_cell(Vector2i(2, 2))
 
-var selected_piece;
-func handle_click(cell: Vector2i):
-	if selected_piece != null:
-		if selected_piece.is_valid_move(cell):
-			move_piece(selected_piece, cell)
+var selected_npc;
+func handle_click_cell(cell_position: Vector2i):
+	var curCell = grid_cells[cell_position.x][cell_position.y] as Cell
+	if curCell != null:
+		selected_cell = curCell
+		# 判断当前选中的格子中是否存在npc
+		for i in curCell.cell_container:
+			#  TODO 先假设当前选中的cell的容器中所有都是npc 后续会设置一个属性来判断是人物还是建筑
+			# 如果当前选中的地块中存在npc则改为选中当前的npc
+			# 不存在则判断是否存在选中的npc,如果存在则移动当当前位置
+			
+			if i:
+				#selected_npc = 
+				select_npc_in_cell(i,curCell)
+				return
+			break;
+	
+	if selected_npc != null:
+		if selected_npc.is_valid_move(cell_position):
+			move_piece(selected_npc, cell_position)
 		clear_selection()
-	elif grid_cells[cell.x][cell.y] != null:
-		select_piece(cell)
 
-func select_piece(cell: Vector2i):
-	clear_selection()
-	selected_cell = cell
-	selected_piece = grid_cells[cell.x][cell.y]
-	grid_cells[cell.x][cell.y].color = Color(0, 1, 0)
-	highlight_cell_lines(cell)
+func select_npc_in_cell(npc: Node2D,cell:Cell):
+	#clear_selection()
+	#selected_cell = cell
+	selected_npc = npc
+	cell.cell_node.color = Color(0, 1, 0)
+	highlight_cell_lines(cell.cell_grid_position)
 
 func move_piece(piece, target: Vector2i):
 	var old_pos = piece.pos
@@ -156,35 +171,36 @@ func move_piece(piece, target: Vector2i):
 	grid_cells[target.x][target.y] = piece
 #
 func clear_selection():
-	if selected_cell != Vector2i(-1, -1):
-		grid_nodes[selected_cell.x][selected_cell.y].color = Color(0.2, 0.2, 0.2)
+	if selected_cell != null:
+		grid_cells[selected_cell.x][selected_cell.y].color = Color(0.2, 0.2, 0.2)
 		clear_highlight_lines()
-	selected_cell = Vector2i(-1, -1)
-	selected_piece = null
+	selected_cell = null
+	selected_npc = null
 
-#func highlight_cell_lines(cell: Vector2i):
-	#var x = cell.x
-	#var y = cell.y
-	#var points = [
-		#[Vector2(x * cell_size, y * cell_size), Vector2((x + 1) * cell_size, y * cell_size)],
-		#[Vector2(x * cell_size, (y + 1) * cell_size), Vector2((x + 1) * cell_size, (y + 1) * cell_size)],
-		#[Vector2(x * cell_size, y * cell_size), Vector2(x * cell_size, (y + 1) * cell_size)],
-		#[Vector2((x + 1) * cell_size, y * cell_size), Vector2((x + 1) * cell_size, (y + 1) * cell_size)]
-	#]
+func highlight_cell_lines(cell: Vector2i):
+	var x = cell.x
+	var y = cell.y
+	var points = [
+		[Vector2(x * cell_size, y * cell_size), Vector2((x + 1) * cell_size, y * cell_size)],
+		[Vector2(x * cell_size, (y + 1) * cell_size), Vector2((x + 1) * cell_size, (y + 1) * cell_size)],
+		[Vector2(x * cell_size, y * cell_size), Vector2(x * cell_size, (y + 1) * cell_size)],
+		[Vector2((x + 1) * cell_size, y * cell_size), Vector2((x + 1) * cell_size, (y + 1) * cell_size)]
+	]
+
+	for point_pair in points:
+		var line = Line2D.new()
+		line.add_point(point_pair[0])
+		line.add_point(point_pair[1])
+		line.width = 4
+		line.z_index = 99
+		line.default_color = Color(1, 1, 0)
+		grid_node.add_child(line)
+		highlight_lines.append(line)
 #
-	#for point_pair in points:
-		#var line = Line2D.new()
-		#line.add_point(point_pair[0])
-		#line.add_point(point_pair[1])
-		#line.width = 4
-		#line.default_color = Color(1, 1, 0)
-		#Grid.add_child(line)
-		#highlight_lines.append(line)
-#
-#func clear_highlight_lines():
-	#for line in highlight_lines:
-		#line.queue_free()
-	#highlight_lines.clear()
+func clear_highlight_lines():
+	for line in highlight_lines:
+		line.queue_free()
+	highlight_lines.clear()
 	#
 	#
 	#

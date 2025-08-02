@@ -32,3 +32,6 @@ func _ready():
 	
 	# 增加一个角色
 	gridChess.添加棋子(npc1.instantiate(),Vector2i(2,2))
+	
+func _input(event: InputEvent) -> void:
+	gridChess._input(event)
