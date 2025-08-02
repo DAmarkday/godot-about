@@ -108,3 +108,104 @@ func use_json_to_create_map(json:Array):
 	
 	pass
 	
+func 添加棋子(piece:Node2D,棋子的棋盘坐标:Vector2i):
+	var x = 棋子的棋盘坐标.x
+	var y = 棋子的棋盘坐标.y
+	(grid_cells[x][y] as Cell).cell_container.push_front(piece)
+	piece.global_position = 根据棋子棋盘坐标生成像素坐标(棋子的棋盘坐标)
+	grid_node.add_child(piece)
+	pass
+	
+func 根据棋子棋盘坐标生成像素坐标(chessPosition:Vector2i)-> Vector2:
+	var cx = chessPosition.x 
+	var cy = chessPosition.y
+	var cs = cell_size
+	if(cx <grid_size.x and cx >=0) and (cy <grid_size.y and cy >=0):
+		return Vector2(cx * cs  + cs /2, cy * cs + cs /2 )
+	return Vector2.ZERO 
+
+
+func _input(event):
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		var mouse_pos = get_global_mouse_position()
+		var cell_x = int(mouse_pos.x / cell_size)
+		var cell_y = int(mouse_pos.y / cell_size)
+		if cell_x >= 0 and cell_x < grid_size.x and cell_y >= 0 and cell_y < grid_size.y:
+			handle_click(Vector2i(cell_x, cell_y))
+
+var selected_piece;
+func handle_click(cell: Vector2i):
+	if selected_piece != null:
+		if selected_piece.is_valid_move(cell):
+			move_piece(selected_piece, cell)
+		clear_selection()
+	elif grid_cells[cell.x][cell.y] != null:
+		select_piece(cell)
+
+func select_piece(cell: Vector2i):
+	clear_selection()
+	selected_cell = cell
+	selected_piece = grid_cells[cell.x][cell.y]
+	grid_cells[cell.x][cell.y].color = Color(0, 1, 0)
+	highlight_cell_lines(cell)
+
+func move_piece(piece, target: Vector2i):
+	var old_pos = piece.pos
+	piece.set_piece_position(target)
+	grid_cells[old_pos.x][old_pos.y] = null
+	grid_cells[target.x][target.y] = piece
+#
+func clear_selection():
+	if selected_cell != Vector2i(-1, -1):
+		grid_nodes[selected_cell.x][selected_cell.y].color = Color(0.2, 0.2, 0.2)
+		clear_highlight_lines()
+	selected_cell = Vector2i(-1, -1)
+	selected_piece = null
+
+#func highlight_cell_lines(cell: Vector2i):
+	#var x = cell.x
+	#var y = cell.y
+	#var points = [
+		#[Vector2(x * cell_size, y * cell_size), Vector2((x + 1) * cell_size, y * cell_size)],
+		#[Vector2(x * cell_size, (y + 1) * cell_size), Vector2((x + 1) * cell_size, (y + 1) * cell_size)],
+		#[Vector2(x * cell_size, y * cell_size), Vector2(x * cell_size, (y + 1) * cell_size)],
+		#[Vector2((x + 1) * cell_size, y * cell_size), Vector2((x + 1) * cell_size, (y + 1) * cell_size)]
+	#]
+#
+	#for point_pair in points:
+		#var line = Line2D.new()
+		#line.add_point(point_pair[0])
+		#line.add_point(point_pair[1])
+		#line.width = 4
+		#line.default_color = Color(1, 1, 0)
+		#Grid.add_child(line)
+		#highlight_lines.append(line)
+#
+#func clear_highlight_lines():
+	#for line in highlight_lines:
+		#line.queue_free()
+	#highlight_lines.clear()
+	#
+	#
+	#
+#func createRandomPosition(count:int):
+	#var placed_positions = []
+	#for i in count:
+		#var pos = Vector2i(randi() % grid_size.x, randi() % grid_size.y)
+		#var attempts = 0
+		#while pos in placed_positions and attempts < 100:
+			#pos = Vector2i(randi() % grid_size.x, randi() % grid_size.y)
+			#attempts += 1
+			#if attempts >= 100:
+				#push_error("Failed to find unique position for piece")
+				#continue
+		#placed_positions.append(pos)
+		#print("Spawning piece at grid position: ", pos)
+	#var temp = []
+	##temp: 实际位置
+	##placed_positions： 棋盘位置
+	#for new_pos in placed_positions:
+		#var np = Vector2(new_pos.x * cell_size + cell_size / 2, new_pos.y * cell_size + cell_size / 2)
+		#temp.append(np)
+	#return [placed_positions,temp]
+	#

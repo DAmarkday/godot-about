@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://c1etxuqfemwgc"]
+
+[ext_resource type="Script" uid="uid://h2smi8jowxqo" path="res://scene/battle/chess/pieceTemplate/piece_template.gd" id="1_a0oe5"]
+
+[node name="PieceTemplate" type="Node2D"]
+script = ExtResource("1_a0oe5")
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
