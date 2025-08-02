@@ -1,10 +1,10 @@
 extends Node2D
-@onready var Grid = $Grid
-@onready var TileLayer:TileMapLayer = $Grid/TileMapLayer
+@onready var grid = $Grid
+@onready var tile_layer:TileMapLayer = $Grid/TileMapLayer
 
 @onready var npc1 = preload("res://scene/battle/chess/charA/char_a.tscn")
 
-var gridChess:Chess;
+var grid_chess:Chess;
 func setup_camera(pointer:Vector2):
 	var camera = Camera2D.new()
 	camera.position = pointer
@@ -25,15 +25,16 @@ var json = [
 	[0,1,1,1,1,1,1,1,1,0],
 ]
 func _ready():
-	gridChess=Chess.new(Grid,TileLayer)
-	setup_camera(gridChess.get_grid_center_position())
-	# 使用json生成对应的棋盘地图
-	gridChess.use_json_to_create_map(json)
-	
-	# 增加一个角色
-	gridChess.添加棋子(npc1.instantiate(),Vector2i(2,2))
+	# 初始化 Chess 对象并传入 JSON 数据
+	grid_chess = Chess.new(grid, tile_layer, json)
+	# 设置相机，居中显示地图
+	setup_camera(grid_chess.get_grid_center_position())
+	# 根据 JSON 数据生成地图
+	grid_chess.create_map_from_json()
+	# 在指定位置添加一个 NPC
+	grid_chess.add_piece(npc1.instantiate(), Vector2i(2, 2))
 	
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		var mouse_pos = get_global_mouse_position()
-		gridChess.input(mouse_pos)
+		grid_chess.handle_input(mouse_pos)
