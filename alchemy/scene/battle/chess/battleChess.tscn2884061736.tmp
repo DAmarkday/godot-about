@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://ylw00u4igqat"]
+
+[ext_resource type="Script" uid="uid://cf3nr1l6tio0w" path="res://scene/battle/chess/battle_chess.gd" id="1_8vhlr"]
+
+[sub_resource type="TileSet" id="TileSet_0vktp"]
+tile_size = Vector2i(64, 64)
+
+[node name="BattleChess" type="Node2D"]
+script = ExtResource("1_8vhlr")
+
+[node name="Grid" type="Node2D" parent="."]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="Grid"]
+tile_set = SubResource("TileSet_0vktp")

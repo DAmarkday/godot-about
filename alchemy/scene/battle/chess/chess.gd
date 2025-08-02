@@ -13,13 +13,18 @@ class Cell:
 	var cell_node:ColorRect
 	# 格子容器,装载各种东西
 	var cell_container:Array
-	func _init(x:int,y:int):
+	# 是否显示当前格子
+	var isVisible:bool
+	func _init(x:int,y:int,visible:bool):
 		cell_node = ColorRect.new()
 		cell_node.size = Vector2(cell_size, cell_size)
 		cell_node.position = Vector2(x * cell_size, y * cell_size)
 		cell_grid_position = Vector2i(x, y)
 		cell_actual_position = Vector2(x * cell_size, y * cell_size)
 		cell_node.color = Color(0.2, 0.2, 0.2)
+		
+		isVisible = visible
+		
 		
 # 网格是多少个Cell
 var grid_size = Vector2i(10, 10)	
@@ -46,7 +51,7 @@ func createCells():
 	
 	for x in range(grid_size.x):
 		for y in range(grid_size.y):
-			var cell = Cell.new(x,y)
+			var cell = Cell.new(x,y,false)
 			grid_node.add_child(cell.cell_node)
 			grid_cells[x][y] = cell
 			
@@ -107,6 +112,9 @@ func use_json_to_create_map(json:Array):
 		for c in range(col_size):
 			if json[r][c] == 1:
 				grid_tile_layer.set_cell(Vector2i(c, r), 0, Vector2i(1, 1))
+			#else:
+				#(grid_cells[r][c].cell_node as Node2D).queue_free()
+				#grid_cells[r][c] = null
 	
 	pass
 	
@@ -136,28 +144,30 @@ func input(mouse_pos:Vector2):
 var selected_npc;
 func handle_click_cell(cell_position: Vector2i):
 	var curCell = grid_cells[cell_position.x][cell_position.y] as Cell
-	if curCell != null:
-		selected_cell = curCell
-		# 判断当前选中的格子中是否存在npc
-		for i in curCell.cell_container:
-			#  TODO 先假设当前选中的cell的容器中所有都是npc 后续会设置一个属性来判断是人物还是建筑
-			# 如果当前选中的地块中存在npc则改为选中当前的npc
-			# 不存在则判断是否存在选中的npc,如果存在则移动当当前位置
-			
-			if i:
-				#selected_npc = 
-				select_npc_in_cell(i,curCell)
-				return
-			break;
-	
+	if curCell == null:
+		return
+	# 如果已经有选中的NPC，尝试移动
 	if selected_npc != null:
 		if selected_npc.is_valid_move(cell_position):
 			move_piece(selected_npc, cell_position)
 		clear_selection()
+		return
+	
+	# 检查当前格子是否有NPC
+	for i in curCell.cell_container:
+			#  TODO 先假设当前选中的cell的容器中所有都是npc 后续会设置一个属性来判断是人物还是建筑
+			# 如果当前选中的地块中存在npc则改为选中当前的npc
+			# 不存在则判断是否存在选中的npc,如果存在则移动当当前位置
+		if i != null: # 假设容器中的都是NPC
+			select_npc_in_cell(i, curCell)
+			return
+	
+	# 如果点击空格子，清除选择
+	clear_selection()
 
 func select_npc_in_cell(npc: Node2D,cell:Cell):
-	#clear_selection()
-	#selected_cell = cell
+	clear_selection()
+	selected_cell = cell
 	selected_npc = npc
 	cell.cell_node.color = Color(0, 1, 0)
 	highlight_cell_lines(cell.cell_grid_position)
@@ -165,14 +175,13 @@ func select_npc_in_cell(npc: Node2D,cell:Cell):
 func move_piece(piece, target: Vector2i):
 	var old_pos = piece.pos
 	piece.set_piece_position(target)
-	for i in (grid_cells[old_pos.x][old_pos.y] as Cell).cell_container:
-		# TODO:
-		i = null;
+	(grid_cells[old_pos.x][old_pos.y] as Cell).cell_container.erase(piece)
 	(grid_cells[target.x][target.y] as Cell).cell_container.append(piece)
 #
 func clear_selection():
 	#if selected_cell != null:
-	selected_cell.cell_node.color = Color(0.2, 0.2, 0.2)
+	if selected_cell != null:
+		selected_cell.cell_node.color = Color(0.2, 0.2, 0.2)
 	clear_highlight_lines()
 	selected_cell = null
 	selected_npc = null
