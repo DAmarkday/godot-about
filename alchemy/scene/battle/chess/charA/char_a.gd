@@ -10,11 +10,12 @@ func update_visual():
 	# 实际项目中：$Sprite.texture = preload("res://assets/rook.png")
 
 func is_valid_move(target: Vector2i) -> bool:
-	var delta = target - pos
-	# 车：直线移动，路径无阻挡
-	if delta.x == 0 or delta.y == 0:
-		return is_path_clear(pos, target)
-	return false
+	#var delta = target - pos
+	## 车：直线移动，路径无阻挡
+	#if delta.x == 0 or delta.y == 0:
+		#return is_path_clear(pos, target)
+	#return false
+	return true
 
 func is_path_clear(from: Vector2i, to: Vector2i) -> bool:
 	if from.x == to.x:

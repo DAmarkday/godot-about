@@ -34,4 +34,6 @@ func _ready():
 	gridChess.添加棋子(npc1.instantiate(),Vector2i(2,2))
 	
 func _input(event: InputEvent) -> void:
-	gridChess._input(event)
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		var mouse_pos = get_global_mouse_position()
+		gridChess.input(mouse_pos)

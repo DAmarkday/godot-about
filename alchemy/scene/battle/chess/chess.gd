@@ -127,13 +127,11 @@ func 根据棋子棋盘坐标生成像素坐标(chessPosition:Vector2i)-> Vector
 	return Vector2.ZERO 
 
 
-func _input(event):
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		var mouse_pos = get_global_mouse_position()
-		var cell_x = int(mouse_pos.x / cell_size)
-		var cell_y = int(mouse_pos.y / cell_size)
-		if cell_x >= 0 and cell_x < grid_size.x and cell_y >= 0 and cell_y < grid_size.y:
-			handle_click_cell(Vector2i(2, 2))
+func input(mouse_pos:Vector2):
+	var cell_x = int(mouse_pos.x / cell_size)
+	var cell_y = int(mouse_pos.y / cell_size)
+	if cell_x >= 0 and cell_x < grid_size.x and cell_y >= 0 and cell_y < grid_size.y:
+		handle_click_cell(Vector2i(cell_x, cell_y))
 
 var selected_npc;
 func handle_click_cell(cell_position: Vector2i):
@@ -167,13 +165,15 @@ func select_npc_in_cell(npc: Node2D,cell:Cell):
 func move_piece(piece, target: Vector2i):
 	var old_pos = piece.pos
 	piece.set_piece_position(target)
-	grid_cells[old_pos.x][old_pos.y] = null
-	grid_cells[target.x][target.y] = piece
+	for i in (grid_cells[old_pos.x][old_pos.y] as Cell).cell_container:
+		# TODO:
+		i = null;
+	(grid_cells[target.x][target.y] as Cell).cell_container.append(piece)
 #
 func clear_selection():
-	if selected_cell != null:
-		grid_cells[selected_cell.x][selected_cell.y].color = Color(0.2, 0.2, 0.2)
-		clear_highlight_lines()
+	#if selected_cell != null:
+	selected_cell.cell_node.color = Color(0.2, 0.2, 0.2)
+	clear_highlight_lines()
 	selected_cell = null
 	selected_npc = null
 
