@@ -1,56 +1,32 @@
-[gd_scene load_steps=17 format=3 uid="uid://w6aa8g2c60h2"]
+[gd_scene load_steps=11 format=3 uid="uid://w6aa8g2c60h2"]
 
 [ext_resource type="PackedScene" uid="uid://c1etxuqfemwgc" path="res://scene/battle/chess/pieceTemplate/piece_template.tscn" id="1_4xaf2"]
 [ext_resource type="Script" uid="uid://cfic1nwtandqe" path="res://scene/battle/chess/charA/char_a.gd" id="2_v270j"]
-[ext_resource type="Texture2D" uid="uid://8mxptm2rb5fd" path="res://texture/npc/hero sprite not sword.png" id="3_tb37c"]
+[ext_resource type="Texture2D" uid="uid://ceap5tm1djh33" path="res://texture/npc/Warrior_Blue.png" id="3_tb37c"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_aw1t5"]
 atlas = ExtResource("3_tb37c")
-region = Rect2(0, 0, 64, 76)
+region = Rect2(0, 0, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ia7pp"]
 atlas = ExtResource("3_tb37c")
-region = Rect2(64, 0, 64, 76)
+region = Rect2(192, 0, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fdoci"]
 atlas = ExtResource("3_tb37c")
-region = Rect2(128, 0, 64, 76)
+region = Rect2(384, 0, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fcco1"]
 atlas = ExtResource("3_tb37c")
-region = Rect2(192, 0, 64, 76)
+region = Rect2(576, 0, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lu5ck"]
 atlas = ExtResource("3_tb37c")
-region = Rect2(256, 0, 64, 76)
+region = Rect2(768, 0, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6fyap"]
 atlas = ExtResource("3_tb37c")
-region = Rect2(320, 0, 64, 76)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_qyelv"]
-atlas = ExtResource("3_tb37c")
-region = Rect2(384, 0, 64, 76)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_woyel"]
-atlas = ExtResource("3_tb37c")
-region = Rect2(448, 0, 64, 76)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_qui6w"]
-atlas = ExtResource("3_tb37c")
-region = Rect2(512, 0, 64, 76)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_rlweu"]
-atlas = ExtResource("3_tb37c")
-region = Rect2(576, 0, 64, 76)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ote3t"]
-atlas = ExtResource("3_tb37c")
-region = Rect2(640, 0, 64, 76)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_bjdqt"]
-atlas = ExtResource("3_tb37c")
-region = Rect2(704, 0, 64, 76)
+region = Rect2(960, 0, 192, 192)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_v270j"]
 resource_local_to_scene = true
@@ -73,28 +49,10 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_6fyap")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_qyelv")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_woyel")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_qui6w")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_rlweu")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ote3t")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_bjdqt")
 }],
 "loop": true,
 "name": &"default",
-"speed": 10.0
+"speed": 5.0
 }]
 
 [node name="PieceTemplate" instance=ExtResource("1_4xaf2")]
@@ -102,8 +60,7 @@ script = ExtResource("2_v270j")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." index="1"]
 z_index = 5
-position = Vector2(29, 4)
-scale = Vector2(2.3, 2.3)
+position = Vector2(0, -15)
 sprite_frames = SubResource("SpriteFrames_v270j")
 autoplay = "default"
-frame_progress = 0.844568
+frame_progress = 0.802916

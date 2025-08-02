@@ -1,0 +1,66 @@
+[gd_scene load_steps=11 format=3 uid="uid://s15h246468le"]
+
+[ext_resource type="PackedScene" uid="uid://c1etxuqfemwgc" path="res://scene/battle/chess/pieceTemplate/piece_template.tscn" id="1_debff"]
+[ext_resource type="Script" uid="uid://bxf6d1mkw4j8q" path="res://scene/battle/chess/charB/char_b.gd" id="2_iy70v"]
+[ext_resource type="Texture2D" uid="uid://m15qn4rwweg3" path="res://texture/boss/TNT_Blue.png" id="3_iy70v"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a65ck"]
+atlas = ExtResource("3_iy70v")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b3j18"]
+atlas = ExtResource("3_iy70v")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1wg5n"]
+atlas = ExtResource("3_iy70v")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tftpl"]
+atlas = ExtResource("3_iy70v")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_grx85"]
+atlas = ExtResource("3_iy70v")
+region = Rect2(768, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qxv08"]
+atlas = ExtResource("3_iy70v")
+region = Rect2(960, 0, 192, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_debff"]
+resource_local_to_scene = true
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a65ck")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b3j18")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1wg5n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tftpl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_grx85")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qxv08")
+}],
+"loop": true,
+"name": &"default",
+"speed": 4.0
+}]
+
+[node name="PieceTemplate" instance=ExtResource("1_debff")]
+script = ExtResource("2_iy70v")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." index="1"]
+z_index = 5
+position = Vector2(0, -19)
+sprite_frames = SubResource("SpriteFrames_debff")
+autoplay = "default"
+frame_progress = 0.723961
