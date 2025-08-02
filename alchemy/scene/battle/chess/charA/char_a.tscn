@@ -63,4 +63,4 @@ z_index = 5
 position = Vector2(0, -15)
 sprite_frames = SubResource("SpriteFrames_v270j")
 autoplay = "default"
-frame_progress = 0.802916
+frame_progress = 0.11097
