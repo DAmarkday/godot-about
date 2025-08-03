@@ -66,6 +66,7 @@ script = ExtResource("2_72wpy")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." index="1"]
 z_index = 5
+position = Vector2(0, -14)
 sprite_frames = SubResource("SpriteFrames_5sdre")
 autoplay = "default"
-frame_progress = 0.670271
+frame_progress = 0.414713

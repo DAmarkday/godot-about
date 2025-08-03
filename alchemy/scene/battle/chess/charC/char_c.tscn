@@ -62,4 +62,4 @@ z_index = 5
 position = Vector2(0, -19)
 sprite_frames = SubResource("SpriteFrames_bg8is")
 autoplay = "default"
-frame_progress = 0.454598
+frame_progress = 0.432634
