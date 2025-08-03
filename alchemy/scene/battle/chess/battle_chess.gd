@@ -3,7 +3,10 @@ extends Node2D
 @onready var tile_layer:TileMapLayer = $Grid/TileMapLayer
 
 @onready var npc1 = preload("res://scene/battle/chess/charA/char_a.tscn")
+@onready var npc2 = preload("res://scene/battle/chess/charC/char_c.tscn")
+@onready var npc3 = preload("res://scene/battle/chess/charD/char_d.tscn")
 @onready var boss1 = preload("res://scene/battle/chess/charB/char_b.tscn")
+@onready var boss2 = preload("res://scene/battle/chess/charE/char_e.tscn")
 
 var grid_chess:Chess;
 func setup_camera(pointer:Vector2):
@@ -35,7 +38,13 @@ func _ready():
 	# 在指定位置添加一个 NPC
 	grid_chess.add_piece(npc1.instantiate(), Vector2i(2, 2))
 	
+	grid_chess.add_piece(npc2.instantiate(), Vector2i(2, 5))
+	
+	grid_chess.add_piece(npc3.instantiate(), Vector2i(3, 3))
+	
 	grid_chess.add_piece(boss1.instantiate(), Vector2i(5, 5))
+	
+	grid_chess.add_piece(boss2.instantiate(), Vector2i(7, 3))
 	
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
