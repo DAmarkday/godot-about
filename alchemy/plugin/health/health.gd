@@ -8,11 +8,12 @@ signal health_depleted
 # 导出属性
 @export var max_health: int = 5
 @export var current_health: int = 5
+@export var grid_width: float = 10.0  # 每个格子的宽度（新增）
 @export var grid_height: float = 10.0  # 血量格子高度
 @export var grid_spacing: float = 3.0  # 格子间距
 @export var full_health_color: Color = Color.RED  # 满血格子颜色
 @export var empty_health_color: Color = Color(0.3, 0.3, 0.3, 0.8)  # 空血格子颜色
-@export var max_total_width: float = 50.0  # 血量条最大总宽度
+@export var max_total_width: float = 50.0  # 血量条最大总宽度（仅用于参考）
 @export var offset_y: float = 20.0  # 血量条相对于棋子底部的Y轴偏移
 @export var background_color: Color = Color(0.1, 0.1, 0.1, 0.8)  # 背景颜色
 @export var outer_border_color: Color = Color.WHITE  # 外边框颜色
@@ -22,19 +23,11 @@ signal health_depleted
 
 # 内部变量
 var health_ui: Panel
-var grid_width: float
 
 func _ready() -> void:
 	current_health = clamp(current_health, 0, max_health)
-	calculate_grid_width()
 	setup_health_ui()
-	print("HealthSystem initialized for %s: max_health=%d, grid_width=%.2f, offset_y=%.2f" % [get_parent().name, max_health, grid_width, offset_y])
-
-func calculate_grid_width() -> void:
-	# 动态计算格子宽度，确保间距一致，最小4像素
-	var total_spacing = grid_spacing * max(0, max_health - 1)  # 避免负间距
-	grid_width = max((max_total_width - total_spacing) / max(max_health, 1), 4.0)
-	print("Calculated grid_width for %s: %.2f, total_width: %.2f, spacing: %.2f" % [get_parent().name, grid_width, grid_width * max_health + total_spacing, grid_spacing])
+	print("HealthSystem 初始化 for %s: max_health=%d, grid_width=%.2f, offset_y=%.2f" % [get_parent().name, max_health, grid_width, offset_y])
 
 func setup_health_ui() -> void:
 	# 创建 UI 节点（使用 Panel 提供外边框和背景）
@@ -68,12 +61,12 @@ func setup_health_ui() -> void:
 	health_ui.add_child(inner_border_rect)
 	
 	update_health_ui()
-	print("Health UI created for %s at local position: %s, size: %s, background: %s, outer_border: %s, inner_border: %s" % [
+	print("Health UI 创建 for %s at local position: %s, size: %s, background: %s, outer_border: %s, inner_border: %s" % [
 		get_parent().name, health_ui.position, health_ui.size, background_color, outer_border_color, inner_border_color])
 	if get_parent() is Node2D:
-		print("Parent %s is Node2D, global position: %s" % [get_parent().name, get_parent().global_position])
+		print("父节点 %s 是 Node2D, 全局位置: %s" % [get_parent().name, get_parent().global_position])
 	else:
-		print("Warning: Parent %s is not Node2D, blood bar may not position correctly" % get_parent().name)
+		print("警告: 父节点 %s 不是 Node2D, 血量条可能无法正确定位" % get_parent().name)
 
 func update_health_ui() -> void:
 	# 清空除内边框外的子节点
@@ -93,8 +86,8 @@ func update_health_ui() -> void:
 		rect.position = Vector2(start_x + i * (grid_width + grid_spacing) + padding, padding)
 		rect.color = full_health_color if i < current_health else empty_health_color
 		health_ui.add_child(rect)
-		print("Grid %d for %s at position: %s" % [i, get_parent().name, rect.position])
-	print("Health UI updated for %s: %d grids, total_width: %.2f, spacing: %.2f" % [get_parent().name, max_health, total_width, grid_spacing])
+		print("格子 %d for %s at position: %s, size: %s" % [i, get_parent().name, rect.position, rect.size])
+	print("Health UI 更新 for %s: %d grids, total_width: %.2f, spacing: %.2f" % [get_parent().name, max_health, total_width, grid_spacing])
 
 func take_damage(amount: int) -> void:
 	current_health = clamp(current_health - amount, 0, max_health)
@@ -102,20 +95,19 @@ func take_damage(amount: int) -> void:
 	emit_signal("health_changed", current_health, max_health)
 	if current_health <= 0:
 		emit_signal("health_depleted")
-	print("Damage taken for %s: %d, Current health: %d" % [get_parent().name, amount, current_health])
+	print("%s 受到伤害: %d, 当前血量: %d" % [get_parent().name, amount, current_health])
 
 func heal(amount: int) -> void:
 	current_health = clamp(current_health + amount, 0, max_health)
 	update_health_ui()
 	emit_signal("health_changed", current_health, max_health)
-	print("Healed for %s: %d, Current health: %d" % [get_parent().name, amount, current_health])
+	print("%s 恢复血量: %d, 当前血量: %d" % [get_parent().name, amount, current_health])
 
 func set_max_health(new_max: int) -> void:
 	max_health = max(1, new_max)
 	current_health = clamp(current_health, 0, max_health)
-	calculate_grid_width()
 	setup_health_ui()  # 重新设置 UI 以更新大小和边框
-	print("Max health set for %s: %d" % [get_parent().name, max_health])
+	print("%s 设置最大血量: %d" % [get_parent().name, max_health])
 
 func get_current_health() -> int:
 	return current_health
