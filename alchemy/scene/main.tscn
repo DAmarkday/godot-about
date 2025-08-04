@@ -1,3 +1,11 @@
-[gd_scene format=3 uid="uid://djtvoydh6hbod"]
+[gd_scene load_steps=3 format=3 uid="uid://djtvoydh6hbod"]
+
+[ext_resource type="Script" uid="uid://djuewi6e4r5d5" path="res://scene/main.gd" id="1_wp4xf"]
+[ext_resource type="PackedScene" uid="uid://ylw00u4igqat" path="res://scene/battle/chess/battleChess.tscn" id="3_wp4xf"]
 
 [node name="Main" type="Node2D"]
+script = ExtResource("1_wp4xf")
+
+[node name="BattleChess" parent="." instance=ExtResource("3_wp4xf")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
