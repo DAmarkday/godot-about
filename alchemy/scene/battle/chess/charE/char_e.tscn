@@ -70,3 +70,7 @@ position = Vector2(0, -14)
 sprite_frames = SubResource("SpriteFrames_5sdre")
 autoplay = "default"
 frame_progress = 0.414713
+
+[node name="Health" parent="." index="2"]
+max_health = 3
+current_health = 2

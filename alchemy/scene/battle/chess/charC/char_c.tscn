@@ -63,3 +63,8 @@ position = Vector2(0, -19)
 sprite_frames = SubResource("SpriteFrames_bg8is")
 autoplay = "default"
 frame_progress = 0.432634
+
+[node name="Health" parent="." index="2"]
+max_health = 3
+current_health = 3
+full_health_color = Color(0.486275, 0.984314, 0.356863, 1)
