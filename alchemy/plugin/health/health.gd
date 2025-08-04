@@ -9,7 +9,7 @@ signal health_depleted
 @export var max_health: int = 5
 @export var current_health: int = 5
 @export var grid_height: float = 10.0  # 血量格子高度
-@export var grid_spacing: float = 2.0  # 格子间距
+@export var grid_spacing: float = 3.0  # 格子间距
 @export var full_health_color: Color = Color.RED  # 满血格子颜色
 @export var empty_health_color: Color = Color(0.3, 0.3, 0.3, 0.8)  # 空血格子颜色
 @export var max_total_width: float = 50.0  # 血量条最大总宽度
@@ -31,10 +31,10 @@ func _ready() -> void:
 	print("HealthSystem initialized for %s: max_health=%d, grid_width=%.2f, offset_y=%.2f" % [get_parent().name, max_health, grid_width, offset_y])
 
 func calculate_grid_width() -> void:
-	# 动态计算格子宽度，最小4像素
-	var total_spacing = grid_spacing * (max_health - 1)
+	# 动态计算格子宽度，确保间距一致，最小4像素
+	var total_spacing = grid_spacing * max(0, max_health - 1)  # 避免负间距
 	grid_width = max((max_total_width - total_spacing) / max(max_health, 1), 4.0)
-	print("Calculated grid_width for %s: %.2f, total_width: %.2f" % [get_parent().name, grid_width, grid_width * max_health + total_spacing])
+	print("Calculated grid_width for %s: %.2f, total_width: %.2f, spacing: %.2f" % [get_parent().name, grid_width, grid_width * max_health + total_spacing, grid_spacing])
 
 func setup_health_ui() -> void:
 	# 创建 UI 节点（使用 Panel 提供外边框和背景）
@@ -54,7 +54,7 @@ func setup_health_ui() -> void:
 	health_ui.add_theme_stylebox_override("panel", style_box)
 	
 	# 设置血条位置和大小（相对于父节点局部坐标）
-	var total_width = grid_width * max_health + grid_spacing * (max_health - 1)
+	var total_width = grid_width * max_health + grid_spacing * max(0, max_health - 1)
 	var padding = inner_border_width + outer_border_width
 	health_ui.position = Vector2(-total_width / 2.0 - padding, offset_y - padding)
 	health_ui.size = Vector2(total_width + padding * 2, grid_height + padding * 2)
@@ -82,7 +82,7 @@ func update_health_ui() -> void:
 			child.queue_free()
 	
 	# 计算血量条总宽度
-	var total_width = grid_width * max_health + grid_spacing * (max_health - 1)
+	var total_width = grid_width * max_health + grid_spacing * max(0, max_health - 1)
 	var padding = inner_border_width + outer_border_width
 	var start_x = 0
 	
@@ -93,7 +93,8 @@ func update_health_ui() -> void:
 		rect.position = Vector2(start_x + i * (grid_width + grid_spacing) + padding, padding)
 		rect.color = full_health_color if i < current_health else empty_health_color
 		health_ui.add_child(rect)
-	print("Health UI updated for %s: %d grids, total_width: %.2f" % [get_parent().name, max_health, total_width])
+		print("Grid %d for %s at position: %s" % [i, get_parent().name, rect.position])
+	print("Health UI updated for %s: %d grids, total_width: %.2f, spacing: %.2f" % [get_parent().name, max_health, total_width, grid_spacing])
 
 func take_damage(amount: int) -> void:
 	current_health = clamp(current_health - amount, 0, max_health)
