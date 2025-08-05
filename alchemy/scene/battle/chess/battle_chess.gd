@@ -12,7 +12,7 @@ var grid_chess:Chess;
 func setup_camera(pointer:Vector2):
 	var camera = Camera2D.new()
 	camera.position = pointer
-	camera.zoom = Vector2(1, 1)
+	camera.zoom = Vector2(0.7, 0.7)
 	add_child(camera)
 	camera.make_current()
 
