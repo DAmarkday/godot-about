@@ -1,0 +1,40 @@
+[gd_scene load_steps=4 format=3 uid="uid://cexoq8h5ycvmv"]
+
+[ext_resource type="Script" uid="uid://dnh1dd4p6srio" path="res://plugin/turnsLabel/turn_label.gd" id="1_dnyjv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v5qv8"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.0509403, 0.393061, 0.521777, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_dnyjv"]
+font_size = 28
+
+[node name="TurnLabel" type="Control"]
+z_index = 999
+layout_mode = 3
+anchors_preset = 0
+offset_right = 300.0
+offset_bottom = 80.0
+script = ExtResource("1_dnyjv")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_right = 300.0
+offset_bottom = 80.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_v5qv8")
+
+[node name="CenterContainer" type="CenterContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/CenterContainer"]
+z_index = 2
+layout_mode = 2
+text = "在 4 个回合后胜利"
+label_settings = SubResource("LabelSettings_dnyjv")
+
+[node name="Panel" type="Panel" parent="PanelContainer"]
+layout_mode = 2

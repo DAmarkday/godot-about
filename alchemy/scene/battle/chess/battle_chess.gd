@@ -1,7 +1,6 @@
 extends Node2D
 @onready var grid = $Grid
 @onready var tile_layer = $Grid/TileMapLayer
-
 @onready var npc1 = preload("res://scene/battle/chess/charA/char_a.tscn")
 @onready var npc2 = preload("res://scene/battle/chess/charC/char_c.tscn")
 @onready var npc3 = preload("res://scene/battle/chess/charD/char_d.tscn")
@@ -12,7 +11,7 @@ var grid_chess:Chess;
 func setup_camera(pointer:Vector2):
 	var camera = Camera2D.new()
 	camera.position = pointer
-	camera.zoom = Vector2(0.7, 0.7)
+	camera.zoom = Vector2(1, 1)
 	add_child(camera)
 	camera.make_current()
 
