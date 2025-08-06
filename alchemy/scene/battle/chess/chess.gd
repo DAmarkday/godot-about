@@ -30,7 +30,6 @@ var tile_layer: TileMapLayer  # 瓦片图层
 var json_data: Array  # 存储传入的 JSON 数据
 var selected_cell: Cell = null  # 当前选中的格子
 var selected_npc = null  # 当前选中的 NPC
-var highlight_lines: Array = []  # 高亮线条
 
 func _init(grid: Node2D, tile_layer: TileMapLayer, json: Array):
 	grid_node = grid
@@ -41,8 +40,15 @@ func _init(grid: Node2D, tile_layer: TileMapLayer, json: Array):
 		push_error("JSON 数据为空或无效！")
 		return
 	grid_size = Vector2i(json[0].size(), json.size())
-	# 设置 TileMapLayer 的 z_index，高于背景但低于线条
 	tile_layer.z_index = 1
+
+func adapt_to_resolution():
+	var screen_size = get_viewport().get_visible_rect().size
+	var camera = get_viewport().get_camera_2d()
+	var zoom = camera.zoom.x if camera else 1.0
+	tile_layer.scale = Vector2(1.0 / zoom, 1.0 / zoom)
+	# 设置整数缩放因子以避免模糊
+	get_tree().root.content_scale_factor = 2.0
 
 func create_map_from_json():
 	# 创建 TileSet
@@ -56,7 +62,13 @@ func create_map_from_json():
 	var atlas_source = TileSetAtlasSource.new()
 	atlas_source.texture = ground_textures
 	atlas_source.texture_region_size = Vector2i(cell_size, cell_size)
-	atlas_source.create_tile(Vector2i(1, 1))  # 配置默认瓦片
+	# 假设 Tilemap_Flat.png 包含以下瓦片：
+	# (1,1): 普通格子（带细网格线，1 像素宽）
+	# (2,1): 高亮格子（带加粗边框，4 像素宽，或高亮颜色）
+	# (3,1): 棋盘外边框（加粗，4 像素宽）
+	atlas_source.create_tile(Vector2i(1, 1))  # 普通格子
+	atlas_source.create_tile(Vector2i(2, 1))  # 高亮格子
+	atlas_source.create_tile(Vector2i(3, 1))  # 外边框
 	tile_set.add_source(atlas_source)
 	
 	# 设置 TileMapLayer 的 TileSet
@@ -84,29 +96,19 @@ func create_map_from_json():
 				# 设置瓦片
 				tile_layer.set_cell(Vector2i(x, y), 0, Vector2i(1, 1))
 	
-	# 绘制网格线
-	create_grid_lines()
+	# 添加棋盘外边框
+	#create_border_tiles()
 
-func create_grid_lines():
-	# 绘制垂直线
-	for x in range(grid_size.x + 1):
-		var line = Line2D.new()
-		line.add_point(Vector2(x * cell_size, 0))
-		line.add_point(Vector2(x * cell_size, grid_size.y * cell_size))
-		line.width = 2
-		line.default_color = Color(0.5, 0.5, 0.5)
-		line.z_index = 3
-		grid_node.add_child(line)
-	
-	# 绘制水平线
-	for y in range(grid_size.y + 1):
-		var line = Line2D.new()
-		line.add_point(Vector2(0, y * cell_size))
-		line.add_point(Vector2(grid_size.x * cell_size, y * cell_size))
-		line.width = 2
-		line.default_color = Color(0.5, 0.5, 0.5)
-		line.z_index = 3
-		grid_node.add_child(line)
+func create_border_tiles():
+	# 绘制加粗外边框（使用专用瓦片）
+	for x in range(-1, grid_size.x + 1):
+		# 顶部和底部边框
+		tile_layer.set_cell(Vector2i(x, -1), 0, Vector2i(3, 1))
+		tile_layer.set_cell(Vector2i(x, grid_size.y), 0, Vector2i(3, 1))
+	for y in range(-1, grid_size.y + 1):
+		# 左侧和右侧边框
+		tile_layer.set_cell(Vector2i(-1, y), 0, Vector2i(3, 1))
+		tile_layer.set_cell(Vector2i(grid_size.x, y), 0, Vector2i(3, 1))
 
 func get_grid_center_position() -> Vector2:
 	# 返回网格中心像素坐标
@@ -166,18 +168,15 @@ func handle_click_cell(cell_pos: Vector2i):
 			select_npc_in_cell(item, cell)
 			return
 	
-	# 点击空格子，清除选择
 	clear_selection()
 
 func select_npc_in_cell(npc: Node2D, cell: Cell):
-	# 选中 NPC 并高亮格子
 	clear_selection()
 	selected_cell = cell
 	selected_npc = npc
-	if cell.cell_node:
-		cell.cell_node.color = Color(0, 1, 0)  # 绿色高亮
-	highlight_cell_lines(cell.grid_position)
-	highlight_move_range(npc)  # 高亮可移动范围
+	# 使用高亮瓦片
+	tile_layer.set_cell(cell.grid_position, 0, Vector2i(2, 1))
+	highlight_move_range(npc)
 
 func move_piece(piece, target: Vector2i):
 	# 移动棋子到目标格子
@@ -186,6 +185,8 @@ func move_piece(piece, target: Vector2i):
 		var old_cell = grid_cells[old_pos.x][old_pos.y] as Cell
 		if old_cell.container.has(piece):
 			old_cell.container.erase(piece)
+			# 恢复普通瓦片
+			tile_layer.set_cell(old_cell.grid_position, 0, Vector2i(1, 1))
 		else:
 			push_warning("棋子不在旧格子的容器中: ", old_pos)
 	
@@ -200,53 +201,25 @@ func move_piece(piece, target: Vector2i):
 	target_cell.container.append(piece)
 	piece.set_piece_position(target) if piece.has_method("set_piece_position") else null
 	piece.global_position = grid_to_pixel_position(target)
-
-func highlight_cell_lines(cell_pos: Vector2i):
-	# 高亮选中格子的边框
-	var x = cell_pos.x
-	var y = cell_pos.y
-	var points = [
-		[Vector2(x * cell_size, y * cell_size), Vector2((x + 1) * cell_size, y * cell_size)],  # 上
-		[Vector2(x * cell_size, (y + 1) * cell_size), Vector2((x + 1) * cell_size, (y + 1) * cell_size)],  # 下
-		[Vector2(x * cell_size, y * cell_size), Vector2(x * cell_size, (y + 1) * cell_size)],  # 左
-		[Vector2((x + 1) * cell_size, y * cell_size), Vector2((x + 1) * cell_size, (y + 1) * cell_size)]  # 右
-	]
-	
-	for point_pair in points:
-		var line = Line2D.new()
-		line.add_point(point_pair[0])
-		line.add_point(point_pair[1])
-		line.width = 4
-		line.default_color = Color(1, 1, 0)  # 黄色高亮
-		line.z_index = 99
-		grid_node.add_child(line)
-		highlight_lines.append(line)
+	# 设置高亮瓦片
+	tile_layer.set_cell(target_cell.grid_position, 0, Vector2i(2, 1))
 
 func clear_selection():
-	# 清除选中状态
-	if selected_cell and selected_cell.cell_node:
-		selected_cell.cell_node.color = Color(0.2, 0.2, 0.2)
-	clear_highlight_lines()
+	if selected_cell:
+		# 恢复普通瓦片
+		tile_layer.set_cell(selected_cell.grid_position, 0, Vector2i(1, 1))
 	clear_move_range_highlights()
 	selected_cell = null
 	selected_npc = null
 
-func clear_highlight_lines():
-	# 清除高亮线条
-	for line in highlight_lines:
-		line.queue_free()
-	highlight_lines.clear()
-	
-
-var move_range_highlights: Array = []  # 存储可移动范围的高亮节点
+var move_range_highlights: Array = []
 func get_move_range(piece: Node2D) -> Array[Vector2i]:
 	# 获取棋子的可移动范围
 	var move_range: Array[Vector2i] = []
 	if not piece.has_method("is_valid_move"):
 		return move_range
 	
-	var current_pos = piece.pos if piece.has_method("get_pos") else Vector2i.ZERO
-	# 检查所有可能的格子（10x10范围内）
+	var current_pos = piece.get_pos() if piece.has_method("get_pos") else Vector2i.ZERO
 	for x in range(grid_size.x):
 		for y in range(grid_size.y):
 			var target = Vector2i(x, y)
@@ -260,17 +233,15 @@ func highlight_move_range(piece: Node2D):
 	var move_range = get_move_range(piece)
 	for pos in move_range:
 		var cell = grid_cells[pos.x][pos.y] as Cell
-		if cell and cell.is_visible and cell.cell_node:
-			var highlight = ColorRect.new()
-			highlight.size = Vector2(cell_size, cell_size)
-			highlight.position = cell.actual_position
-			highlight.color = Color(0, 0.5, 1, 0.5)  # 蓝色半透明
-			highlight.z_index = 2  # 高于瓦片，低于网格线
-			grid_node.add_child(highlight)
-			move_range_highlights.append(highlight)
+		if cell and cell.is_visible:
+			# 使用高亮瓦片表示移动范围
+			tile_layer.set_cell(pos, 0, Vector2i(2, 1))
+			move_range_highlights.append(pos)
 
 func clear_move_range_highlights():
-	# 清除可移动范围的高亮
-	for highlight in move_range_highlights:
-		highlight.queue_free()
+	for pos in move_range_highlights:
+		var cell = grid_cells[pos.x][pos.y] as Cell
+		if cell and cell.is_visible:
+			# 恢复普通瓦片
+			tile_layer.set_cell(pos, 0, Vector2i(1, 1))
 	move_range_highlights.clear()
