@@ -1,4 +1,4 @@
-extends Area2D
+extends Node2D
 
 # 子弹脚本
 
@@ -8,6 +8,9 @@ var velocity: Vector2
 func _ready():
 	# 初始化子弹方向
 	velocity = Vector2(cos(rotation), sin(rotation)) * speed
+	# 设置子弹为长条形（拉伸1x1像素方块）
+	#$Sprite2D.texture = preload("res://icon.svg")
+	#$Sprite2D.scale = Vector2(10, 2)  # 拉伸为长条形（宽10，高2）
 	
 	# 设置销毁定时器
 	var timer = Timer.new()

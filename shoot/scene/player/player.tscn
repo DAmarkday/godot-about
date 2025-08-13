@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://cnoqn0mbrw7uy"]
+
+[ext_resource type="Script" uid="uid://dregnnoundd8b" path="res://scene/player/player.gd" id="1_v7pse"]
+[ext_resource type="Texture2D" uid="uid://ya3uhmjtc2cj" path="res://resource/base.png" id="2_cm2cf"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gh87g"]
+
+[node name="Player" type="Node2D"]
+script = ExtResource("1_v7pse")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_gh87g")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-0.329674, -0.173607)
+rotation = 0.777598
+texture = ExtResource("2_cm2cf")
+offset = Vector2(3.34393, 2.30706)

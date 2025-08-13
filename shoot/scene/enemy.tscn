@@ -1,11 +1,29 @@
-[gd_scene load_steps=3 format=3 uid="uid://n062tu8i7l0v"]
+[gd_scene load_steps=3 format=3 uid="uid://dua1o362mdjat"]
 
-[ext_resource type="Script" uid="uid://iyb1p2p1qhyp" path="res://scene/enemy.gd" id="1_h08p8"]
+[sub_resource type="GDScript" id="GDScript_vufel"]
+script/source = "extends Area2D
+
+# 敌人脚本
+
+var speed: float = 100.0
+var target: Vector2 = Vector2(960, 540)  # 玩家位置（屏幕中心）
+
+func _ready():
+	# 将敌人加入组
+	add_to_group(\"enemies\")
+	# 设置敌人为1x1像素白色方块
+	#$Sprite2D.texture = preload(\"res://pixel.png\")
+
+func _physics_process(delta):
+	# 朝玩家移动
+	var direction = (target - position).normalized()
+	position += direction * speed * delta
+"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f87vc"]
 
 [node name="Enemy" type="Area2D"]
-script = ExtResource("1_h08p8")
+script = SubResource("GDScript_vufel")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_f87vc")
