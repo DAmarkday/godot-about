@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://73fiwmaucsya"]
+
+[node name="Player" type="CharacterBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+[node name="Body" type="Node2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Body"]
+
+[node name="WeaponNode" type="Node" parent="Body"]
