@@ -1,13 +1,133 @@
-[gd_scene format=3 uid="uid://73fiwmaucsya"]
+[gd_scene load_steps=19 format=3 uid="uid://73fiwmaucsya"]
+
+[ext_resource type="Texture2D" uid="uid://db15ldjk0wehp" path="res://texture/shadow.png" id="1_88688"]
+[ext_resource type="Script" uid="uid://bopkijuk0xvy7" path="res://scene/player/player.gd" id="1_sw8x8"]
+[ext_resource type="Texture2D" uid="uid://dd6remamgfpmd" path="res://texture/player/hero sprite not sword.png" id="1_tt56r"]
+[ext_resource type="Script" uid="uid://dvqu3gh7s3tlq" path="res://scene/player/camera_2d.gd" id="3_qt1gw"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_88688"]
+radius = 6.0
+height = 18.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_88688"]
+atlas = ExtResource("1_tt56r")
+region = Rect2(0, 0, 64, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qt1gw"]
+atlas = ExtResource("1_tt56r")
+region = Rect2(64, 0, 64, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sw8x8"]
+atlas = ExtResource("1_tt56r")
+region = Rect2(128, 0, 64, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rvvvr"]
+atlas = ExtResource("1_tt56r")
+region = Rect2(192, 0, 64, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_co054"]
+atlas = ExtResource("1_tt56r")
+region = Rect2(256, 0, 64, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xewb5"]
+atlas = ExtResource("1_tt56r")
+region = Rect2(320, 0, 64, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4kw3b"]
+atlas = ExtResource("1_tt56r")
+region = Rect2(384, 0, 64, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a5dh7"]
+atlas = ExtResource("1_tt56r")
+region = Rect2(448, 0, 64, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c12fn"]
+atlas = ExtResource("1_tt56r")
+region = Rect2(512, 0, 64, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mc8hd"]
+atlas = ExtResource("1_tt56r")
+region = Rect2(576, 0, 64, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_77j1f"]
+atlas = ExtResource("1_tt56r")
+region = Rect2(640, 0, 64, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pnt7x"]
+atlas = ExtResource("1_tt56r")
+region = Rect2(704, 0, 64, 65)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_sldpn"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_88688")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qt1gw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sw8x8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rvvvr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_co054")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xewb5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4kw3b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a5dh7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c12fn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mc8hd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_77j1f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pnt7x")
+}],
+"loop": true,
+"name": &"down_idle",
+"speed": 16.0
+}]
 
 [node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_sw8x8")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="shadow" type="Sprite2D" parent="."]
+position = Vector2(0, -3)
+texture = ExtResource("1_88688")
+metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -9)
+shape = SubResource("CapsuleShape2D_88688")
+metadata/_edit_lock_ = true
 
 [node name="Body" type="Node2D" parent="."]
+metadata/_edit_lock_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Body"]
+sprite_frames = SubResource("SpriteFrames_sldpn")
+animation = &"down_idle"
+autoplay = "down_idle"
+frame_progress = 0.0297527
+offset = Vector2(13, -11)
+metadata/_edit_lock_ = true
 
-[node name="WeaponNode" type="Node" parent="Body"]
+[node name="WeaponNode" type="Node2D" parent="Body"]
+position = Vector2(0, -10)
+metadata/_edit_lock_ = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+script = ExtResource("3_qt1gw")
