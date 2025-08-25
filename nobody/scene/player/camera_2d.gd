@@ -21,11 +21,12 @@ func set_camera_limits():
 		return
 	var used_rect:Rect2i = tileMap.get_used_rect()
 	var tile_map_size := tileMap.tile_set.get_tile_size()
-	limit_left = used_rect.position.x
+	limit_left = 0
+	limit_top = 0
 	print(used_rect.position,tile_map_size)
-	limit_top = used_rect.position.y * tile_map_size.y
-	limit_right = (used_rect.position.x + used_rect.size.x) *tile_map_size.x
-	limit_bottom = (used_rect.position.y + used_rect.size.y)*tile_map_size.y
+	
+	limit_right = (used_rect.size.x) *tile_map_size.x
+	limit_bottom = (used_rect.size.y)*tile_map_size.y
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass

@@ -303,6 +303,11 @@ region = Rect2(448, 585, 64, 65)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_sldpn"]
 animations = [{
+"frames": [],
+"loop": true,
+"name": &"1121",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_seimy")
@@ -576,7 +581,7 @@ metadata/_edit_lock_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Body"]
 sprite_frames = SubResource("SpriteFrames_sldpn")
-animation = &"lr_idle"
+animation = &"1121"
 autoplay = "down_idle"
 offset = Vector2(13, -11)
 metadata/_edit_lock_ = true
