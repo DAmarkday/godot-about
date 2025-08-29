@@ -1,7 +1,7 @@
 extends CharacterBody2D
 class_name Player
 
-@export var SPEED = 800.0 
+@export var SPEED = 150.0 
 
 
 @onready var anim = $Body/AnimatedSprite2D
@@ -57,9 +57,9 @@ func update_animation_and_facing():
 			if abs(to_mouse.x) >=abs(to_mouse.y):
 				#朝右
 				if velocity == Vector2.ZERO:
-					_current_anim = 'lr_idle'
+					_current_anim = 'backlr_idle'
 				else:
-					_current_anim = 'lr_move'
+					_current_anim = 'backlr_move'
 				anim.play(_current_anim)	
 			else:
 				#朝上

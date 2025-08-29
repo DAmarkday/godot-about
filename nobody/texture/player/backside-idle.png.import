@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bgyaykym74ajv"
-path="res://.godot/imported/PC _ Computer - Enter the Gungeon - Playable Characters - The Marine (1).png-24978660ebaf793c300024c77626339b.ctex"
+uid="uid://dmx34rte7avy"
+path="res://.godot/imported/backside-idle.png-f3c59e8373e4e460371d401244ae9799.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://texture/player/PC _ Computer - Enter the Gungeon - Playable Characters - The Marine (1).png"
-dest_files=["res://.godot/imported/PC _ Computer - Enter the Gungeon - Playable Characters - The Marine (1).png-24978660ebaf793c300024c77626339b.ctex"]
+source_file="res://texture/player/backside-idle.png"
+dest_files=["res://.godot/imported/backside-idle.png-f3c59e8373e4e460371d401244ae9799.ctex"]
 
 [params]
 

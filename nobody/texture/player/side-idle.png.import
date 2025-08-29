@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dd6remamgfpmd"
-path="res://.godot/imported/hero sprite not sword.png-b6fcb786ff7346965a180ff428995321.ctex"
+uid="uid://diuxvetsf78cc"
+path="res://.godot/imported/side-idle.png-dc58d642572a5f4f9e1550a999bb82c8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://texture/player/hero sprite not sword.png"
-dest_files=["res://.godot/imported/hero sprite not sword.png-b6fcb786ff7346965a180ff428995321.ctex"]
+source_file="res://texture/player/side-idle.png"
+dest_files=["res://.godot/imported/side-idle.png-dc58d642572a5f4f9e1550a999bb82c8.ctex"]
 
 [params]
 
