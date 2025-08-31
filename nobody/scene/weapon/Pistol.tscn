@@ -85,4 +85,4 @@ frame = 8
 frame_progress = 1.0
 
 [node name="BulletPoint" parent="." index="2"]
-position = Vector2(11, -5)
+position = Vector2(12, -5)

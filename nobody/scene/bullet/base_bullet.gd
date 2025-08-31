@@ -5,9 +5,10 @@ class_name BaseBullet
 @export var dir = Vector2.ZERO
 
 var _tick = 0
+var velocity = Vector2(500, 0)
 # physic默认在项目设置里是60帧，process就是实际游戏帧率
 func _physics_process(delta):
-	global_position += dir *delta*  speed
+	global_position += velocity*delta
 	_tick+=delta
 	if Engine.get_physics_frames() % 20:
 		if _tick>=3:
@@ -17,4 +18,4 @@ func _physics_process(delta):
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	if(dir !=Vector2.ZERO):
-		look_at(dir)
+		velocity=dir *  speed

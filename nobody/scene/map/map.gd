@@ -44,6 +44,3 @@ func _ready():
 	# hotspot 是光标的点击点（通常设为图标中心或左上角，视需求调整）
 	var hotspot = Vector2(original_size.x / 4, original_size.y / 4) # 居中 hotspot
 	DisplayServer.cursor_set_custom_image(resized_texture, DisplayServer.CURSOR_ARROW, hotspot)
-
-func _process(delta):
-	pass

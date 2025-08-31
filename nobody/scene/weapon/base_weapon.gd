@@ -3,6 +3,7 @@ class_name BaseWeapon
 
 @onready var fire_timer = $Timer 
 @onready var bullet_point = $BulletPoint
+@onready var anim = $AnimatedSprite2D
 
 @export var bullets_per_magazine = 30  # 每弹夹子弹数
 @export var max_magazine_counts = 5 # 最大弹夹数量
@@ -11,7 +12,7 @@ class_name BaseWeapon
 @export var damage = 5
 @export var weapon_name = '默认枪械'
 
-const _pre_bullet = preload("res://scene/bullet/BaseBullet.tscn")
+var _pre_bullet = preload("res://scene/bullet/BaseBullet.tscn")
 
 
 @onready var sprite = $AnimatedSprite2D
@@ -33,10 +34,19 @@ func _ready() -> void:
 func getCurRotateDeg():
 	pass
 
-func shoot(dir:Vector2):
+func shoot():
 	var instance = _pre_bullet.instantiate()
 	instance.global_position = bullet_point.global_position
-	instance.dir = global_position.direction_to(dir)
+	
+	# 使用枪械的朝向计算子弹方向
+	var direction = Vector2(cos(anim.global_rotation), sin(anim.global_rotation)).normalized()
+	instance.dir = direction
+	
+	# 设置子弹旋转，使长方形朝向与移动方向一致
+	instance.rotation = anim.global_rotation
+	
+	
+	get_tree().root.add_child(instance)
 	
 	can_shoot = false
 	fire_timer.start()

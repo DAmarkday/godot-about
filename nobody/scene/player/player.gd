@@ -5,7 +5,7 @@ class_name Player
 
 
 @onready var anim = $Body/AnimatedSprite2D
-@onready var body = $Body
+@onready var body:Node2D = $Body
 @onready var weapon_node:Node2D = $Body/WeaponNode
 #@onready var hand_nodeL:Node2D = $Body/HandNodeL
 @onready var hand_nodeR:Node2D = $Body/HandNodeR
@@ -19,7 +19,28 @@ var isFlip = false;
 	
 func _ready():
 	pass
+
+var last_mouse_pos = Vector2.ZERO  # 记录上一次鼠标位置
+var mouse_move_threshold = 10.0  # 鼠标移动最小距离阈值
+var min_distance_threshold = 8.0
+func _input(event):
+	if event is InputEventMouseMotion:
+		var mouse_position = get_global_mouse_position()
+		weapon_node.look_at(mouse_position)
+		
+		if mouse_position.distance_to(last_mouse_pos) > mouse_move_threshold:
+			last_mouse_pos = mouse_position
+			var direction = mouse_position - global_position
+			if direction.length() > min_distance_threshold:
+				var to_mouse = mouse_position - global_position
+				
+				#if to_mouse.length()<20:
+					#mouse_position = mouse_position.normalized() * 10000
 	
+				update_animation_and_facing(mouse_position)
+				#last_direction = direction.normalized()
+				#update_animation(last_direction)
+
 func _physics_process(delta: float) -> void:	
 	var dir = Vector2.ZERO
 	dir.x = Input.get_axis("move_left","move_right")
@@ -28,25 +49,31 @@ func _physics_process(delta: float) -> void:
 	
 	velocity = dir.normalized() *SPEED
 	
-	var mouse_position = get_global_mouse_position()
-	update_animation_and_facing(mouse_position)
-	weapon_node.look_at(mouse_position)
+	#var mouse_position = get_global_mouse_position()
 	
 	move_and_slide()
+			
+	#var to_mouse = mouse_position - global_position
+	#if to_mouse.length()<20:
+		#mouse_position = mouse_position.normalized() * 10000
+	#
+	#update_animation_and_facing(mouse_position,delta)
+	#weapon_node.look_at(mouse_position)
 	
 	if Input.is_action_pressed("fire"):
-			# 计时器归零时执行操作并重置计时器
+		# 计时器归零时执行操作并重置计时器
 		if(curWeapon):
-			curWeapon.shoot(Vector2(mouse_position.x,mouse_position.y))	
+			curWeapon.shoot()	
+
 	
 func update_animation_and_facing(mouse_position):		
 	var to_mouse = mouse_position - global_position
-	
 	# 计算角度（弧度）
 	var angle_rad = to_mouse.angle()
 	
 	# 转换为角度（可选）
 	var angle_deg = rad_to_deg(angle_rad)
+	print('`to_mouse`',to_mouse,angle_deg,to_mouse.length())
 	
 	
 	# 确保角度在 0-360 范围内
@@ -62,6 +89,7 @@ func update_animation_and_facing(mouse_position):
 	anim.z_index= 0
 	#hand_nodeL.z_index = 0
 	hand_nodeR.z_index = 0
+	weapon_node.visible = false
 	
 	#hand_nodeL.visible = false
 	hand_nodeR.visible = false
@@ -69,14 +97,8 @@ func update_animation_and_facing(mouse_position):
 	var weaponNodeDeg = weapon_node.transform.get_rotation()
 	var weaponNodeRota = rad_to_deg(weaponNodeDeg)
 	print("weaponNodeRota is ",weaponNodeRota)
-	#if weaponNodeRota <=120 and weaponNodeRota >=-120:
-		##isFlip = false
-		#if body.scale.x != 1:
-			#body.scale.x = 1
-	#else :
-		#if body.scale.x != -1:
-			#body.scale.x = -1
-			##isFlip = true
+	# 控制角色翻转
+	var target_scale_x = body.scale.x
 	
 	#控制角色动画翻转 要求是
 	#从鼠标在人物左方到右方超过 70°时才还原翻转
@@ -87,27 +109,33 @@ func update_animation_and_facing(mouse_position):
 		if weaponNodeRota>=0:
 			if (realRotate >110):
 				isFlip = true
-				if body.scale.x != -1:
-					body.scale.x = -1
+				if target_scale_x != -1:
+					#body.scale.x = -1
+					target_scale_x=-1
 		else:
-			if (realRotate <-70):
+			if (realRotate <-110):
 				isFlip = true
-				if body.scale.x != -1:
-					body.scale.x = -1
+				if target_scale_x != -1:
+					#body.scale.x = -1
+					target_scale_x=-1
 	else:
 		if weaponNodeRota>=0:
 			realRotate =  180 - weaponNodeRota 
 			if realRotate <70:
 				isFlip = false
-				if body.scale.x != 1:
-					body.scale.x = 1
+				if target_scale_x != 1:
+					#body.scale.x = 1
+					target_scale_x=1
 				
 		else:
 			realRotate = -(180- abs(weaponNodeRota) )
 			if realRotate >-70:
 				isFlip = false
-				if body.scale.x != 1:
-					body.scale.x = 1
+				if target_scale_x != 1:
+					#body.scale.x = 1
+					target_scale_x=1
+					
+	body.scale.x = target_scale_x
 	
 	if -20 <=angle_deg and angle_deg<60:
 		#右下角 朝右
@@ -120,7 +148,6 @@ func update_animation_and_facing(mouse_position):
 			_current_anim = 'lr_idle'
 		else:
 			_current_anim = 'lr_move'
-		anim.play(_current_anim)	
 		pass
 	elif 60 <=angle_deg and angle_deg <120:
 		#正下方 朝下
@@ -133,7 +160,6 @@ func update_animation_and_facing(mouse_position):
 			_current_anim = 'down_idle'
 		else:
 			_current_anim = 'down_move'
-		anim.play(_current_anim)	
 		pass
 	elif (120 <=angle_deg and angle_deg <180) or ( -180<= angle_deg and angle_deg < -160):
 		#左下方 朝左
@@ -146,7 +172,6 @@ func update_animation_and_facing(mouse_position):
 			_current_anim = 'lr_idle'
 		else:
 			_current_anim = 'lr_move'
-		anim.play(_current_anim)	
 		pass
 	elif -160 <=angle_deg and angle_deg <-120:
 		#左上方 朝左上
@@ -160,7 +185,6 @@ func update_animation_and_facing(mouse_position):
 			_current_anim = 'backlr_idle'
 		else:
 			_current_anim = 'backlr_move'
-		anim.play(_current_anim)	
 		pass
 	elif -120 <=angle_deg and angle_deg <-60:
 		#上方 朝上
@@ -174,7 +198,6 @@ func update_animation_and_facing(mouse_position):
 			_current_anim = 'up_idle'
 		else:
 			_current_anim = 'up_move'
-		anim.play(_current_anim)	
 		pass
 	elif -60 <=angle_deg and angle_deg <-20:
 		#右上方 朝右上
@@ -189,8 +212,13 @@ func update_animation_and_facing(mouse_position):
 			_current_anim = 'backlr_idle'
 		else:
 			_current_anim = 'backlr_move'
-		anim.play(_current_anim)	
 		pass
+	
+	anim.play(_current_anim)	
+	#await anim.animation_finished 
+	#await anim.
+	#await get_tree().process_frame
+	weapon_node.visible = true
 
 func set_single_hand_weapon(node:Node2D):
 	curWeapon = node
