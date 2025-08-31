@@ -1,0 +1,88 @@
+[gd_scene load_steps=13 format=3 uid="uid://rk22eedmqed4"]
+
+[ext_resource type="PackedScene" uid="uid://dkp5u2b4dr1wm" path="res://scene/weapon/BaseWeapon.tscn" id="1_d8pu0"]
+[ext_resource type="Texture2D" uid="uid://dv3raqhvnakx6" path="res://texture/gun/gun1.png" id="2_wd3dj"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j187p"]
+atlas = ExtResource("2_wd3dj")
+region = Rect2(0, 0, 34, 30)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8uk7m"]
+atlas = ExtResource("2_wd3dj")
+region = Rect2(34, 0, 34, 30)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y3qro"]
+atlas = ExtResource("2_wd3dj")
+region = Rect2(68, 0, 34, 30)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jrsp0"]
+atlas = ExtResource("2_wd3dj")
+region = Rect2(102, 0, 34, 30)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vkp6o"]
+atlas = ExtResource("2_wd3dj")
+region = Rect2(136, 0, 34, 30)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tr66q"]
+atlas = ExtResource("2_wd3dj")
+region = Rect2(170, 0, 34, 30)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kxrrg"]
+atlas = ExtResource("2_wd3dj")
+region = Rect2(204, 0, 34, 30)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iveta"]
+atlas = ExtResource("2_wd3dj")
+region = Rect2(238, 0, 34, 30)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5gcrj"]
+atlas = ExtResource("2_wd3dj")
+region = Rect2(272, 0, 34, 30)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_d8pu0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j187p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8uk7m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y3qro")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jrsp0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vkp6o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tr66q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kxrrg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iveta")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5gcrj")
+}],
+"loop": false,
+"name": &"shoot",
+"speed": 20.0
+}]
+
+[node name="BaseWeapon" instance=ExtResource("1_d8pu0")]
+
+[node name="AnimatedSprite2D" parent="." index="0"]
+position = Vector2(0, 0)
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_d8pu0")
+animation = &"shoot"
+frame = 8
+frame_progress = 1.0
+
+[node name="BulletPoint" parent="." index="2"]
+position = Vector2(11, -5)

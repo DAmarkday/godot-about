@@ -2,10 +2,10 @@
 
 [ext_resource type="Texture2D" uid="uid://db15ldjk0wehp" path="res://texture/shadow.png" id="1_88688"]
 [ext_resource type="Script" uid="uid://bopkijuk0xvy7" path="res://scene/player/player.gd" id="1_sw8x8"]
-[ext_resource type="Texture2D" uid="uid://c21yn4gbiurr2" path="res://texture/player/backlr-idle.png" id="3_mc8hd"]
+[ext_resource type="Texture2D" uid="uid://bvvn144ob3oc2" path="res://texture/player/backlr-walk.png" id="3_c12fn"]
+[ext_resource type="Texture2D" uid="uid://blskiimh7qryo" path="res://texture/player/backlr-idle.png" id="3_mc8hd"]
 [ext_resource type="Script" uid="uid://dvqu3gh7s3tlq" path="res://scene/player/camera_2d.gd" id="3_qt1gw"]
 [ext_resource type="Texture2D" uid="uid://cuoirxmvcj1h2" path="res://texture/player/idle.png" id="3_rvvvr"]
-[ext_resource type="Texture2D" uid="uid://dw4o8phng88ph" path="res://texture/player/backlr-walk.png" id="4_77j1f"]
 [ext_resource type="Texture2D" uid="uid://5rho1d11ckfv" path="res://texture/player/walk.png" id="4_xewb5"]
 [ext_resource type="Texture2D" uid="uid://chd03sh106wdv" path="res://texture/player/lr-idle.png" id="5_4kw3b"]
 [ext_resource type="Texture2D" uid="uid://c6puw43urifv5" path="res://texture/player/lr-walk.png" id="6_4kw3b"]
@@ -33,28 +33,28 @@ region = Rect2(64, 0, 32, 32)
 atlas = ExtResource("3_mc8hd")
 region = Rect2(96, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_h33sl"]
-atlas = ExtResource("4_77j1f")
+[sub_resource type="AtlasTexture" id="AtlasTexture_1xy5d"]
+atlas = ExtResource("3_c12fn")
 region = Rect2(0, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_vspee"]
-atlas = ExtResource("4_77j1f")
+[sub_resource type="AtlasTexture" id="AtlasTexture_6nxob"]
+atlas = ExtResource("3_c12fn")
 region = Rect2(32, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_1xy5d"]
-atlas = ExtResource("4_77j1f")
+[sub_resource type="AtlasTexture" id="AtlasTexture_tk4jm"]
+atlas = ExtResource("3_c12fn")
 region = Rect2(64, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_6nxob"]
-atlas = ExtResource("4_77j1f")
+[sub_resource type="AtlasTexture" id="AtlasTexture_7utjm"]
+atlas = ExtResource("3_c12fn")
 region = Rect2(96, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_tk4jm"]
-atlas = ExtResource("4_77j1f")
+[sub_resource type="AtlasTexture" id="AtlasTexture_j11qf"]
+atlas = ExtResource("3_c12fn")
 region = Rect2(128, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_7utjm"]
-atlas = ExtResource("4_77j1f")
+[sub_resource type="AtlasTexture" id="AtlasTexture_fg1ob"]
+atlas = ExtResource("3_c12fn")
 region = Rect2(160, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_a5dh7"]
@@ -198,12 +198,6 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_h33sl")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_vspee")
-}, {
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_1xy5d")
 }, {
 "duration": 1.0,
@@ -214,6 +208,12 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_7utjm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j11qf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fg1ob")
 }],
 "loop": true,
 "name": &"backlr_move",
@@ -348,6 +348,7 @@ animations = [{
 [node name="Player" type="CharacterBody2D"]
 z_index = 1
 script = ExtResource("1_sw8x8")
+SPEED = null
 
 [node name="shadow" type="Sprite2D" parent="."]
 position = Vector2(0, -2)
@@ -362,23 +363,23 @@ metadata/_edit_lock_ = true
 [node name="Body" type="Node2D" parent="."]
 metadata/_edit_lock_ = true
 
+[node name="HandNodeL" type="Sprite2D" parent="Body"]
+position = Vector2(-8, -4)
+texture = ExtResource("11_77j1f")
+offset = Vector2(0, -1)
+metadata/_edit_lock_ = true
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Body"]
 position = Vector2(-13, 1)
 sprite_frames = SubResource("SpriteFrames_sldpn")
-animation = &"backlr_move"
+animation = &"backlr_idle"
 autoplay = "down_idle"
-frame_progress = 0.684224
+frame_progress = 0.959
 offset = Vector2(13, -11)
 metadata/_edit_lock_ = true
 
 [node name="WeaponNode" type="Node2D" parent="Body"]
-metadata/_edit_lock_ = true
-
-[node name="HandNodeL" type="Sprite2D" parent="Body"]
-visible = false
-position = Vector2(-8, -4)
-texture = ExtResource("11_77j1f")
-offset = Vector2(0, -1)
+position = Vector2(7, -4)
 metadata/_edit_lock_ = true
 
 [node name="HandNodeR" type="Sprite2D" parent="Body"]
