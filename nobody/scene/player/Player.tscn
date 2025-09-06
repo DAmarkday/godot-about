@@ -365,9 +365,8 @@ metadata/_edit_lock_ = true
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Body"]
 position = Vector2(-13, 1)
 sprite_frames = SubResource("SpriteFrames_sldpn")
-animation = &"backlr_move"
+animation = &"down_idle"
 autoplay = "down_idle"
-frame_progress = 0.684224
 offset = Vector2(13, -11)
 metadata/_edit_lock_ = true
 
