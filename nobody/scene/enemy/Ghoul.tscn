@@ -339,9 +339,6 @@ animations = [{
 
 [node name="BaseEnemy" instance=ExtResource("1_2d8q5")]
 
-[node name="shadow" parent="." index="0"]
-position = Vector2(0, -3)
-
 [node name="AnimatedSprite2D" parent="Body" index="0"]
 position = Vector2(2, -14.25)
 scale = Vector2(1.12903, 0.893939)

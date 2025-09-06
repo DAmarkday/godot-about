@@ -30,13 +30,13 @@ func _ready():
 	var player = _player.instantiate()
 	map.add_child(player)
 	
-	# 在地图中心生成
+	# 在地图中心生成a
 	player.global_position = map.getMapCenterPos()
 	var weapon = _weapon.instantiate()
 	
 	player.set_single_hand_weapon(weapon)
 	
 	EnemyManager.create(map)
-	var ghoulInstance= _ghoul.instantiate()
-	EnemyManager.createEnemy(ghoulInstance,30)
+	#var ghoulInstance= _ghoul.instantiate()
+	EnemyManager.createEnemy(_ghoul,30)
 	

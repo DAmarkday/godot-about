@@ -13,12 +13,13 @@ func create(mapNode):
 	mapInstance= mapNode
 	
 
-func createEnemy(enemy:Node,once_count:int):
+func createEnemy(enemyResource:Resource,once_count:int):
 	for i in once_count:
-		enemy.position = getRandomPoint()
+		var enemy = enemyResource.instantiate()
 		enemies.append(enemy)
 		mapInstance.add_child(enemy)
-
+		enemy.position = getRandomPoint()
+		
 func getRandomPoint():
 	if mapInstance == null:
 		return
