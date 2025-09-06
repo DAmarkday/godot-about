@@ -25,9 +25,13 @@ var mouse_move_threshold = 10.0  # 鼠标移动最小距离阈值
 var min_distance_threshold = 8.0
 func _input(event):
 	if event is InputEventMouseMotion:
+		# 枪口和鼠标的差值与x正方向的夹角就是武器节点(手柄处)的全局旋转角度
 		var mouse_position = get_global_mouse_position()
-		weapon_node.look_at(mouse_position)
+		var bp= weapon_node.get_child(0).getBollPointPos()
+		var temp= mouse_position - bp
+		var angle = atan2(temp.y, temp.x)
 		
+		weapon_node.global_rotation = angle
 		if mouse_position.distance_to(last_mouse_pos) > mouse_move_threshold:
 			last_mouse_pos = mouse_position
 			var direction = mouse_position - global_position

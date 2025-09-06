@@ -34,6 +34,9 @@ func _ready() -> void:
 func getCurRotateDeg():
 	pass
 
+func getBollPointPos():
+	return bullet_point.global_position
+
 func shoot():
 	var instance = _pre_bullet.instantiate()
 	instance.global_position = bullet_point.global_position
