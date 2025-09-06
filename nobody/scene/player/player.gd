@@ -9,7 +9,6 @@ class_name Player
 @onready var weapon_node:Node2D = $Body/WeaponNode
 #@onready var hand_nodeL:Node2D = $Body/HandNodeL
 @onready var hand_nodeR:Node2D = $Body/HandNodeR
-@onready var camera=$Camera2D
 
 var _current_anim = 'down_'
 var _last_direction := Vector2.ZERO
@@ -24,50 +23,92 @@ var last_mouse_pos = Vector2.ZERO  # 记录上一次鼠标位置
 var mouse_move_threshold = 10.0  # 鼠标移动最小距离阈值
 var min_distance_threshold = 8.0
 func _input(event):
-	if event is InputEventMouseMotion:
-		# 枪口和鼠标的差值与x正方向的夹角就是武器节点(手柄处)的全局旋转角度
-		var mouse_position = get_global_mouse_position()
-		var bp= weapon_node.get_child(0).getBollPointPos()
-		var temp= mouse_position - bp
-		var angle = atan2(temp.y, temp.x)
-		
-		weapon_node.global_rotation = angle
-		if mouse_position.distance_to(last_mouse_pos) > mouse_move_threshold:
-			last_mouse_pos = mouse_position
-			var direction = mouse_position - global_position
-			if direction.length() > min_distance_threshold:
-				var to_mouse = mouse_position - global_position
-				
-				#if to_mouse.length()<20:
-					#mouse_position = mouse_position.normalized() * 10000
-	
-				update_animation_and_facing(mouse_position)
-				#last_direction = direction.normalized()
-				#update_animation(last_direction)
-
-func _physics_process(delta: float) -> void:	
+	#var mouse_position = get_global_mouse_position()
+	#var bp= weapon_node.get_child(0).getBollPointPos()
+	#var temp= mouse_position - bp
+	#var angle = atan2(temp.y, temp.x)
+	#
+	#weapon_node.global_rotation = angle
+	pass
+	#if event is InputEventMouseMotion:
+		## 枪口和鼠标的差值与x正方向的夹角就是武器节点(手柄处)的全局旋转角度
+		#var mouse_position = get_global_mouse_position()
+		#var bp= weapon_node.get_child(0).getBollPointPos()
+		#var temp= mouse_position - bp
+		#var angle = atan2(temp.y, temp.x)
+		#
+		#weapon_node.global_rotation = angle
+		#if mouse_position.distance_to(last_mouse_pos) > mouse_move_threshold:
+			#last_mouse_pos = mouse_position
+			#var direction = mouse_position - global_position
+			#if direction.length() > min_distance_threshold:
+				#var to_mouse = mouse_position - global_position
+				#
+				##if to_mouse.length()<20:
+					##mouse_position = mouse_position.normalized() * 10000
+	#
+				#update_animation_and_facing(mouse_position)
+				##last_direction = direction.normalized()
+				##update_animation(last_direction)
+func _physics_process(delta: float) -> void:
 	var dir = Vector2.ZERO
 	dir.x = Input.get_axis("move_left","move_right")
 	dir.y = Input.get_axis("move_up","move_down")
 	
-	
 	velocity = dir.normalized() *SPEED
+	move_and_slide()
+	
+	var mouse_position = get_global_mouse_position()
+	var bp= weapon_node.get_child(0).getBollPointPos()
+	var temp= mouse_position - bp
+	var angle = atan2(temp.y, temp.x)
+	
+	weapon_node.global_rotation = angle
+	
+	# 更新动画和朝向
+	update_animation_and_facing(mouse_position)
+	
+	# 射击逻辑
+	if Input.is_action_pressed("fire") and curWeapon:
+		curWeapon.shoot(velocity)
+
+
+func _process(delta: float) -> void:	
 	
 	#var mouse_position = get_global_mouse_position()
-	
-	move_and_slide()
-			
 	#var to_mouse = mouse_position - global_position
 	#if to_mouse.length()<20:
 		#mouse_position = mouse_position.normalized() * 10000
 	#
 	#update_animation_and_facing(mouse_position,delta)
 	#weapon_node.look_at(mouse_position)
+	# 枪口和鼠标的差值与x正方向的夹角就是武器节点(手柄处)的全局旋转角度
+	#var mouse_position = get_global_mouse_position()
+	#var bp= weapon_node.get_child(0).getBollPointPos()
+	#var temp= mouse_position - bp
+	#var angle = atan2(temp.y, temp.x)
+	#
+	#weapon_node.global_rotation = angle
+	#if mouse_position.distance_to(last_mouse_pos) > mouse_move_threshold:
+		#last_mouse_pos = mouse_position
+		#var direction = mouse_position - global_position
+		#if direction.length() > min_distance_threshold:
+			#var to_mouse = mouse_position - global_position
+			
+			#if to_mouse.length()<20:
+				#mouse_position = mouse_position.normalized() * 10000
+
+			#last_direction = direction.normalized()
+			#update_animation(last_direction)
+	#update_animation_and_facing(mouse_position)
+
 	
-	if Input.is_action_pressed("fire"):
-		# 计时器归零时执行操作并重置计时器
-		if(curWeapon):
-			curWeapon.shoot()	
+	#if Input.is_action_pressed("fire"):
+		## 计时器归零时执行操作并重置计时器
+		#if(curWeapon):
+			#curWeapon.shoot()	
+	#
+	pass
 
 	
 func update_animation_and_facing(mouse_position):		

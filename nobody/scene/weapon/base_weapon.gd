@@ -37,19 +37,33 @@ func getCurRotateDeg():
 func getBollPointPos():
 	return bullet_point.global_position
 
-func shoot():
+func shoot(player_velocity: Vector2 = Vector2.ZERO):
+	if can_shoot == false:
+		return
+	
 	var instance = _pre_bullet.instantiate()
 	instance.global_position = bullet_point.global_position
 	
 	# 使用枪械的朝向计算子弹方向
-	var direction = Vector2(cos(anim.global_rotation), sin(anim.global_rotation)).normalized()
-	instance.dir = direction
+	#var direction = Vector2(cos(anim.global_rotation), sin(anim.global_rotation)).normalized()
+	var mouse_pos = get_global_mouse_position()
+	var direction = (mouse_pos - bullet_point.global_position).normalized()
+	#instance.dir = direction
+	
+	var adjusted_direction = direction
+	if player_velocity.length() > 0:
+		var normalized_velocity = player_velocity.normalized()
+		var weight = player_velocity.length() / 300.0  # 假设玩家最大速度为 300
+		adjusted_direction = (direction - normalized_velocity * weight).normalized()
 	
 	# 设置子弹旋转，使长方形朝向与移动方向一致
-	instance.rotation = anim.global_rotation
-	
+	#instance.rotation = anim.global_rotation
+	# 设置子弹方向和旋转
+	instance.dir = adjusted_direction
+	instance.rotation = adjusted_direction.angle()
 	
 	get_tree().root.add_child(instance)
-	
 	can_shoot = false
+	anim.play("shoot")
+	#await anim.animation_finished
 	fire_timer.start()

@@ -71,7 +71,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"shoot",
-"speed": 20.0
+"speed": 30.0
 }]
 
 [node name="BaseWeapon" instance=ExtResource("1_d8pu0")]
