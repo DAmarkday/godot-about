@@ -1,7 +1,7 @@
 extends CharacterBody2D
 class_name Player
 
-@export var SPEED = 150.0 
+@export var SPEED = 500.0 
 
 
 @onready var anim = $Body/AnimatedSprite2D
@@ -70,7 +70,7 @@ func _physics_process(delta: float) -> void:
 	
 	# 射击逻辑
 	if Input.is_action_pressed("fire") and curWeapon:
-		curWeapon.shoot(velocity)
+		curWeapon.shoot()
 
 
 func _process(delta: float) -> void:	

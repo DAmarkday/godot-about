@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="nobody"
-run/main_scene="uid://bjym7ojjowvad"
+run/main_scene="uid://bcvigpohncdse"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+EnemyManager="*res://script/EnemyManager.gd"
 
 [display]
 
