@@ -40,3 +40,5 @@ func _ready():
 	#var ghoulInstance= _ghoul.instantiate()
 	EnemyManager.createEnemy(_ghoul,30)
 	
+	GameManager.create(player)
+	

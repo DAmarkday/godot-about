@@ -172,6 +172,7 @@ texture = ExtResource("1_bkhc6")
 12:17/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_th7i2"]
+navigation_layer_0/layers = 1
 sources/0 = SubResource("TileSetAtlasSource_yyonm")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_bkhc6"]

@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 EnemyManager="*res://script/EnemyManager.gd"
+GameManager="*res://script/GameManager.gd"
 
 [display]
 
