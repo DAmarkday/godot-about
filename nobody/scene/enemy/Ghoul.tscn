@@ -241,7 +241,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_tyox1")
 }],
-"loop": true,
+"loop": false,
 "name": &"create",
 "speed": 7.0
 }, {
@@ -355,5 +355,5 @@ disabled = true
 position = Vector2(2.00003, -14.25)
 scale = Vector2(1.299, 1)
 sprite_frames = SubResource("SpriteFrames_2d8q5")
-animation = &"idle"
-autoplay = "idle"
+animation = &"create"
+autoplay = "create"

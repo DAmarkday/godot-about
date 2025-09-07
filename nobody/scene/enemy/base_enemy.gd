@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 class_name BaseEnemy
 
-@export var speed = 25
+@export var speed = 15
 @onready var anim = $Body/AnimatedSprite2D
 @onready var body = $Body
 @onready var shadow = $Shadow 
@@ -11,6 +11,7 @@ class_name BaseEnemy
 var movement_delta
 
 enum State {
+	CREAT,
 	IDLE,
 	MOVE,
 	ATK,
@@ -18,10 +19,19 @@ enum State {
 	HIT
 }
 
-var current_state = State.IDLE
+var current_state = State.CREAT
 var current_player = null
 
+func _ready() -> void:
+	if current_state == State.CREAT:
+		anim.play("create")
+		await anim.animation_finished
+		current_state = State.IDLE
+
+
 func _physics_process(delta):
+	if current_state == State.CREAT:
+		return
 	movement_delta = speed
 	var new_velocity: Vector2 = global_position.direction_to(GameManager.getPlayerPos()) * movement_delta	
 	velocity = new_velocity
