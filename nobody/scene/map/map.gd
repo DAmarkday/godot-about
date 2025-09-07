@@ -1,6 +1,8 @@
 extends Node2D
-
-@onready var MapLandNode:TileMapLayer = $Land
+class_name Map
+@onready var MapLandNode:TileMapLayer = $Viewer/Land
+@onready var Viewer:Node2D = $Viewer
+@onready var BulletViewer:Node2D = $BulletViewer
 
 func getMapCenterPos():
 	if MapLandNode ==null:
@@ -16,3 +18,12 @@ func getMapCenterPos():
 
 func getMapLandTileMap():
 	return MapLandNode
+
+
+func addEntityToViewer(entity:Node2D):
+	Viewer.add_child(entity)
+	pass
+	
+func addEntityToBulletViewer(entity:Node2D):
+	BulletViewer.add_child(entity)
+	pass

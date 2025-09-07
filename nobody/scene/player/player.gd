@@ -1,7 +1,7 @@
 extends CharacterBody2D
 class_name Player
 
-@export var SPEED = 370.0 
+@export var SPEED = 90.0 
 
 
 @onready var anim = $Body/AnimatedSprite2D
@@ -130,14 +130,14 @@ func update_animation_and_facing(mouse_position):
 	# 更新角色朝向
 	weapon_node.position = Vector2(0,0)
 	
-	weapon_node.z_index = 0
-	anim.z_index= 0
-	#hand_nodeL.z_index = 0
-	hand_nodeR.z_index = 0
+
 	weapon_node.visible = false
 	
 	#hand_nodeL.visible = false
 	hand_nodeR.visible = false
+	
+	#weapon_node.reparent(hand_nodeR)
+	weapon_node.position =hand_nodeR.position
 	
 	var weaponNodeDeg = weapon_node.transform.get_rotation()
 	var weaponNodeRota = rad_to_deg(weaponNodeDeg)
@@ -185,10 +185,14 @@ func update_animation_and_facing(mouse_position):
 	if -20 <=angle_deg and angle_deg<60:
 		#右下角 朝右
 		hand_nodeR.visible = true
-		weapon_node.reparent(hand_nodeR)
+		#weapon_node.reparent(hand_nodeR)
 		# 从上到下的渲染顺序是 手 枪 身体
-		weapon_node.z_index = -1
-		hand_nodeR.z_index = 1
+		#weapon_node.z_index = -1
+		#hand_nodeR.z_index = 1
+		weapon_node.move_to_front()
+		hand_nodeR.move_to_front()
+		
+		
 		if velocity == Vector2.ZERO:
 			_current_anim = 'lr_idle'
 		else:
@@ -197,10 +201,12 @@ func update_animation_and_facing(mouse_position):
 	elif 60 <=angle_deg and angle_deg <120:
 		#正下方 朝下
 		hand_nodeR.visible = true
-		weapon_node.reparent(hand_nodeR)
+		#weapon_node.reparent(hand_nodeR)
 		# 从上到下的渲染顺序是 手 枪 身体
-		weapon_node.z_index = -1
-		hand_nodeR.z_index = 1
+		#weapon_node.z_index = -1
+		#hand_nodeR.z_index = 1
+		weapon_node.move_to_front()
+		hand_nodeR.move_to_front()
 		if velocity == Vector2.ZERO:
 			_current_anim = 'down_idle'
 		else:
@@ -209,10 +215,12 @@ func update_animation_and_facing(mouse_position):
 	elif (120 <=angle_deg and angle_deg <180) or ( -180<= angle_deg and angle_deg < -160):
 		#左下方 朝左
 		hand_nodeR.visible = true
-		weapon_node.reparent(hand_nodeR)
+		#weapon_node.reparent(hand_nodeR)
 		# 从上到下的渲染顺序是 手 枪 身体
-		weapon_node.z_index = -1
-		hand_nodeR.z_index = 1
+		#weapon_node.z_index = -1
+		#hand_nodeR.z_index = 1
+		weapon_node.move_to_front()
+		hand_nodeR.move_to_front()
 		if velocity == Vector2.ZERO:
 			_current_anim = 'lr_idle'
 		else:
@@ -221,11 +229,13 @@ func update_animation_and_facing(mouse_position):
 	elif -160 <=angle_deg and angle_deg <-120:
 		#左上方 朝左上
 		hand_nodeR.visible = true
-		weapon_node.reparent(hand_nodeR)
+		#weapon_node.reparent(hand_nodeR)
 		# 从上到下的渲染顺序是 身体 手 枪 
-		anim.z_index = 1
-		weapon_node.z_index = -1
-		hand_nodeR.z_index = 0
+		#anim.z_index = 1
+		#weapon_node.z_index = -1
+		#hand_nodeR.z_index = 0
+		hand_nodeR.move_to_front()
+		anim.move_to_front()
 		if velocity == Vector2.ZERO:
 			_current_anim = 'backlr_idle'
 		else:
@@ -234,11 +244,13 @@ func update_animation_and_facing(mouse_position):
 	elif -120 <=angle_deg and angle_deg <-60:
 		#上方 朝上
 		hand_nodeR.visible = true
-		weapon_node.reparent(hand_nodeR)
-		# 从上到下的渲染顺序是 身体 手 枪 
-		anim.z_index = 1
-		weapon_node.z_index = -1
-		hand_nodeR.z_index = 0
+		#weapon_node.reparent(hand_nodeR)
+		## 从上到下的渲染顺序是 身体 手 枪 
+		#anim.z_index = 1
+		#weapon_node.z_index = -1
+		#hand_nodeR.z_index = 0
+		hand_nodeR.move_to_front()
+		anim.move_to_front()
 		if velocity == Vector2.ZERO:
 			_current_anim = 'up_idle'
 		else:
@@ -248,11 +260,13 @@ func update_animation_and_facing(mouse_position):
 		#右上方 朝右上
 		#朝右
 		hand_nodeR.visible = true
-		weapon_node.reparent(hand_nodeR)
+		#weapon_node.reparent(hand_nodeR)
 		# 从上到下的渲染顺序是 身体 手 枪 
-		anim.z_index = 1
-		hand_nodeR.z_index = 0
-		weapon_node.z_index = -1
+		#anim.z_index = 1
+		#hand_nodeR.z_index = 0
+		#weapon_node.z_index = -1
+		hand_nodeR.move_to_front()
+		anim.move_to_front()
 		if velocity == Vector2.ZERO:
 			_current_anim = 'backlr_idle'
 		else:

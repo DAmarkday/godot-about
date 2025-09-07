@@ -53,7 +53,7 @@ func shoot():
 	# 设置子弹旋转，使长方形朝向与移动方向一致
 	instance.rotation = anim.global_rotation
 	
-	get_tree().root.add_child(instance)
+	GameManager.getMapInstance().addEntityToBulletViewer(instance)
 	can_shoot = false
 	anim.play("shoot")
 	#await anim.animation_finished

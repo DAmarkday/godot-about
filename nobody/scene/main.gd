@@ -28,7 +28,7 @@ func _ready():
 	var map = _map.instantiate()
 	add_child(map)
 	var player = _player.instantiate()
-	map.add_child(player)
+	map.addEntityToViewer(player)
 	
 	# 在地图中心生成a
 	player.global_position = map.getMapCenterPos()
@@ -40,5 +40,5 @@ func _ready():
 	#var ghoulInstance= _ghoul.instantiate()
 	EnemyManager.createEnemy(_ghoul,30)
 	
-	GameManager.create(player)
+	GameManager.create(player,map)
 	

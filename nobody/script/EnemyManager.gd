@@ -7,7 +7,7 @@ var kill_counts = 0
 
 var enemies = []
 
-var mapInstance:Node2D = null;
+var mapInstance:Map = null;
 
 func create(mapNode):
 	mapInstance= mapNode
@@ -17,7 +17,7 @@ func createEnemy(enemyResource:Resource,once_count:int):
 	for i in once_count:
 		var enemy = enemyResource.instantiate()
 		enemies.append(enemy)
-		mapInstance.add_child(enemy)
+		mapInstance.addEntityToViewer(enemy)
 		enemy.position = getRandomPoint()
 		
 func getRandomPoint():
