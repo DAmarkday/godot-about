@@ -19,3 +19,10 @@ texture = ExtResource("2_0h2n2")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Body"]
 sprite_frames = SubResource("SpriteFrames_0h2n2")
+
+[node name="AtkArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AtkArea"]
+
+[node name="NavigationRegion" type="NavigationAgent2D" parent="." groups=["navgation"]]
+debug_enabled = true

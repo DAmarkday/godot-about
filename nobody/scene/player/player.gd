@@ -1,7 +1,7 @@
 extends CharacterBody2D
 class_name Player
 
-@export var SPEED = 70.0 
+@export var SPEED = 270.0 
 
 
 @onready var anim = $Body/AnimatedSprite2D
@@ -118,7 +118,7 @@ func update_animation_and_facing(mouse_position):
 	
 	# 转换为角度（可选）
 	var angle_deg = rad_to_deg(angle_rad)
-	print('`to_mouse`',to_mouse,angle_deg,to_mouse.length())
+	#print('`to_mouse`',to_mouse,angle_deg,to_mouse.length())
 	
 	
 	# 确保角度在 0-360 范围内
@@ -141,7 +141,7 @@ func update_animation_and_facing(mouse_position):
 	
 	var weaponNodeDeg = weapon_node.transform.get_rotation()
 	var weaponNodeRota = rad_to_deg(weaponNodeDeg)
-	print("weaponNodeRota is ",weaponNodeRota)
+	#print("weaponNodeRota is ",weaponNodeRota)
 	# 控制角色翻转
 	var target_scale_x = body.scale.x
 	

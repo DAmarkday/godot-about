@@ -38,7 +38,7 @@ func _ready():
 	
 	EnemyManager.create(map)
 	#var ghoulInstance= _ghoul.instantiate()
-	EnemyManager.createEnemy(_ghoul,30)
+	EnemyManager.createEnemy(_ghoul,5)
 	
 	GameManager.create(player,map)
 	
