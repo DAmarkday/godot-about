@@ -26,3 +26,6 @@ sprite_frames = SubResource("SpriteFrames_0h2n2")
 
 [node name="NavigationRegion" type="NavigationAgent2D" parent="." groups=["navgation"]]
 debug_enabled = true
+
+[connection signal="body_entered" from="AtkArea" to="." method="_on_atk_area_body_entered"]
+[connection signal="body_exited" from="AtkArea" to="." method="_on_atk_area_body_exited"]

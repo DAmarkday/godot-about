@@ -388,3 +388,12 @@ metadata/_edit_lock_ = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 script = ExtResource("3_qt1gw")
+
+[node name="Area2D" type="Area2D" parent="."]
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -11)
+shape = SubResource("CapsuleShape2D_88688")
+debug_color = Color(0.856952, 0.34483, 0.328329, 0.42)
+metadata/_edit_lock_ = true

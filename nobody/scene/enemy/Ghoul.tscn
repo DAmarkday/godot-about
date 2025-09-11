@@ -342,7 +342,8 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fd232"]
-height = 34.0
+radius = 6.0
+height = 38.0
 
 [node name="BaseEnemy" instance=ExtResource("1_2d8q5")]
 
@@ -368,11 +369,11 @@ autoplay = "create"
 metadata/_edit_lock_ = true
 
 [node name="AtkArea" parent="." index="3"]
-metadata/_edit_lock_ = true
+monitorable = false
 
 [node name="CollisionShape2D" parent="AtkArea" index="0"]
-position = Vector2(5, -13)
+position = Vector2(3, -12)
 rotation = 1.5708
+scale = Vector2(1.14603, 1.00003)
 shape = SubResource("CapsuleShape2D_fd232")
 debug_color = Color(0.956863, 0.168627, 0.313726, 0.419608)
-metadata/_edit_lock_ = true
