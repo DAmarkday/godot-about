@@ -18,7 +18,7 @@ const STATE_ANIM_MAP: Dictionary = {
 @export var detection_range: float = 200.0
 @export var idle_interval: float = 1.0
 @export var attack_cooldown: float = 1.0
-@export var max_health: int = 100
+@export var max_health: int = 10
 @export var patrol_radius_min: float = 100.0
 @export var patrol_radius_max: float = 300.0
 @export var patrol_duration: float = 5.0
@@ -44,7 +44,7 @@ var patrol_timer: Timer
 
 # 状态变量
 var is_alive: bool = true
-#var current_health: int
+var current_health: int
 var patrol_target: Vector2 = Vector2.ZERO
 var is_performing_attack: bool = false
 var facing_direction: float = 1.0  # 面向方向 (1.0: 右, -1.0: 左)
@@ -65,7 +65,7 @@ func _ready() -> void:
 		return
 
 	# 初始化生命值
-	#current_health = max_health
+	current_health = max_health
 
 	# 初始化导航阈值
 	nav.path_desired_distance = path_desired_distance
@@ -91,12 +91,12 @@ func _ready() -> void:
 
 	# 启动创建状态
 	if current_state == State.CREAT:
-		change_anim()
+		#change_anim()
 		anim.animation_finished.connect(_on_create_finished, CONNECT_ONE_SHOT)
 
 func _on_create_finished() -> void:
 	current_state = State.IDLE
-	change_anim()
+	#change_anim()
 
 func _physics_process(delta: float) -> void:
 	if not is_alive or current_state == State.CREAT:
@@ -210,7 +210,7 @@ func perform_attack() -> void:
 	# 更新方向面向玩家
 	var player_pos = GameManager.getPlayerPos()
 	update_facing_direction(player_pos)
-	change_anim()
+	#change_anim()
 	anim.animation_finished.connect(_on_attack_finished, CONNECT_ONE_SHOT)
 
 func _on_attack_finished() -> void:
@@ -221,7 +221,10 @@ func _handle_hit() -> void:
 	velocity = Vector2.ZERO
 
 func _handle_death() -> void:
+	is_alive = false
+	coll.disabled = true
 	velocity = Vector2.ZERO
+	
 
 func _on_patrol_timeout() -> void:
 	current_state = State.IDLE
@@ -233,45 +236,44 @@ func _on_idle_timer_timeout() -> void:
 		current_state = State.PATROL
 		patrol_timer.start()
 
-func take_damage(damage: int = 10) -> void:
+func take_damage(damage: int = 2) -> void:
 	if not is_alive:
 		return
-	#current_health -= damage
-	#dsamaged.emit(damage)
-	#if current_health <= 0:
-		#die()
-	#else:
-		#hit()
+	current_health -= damage
+	#damaged.emit(damage)
+	if current_health <= 0:
+		die()
+	else:
+		hit()
 
 func hit() -> void:
 	if not is_alive:
 		return
 	current_state = State.HIT
 	velocity = Vector2.ZERO  # 强制停止
-	change_anim()
+	#change_anim()
+	if anim.is_connected('animation_finished',_on_hit_finished):
+		return
 	anim.animation_finished.connect(_on_hit_finished, CONNECT_ONE_SHOT)
 
 func _on_hit_finished() -> void:
 	if is_alive:
 		current_state = State.IDLE
-		change_anim()
+		#change_anim()
 
 func die() -> void:
 	if not is_alive:
 		return
-	is_alive = false
 	current_state = State.DEATH
-	velocity = Vector2.ZERO
-	change_anim()
 	anim.animation_finished.connect(_on_death_finished, CONNECT_ONE_SHOT)
 
 func _on_death_finished() -> void:
-	died.emit()
+	#died.emit()
 	queue_free()
 
 func change_anim() -> void:
-	if not is_alive:
-		return
+	#if not is_alive:
+		#return
 	var target_anim: String = STATE_ANIM_MAP[current_state]
 	if current_state in [State.IDLE, State.PATROL, State.MOVE]:
 		target_anim = "move" if velocity.length() > velocity_flip_threshold else "idle"

@@ -19,3 +19,20 @@ func _physics_process(delta):
 func _ready():
 	if(dir !=Vector2.ZERO):
 		velocity=dir *  speed
+
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	print('xxxx',body)
+	if body is BaseEnemy:
+		body.take_damage(1)
+		#Game.damage(Game.player,body)
+		set_physics_process(false)
+		
+		#var ins = _pre_hit_effect.instantiate()
+		#ins.global_position = global_position
+		
+		#Game.map.add_child(ins)
+		queue_free()
+
+
+	pass # Replace with function body.
