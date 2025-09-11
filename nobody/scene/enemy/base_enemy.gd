@@ -237,7 +237,7 @@ func take_damage(damage: int = 10) -> void:
 	if not is_alive:
 		return
 	#current_health -= damage
-	#damaged.emit(damage)
+	#dsamaged.emit(damage)
 	#if current_health <= 0:
 		#die()
 	#else:
