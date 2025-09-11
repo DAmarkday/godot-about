@@ -533,19 +533,19 @@ script = ExtResource("1_yyonm")
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 
 [node name="bottom" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(1590, 1803)
+position = Vector2(1597, 1811)
 shape = SubResource("RectangleShape2D_yyonm")
 
 [node name="left" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(-20, 816)
+position = Vector2(-27, 817)
 shape = SubResource("RectangleShape2D_ihkbp")
 
 [node name="top" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(1539, -15)
+position = Vector2(1533, -23)
 shape = SubResource("RectangleShape2D_4wnb2")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(3158.44, 882)
+[node name="right" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(3173, 885)
 shape = SubResource("RectangleShape2D_ld61i")
 
 [node name="Viewer" type="Node2D" parent="."]
