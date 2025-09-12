@@ -4,8 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://t0i4sum25arq" path="res://texture/enemy/ghoul/Ghoul Sprite Sheet 62 x 33.png" id="2_wjkkm"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wjkkm"]
-radius = 4.0
-height = 24.0
+radius = 3.0
+height = 14.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wjkkm"]
 atlas = ExtResource("2_wjkkm")
@@ -342,7 +342,7 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fd232"]
-radius = 3.49031
+radius = 9.59835
 height = 38.0
 
 [node name="BaseEnemy" instance=ExtResource("1_2d8q5")]
@@ -354,7 +354,6 @@ metadata/_edit_lock_ = true
 [node name="CollisionShape2D" parent="." index="1"]
 position = Vector2(1, -11)
 shape = SubResource("CapsuleShape2D_wjkkm")
-metadata/_edit_lock_ = true
 
 [node name="Body" parent="." index="2"]
 metadata/_edit_lock_ = true
@@ -363,14 +362,12 @@ metadata/_edit_lock_ = true
 position = Vector2(2.00003, -14.25)
 scale = Vector2(1.299, 1)
 sprite_frames = SubResource("SpriteFrames_2d8q5")
-animation = &"death"
+animation = &"attack"
 autoplay = "create"
-frame = 7
-frame_progress = 1.0
 metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" parent="AtkArea" index="0"]
-position = Vector2(3, -11)
+position = Vector2(3, -12)
 rotation = 1.5708
 scale = Vector2(1.14603, 1.00003)
 shape = SubResource("CapsuleShape2D_fd232")

@@ -83,6 +83,8 @@ sprite_frames = SubResource("SpriteFrames_d8pu0")
 animation = &"shoot"
 frame = 8
 frame_progress = 1.0
+metadata/_edit_lock_ = true
 
 [node name="BulletPoint" parent="." index="2"]
 position = Vector2(12, -5)
+metadata/_edit_lock_ = true

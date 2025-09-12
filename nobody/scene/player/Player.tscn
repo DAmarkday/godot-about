@@ -13,9 +13,8 @@
 [ext_resource type="Texture2D" uid="uid://d2pmt1d4d43kb" path="res://texture/player/back-walk.png" id="8_a5dh7"]
 [ext_resource type="Texture2D" uid="uid://dxwwi3chkwlsu" path="res://texture/player/hand.png" id="11_77j1f"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_88688"]
-radius = 6.0
-height = 20.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_77j1f"]
+size = Vector2(25, 10)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2l1ko"]
 atlas = ExtResource("3_mc8hd")
@@ -347,6 +346,8 @@ animations = [{
 
 [node name="Player" type="CharacterBody2D"]
 z_index = 1
+collision_mask = 3
+platform_floor_layers = 4294967040
 script = ExtResource("1_sw8x8")
 
 [node name="shadow" type="Sprite2D" parent="."]
@@ -355,9 +356,8 @@ texture = ExtResource("1_88688")
 metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -11)
-shape = SubResource("CapsuleShape2D_88688")
-metadata/_edit_lock_ = true
+position = Vector2(0.5, -9)
+shape = SubResource("RectangleShape2D_77j1f")
 
 [node name="Body" type="Node2D" parent="."]
 metadata/_edit_lock_ = true
@@ -388,12 +388,3 @@ metadata/_edit_lock_ = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 script = ExtResource("3_qt1gw")
-
-[node name="Area2D" type="Area2D" parent="."]
-monitoring = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(0, -11)
-shape = SubResource("CapsuleShape2D_88688")
-debug_color = Color(0.856952, 0.34483, 0.328329, 0.42)
-metadata/_edit_lock_ = true

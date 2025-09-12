@@ -7,6 +7,9 @@
 
 [node name="BaseEnemy" type="CharacterBody2D"]
 z_index = 1
+collision_layer = 2
+motion_mode = 1
+platform_floor_layers = 4294967040
 script = ExtResource("1_vbd62")
 
 [node name="Shadow" type="Sprite2D" parent="."]

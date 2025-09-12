@@ -15,12 +15,12 @@ const STATE_ANIM_MAP: Dictionary = {
 
 # 导出属性，便于编辑器调整
 @export var speed: float = 25.0
-@export var detection_range: float = 200.0
+@export var detection_range: float = 300.0
 @export var idle_interval: float = 1.0
 @export var attack_cooldown: float = 1.0
-@export var max_health: int = 10
+@export var max_health: int = 1000
 @export var patrol_radius_min: float = 100.0
-@export var patrol_radius_max: float = 300.0
+@export var patrol_radius_max: float = 400.0
 @export var patrol_duration: float = 5.0
 @export var navigation_threshold: float = 4.0
 @export var path_desired_distance: float = 10.0  # 新增：导航路径点距离阈值，防止跳跃
@@ -36,7 +36,7 @@ const STATE_ANIM_MAP: Dictionary = {
 # 状态机
 enum State { CREAT, IDLE, PATROL, MOVE, ATK, HIT, DEATH }
 var current_state: State = State.CREAT
-
+var current_target:Player = null
 # 计时器
 var timer: Timer
 var attack_timer: Timer
@@ -101,6 +101,9 @@ func _on_create_finished() -> void:
 func _physics_process(delta: float) -> void:
 	if not is_alive or current_state == State.CREAT:
 		return
+	
+	if current_target and current_state != State.ATK:
+		current_state = State.ATK
 
 	# 获取玩家位置
 	var player_pos = GameManager.getPlayerPos()
@@ -253,6 +256,7 @@ func hit() -> void:
 	velocity = Vector2.ZERO  # 强制停止
 	#change_anim()
 	if anim.is_connected('animation_finished',_on_hit_finished):
+		#anim.frame = 0
 		return
 	anim.animation_finished.connect(_on_hit_finished, CONNECT_ONE_SHOT)
 
@@ -281,12 +285,15 @@ func change_anim() -> void:
 		anim.play(target_anim)
 
 func _on_atk_area_body_entered(body: Node2D) -> void:
+	print("121212 ",body)
 	if body is Player and current_state != State.DEATH:
 		current_state = State.ATK
+		current_target = body
 
 func _on_atk_area_body_exited(body: Node2D) -> void:
 	if body is Player and current_state != State.DEATH:
 		current_state = State.IDLE
+		current_target = null
 
 # 可选：检查是否面向目标
 func is_facing_target() -> bool:

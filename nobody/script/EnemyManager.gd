@@ -12,25 +12,34 @@ var mapInstance:Map = null;
 func create(mapNode):
 	mapInstance= mapNode
 	
-
 func createEnemy(enemyResource:Resource,once_count:int):
 	for i in once_count:
 		var enemy = enemyResource.instantiate()
 		enemies.append(enemy)
 		mapInstance.addEntityToViewer(enemy)
-		enemy.position = getRandomPoint()
-		
-func getRandomPoint():
+		enemy.global_position = getRandomPoint()
+
+#从地图所有地块中随机获取一个地块的中心点 然后转化为全局坐标
+func getRandomPoint() -> Vector2:
 	if mapInstance == null:
-		return
+		push_warning("mapInstance is null")
+		return Vector2.ZERO
+
+	var mapLandTileMap = mapInstance.getMapLandTileMap()
+	if mapLandTileMap == null:
+		push_warning("mapLandTileMap is null")
+		return Vector2.ZERO
+
+	var valid_tiles = mapLandTileMap.get_used_cells()
+	if valid_tiles.is_empty():
+		push_warning("No valid tiles found in TileMap")
+		return Vector2.ZERO
+
+	# 随机选择一个有效 Tile
+	var point = valid_tiles[randi() % valid_tiles.size()]
+
+	# 转换为世界坐标
+	var point_local = mapLandTileMap.map_to_local(point)
+	var  point_gloabl=mapLandTileMap.to_global(point_local)
 	
-	var mapLandTileMap=mapInstance.getMapLandTileMap()
-	var rect = mapLandTileMap.get_used_rect() 
-	#var area2D = Game.map.enemy_area as Area2D
-	#var coll =area2D.get_node('CollisionShape2D') as CollisionShape2D
-	#var rect = coll.shape.get_rect()
-	
-	var point = Vector2i(randi_range(rect.position.x,rect.position.x+ rect.size.x),randi_range(rect.position.y,rect.size.y + rect.position.y))
-	#return rect.position + point 
-	var point_2 = mapLandTileMap.map_to_local( point)
-	return point_2
+	return point_gloabl

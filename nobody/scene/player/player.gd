@@ -3,7 +3,6 @@ class_name Player
 
 @export var SPEED = 270.0 
 
-
 @onready var anim = $Body/AnimatedSprite2D
 @onready var body:Node2D = $Body
 @onready var weapon_node:Node2D = $Body/WeaponNode
