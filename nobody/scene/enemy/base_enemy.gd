@@ -34,12 +34,14 @@ const STATE_ANIM_MAP: Dictionary = {
 @onready var nav: NavigationAgent2D = $NavigationRegion  # 修正：假设为 NavigationAgent2D 节点
 
 @onready var DetectionRangeVisualizer = $DetectionRangeVisualizer
+@onready var DetectionRangeAreaCollisionShape:CollisionShape2D = $DetectionRangeArea/CollisionShape2D
 
 
 # 状态机
 enum State { CREAT, IDLE, PATROL, MOVE, ATK, HIT, DEATH }
 var current_state: State = State.CREAT
-var current_target:Player = null
+var current_attack_target:Player = null
+var current_walk_target:Player = null
 # 计时器
 var timer: Timer
 var attack_timer: Timer
@@ -69,6 +71,9 @@ func _ready() -> void:
 
 	# 初始化生命值
 	current_health = max_health
+
+	DetectionRangeAreaCollisionShape.shape.radius = detection_range
+	
 
 	# 初始化导航阈值
 	nav.path_desired_distance = path_desired_distance
@@ -108,18 +113,16 @@ func _physics_process(delta: float) -> void:
 	if not is_alive or current_state == State.CREAT:
 		return
 	
-	if current_target and current_state != State.ATK:
+	if current_attack_target and current_state != State.ATK:
 		current_state = State.ATK
+		
+	if current_walk_target and current_state != State.MOVE:
+		current_state = State.MOVE
 
 	# 获取玩家位置
 	var player_pos = GameManager.getPlayerPos()
 	if player_pos == Vector2.ZERO:
 		return
-
-	# 检查玩家是否在检测范围内，优先切换到 MOVE
-	var dist_sq = global_position.distance_squared_to(player_pos)
-	if dist_sq < detection_range * detection_range and current_state not in [State.ATK, State.HIT, State.DEATH]:
-		current_state = State.MOVE
 
 	# 更新面向方向（仅在静止状态）
 	if velocity.length() < velocity_flip_threshold:
@@ -187,17 +190,17 @@ func _handle_patrol() -> void:
 
 func _handle_move() -> void:
 	var player_pos = GameManager.getPlayerPos()
-	var dist_sq = global_position.distance_squared_to(player_pos)
-	if dist_sq > detection_range * detection_range:
-		# 关键修复：切换到 IDLE 时重置导航和方向
-		current_state = State.IDLE
-		nav.target_position = global_position  # 重置路径，清除缓存
-		velocity = Vector2.ZERO  # 强制停止
-		# 更新最后方向基于当前玩家位置，避免倒转
-		var dir_to_player = (player_pos - global_position).normalized()
-		last_velocity_dir = sign(dir_to_player.x) if dir_to_player.x != 0 else last_velocity_dir
-		print("Switched to IDLE: Reset nav and dir to ", last_velocity_dir)  # 调试输出
-		return
+	#var dist_sq = global_position.distance_squared_to(player_pos)
+	#if dist_sq > detection_range * detection_range:
+		## 关键修复：切换到 IDLE 时重置导航和方向
+		#current_state = State.IDLE
+		#nav.target_position = global_position  # 重置路径，清除缓存
+		#velocity = Vector2.ZERO  # 强制停止
+		## 更新最后方向基于当前玩家位置，避免倒转
+		#var dir_to_player = (player_pos - global_position).normalized()
+		#last_velocity_dir = sign(dir_to_player.x) if dir_to_player.x != 0 else last_velocity_dir
+		#print("Switched to IDLE: Reset nav and dir to ", last_velocity_dir)  # 调试输出
+		#return
 
 	nav.target_position = player_pos
 	var next_pos = nav.get_next_path_position()
@@ -306,12 +309,14 @@ func _on_atk_area_body_entered(body: Node2D) -> void:
 	#print("121212 ",body)
 	if body is Player and current_state != State.DEATH:
 		current_state = State.ATK
-		current_target = body
+		current_attack_target = body
 
 func _on_atk_area_body_exited(body: Node2D) -> void:
 	if body is Player and current_state != State.DEATH:
 		current_state = State.IDLE
-		current_target = null
+		current_attack_target = null
+		
+		
 
 # 可选：检查是否面向目标
 func is_facing_target() -> bool:
@@ -319,3 +324,24 @@ func is_facing_target() -> bool:
 	var dir_to_target = (player_pos - global_position).normalized()
 	var facing_dir = Vector2(last_velocity_dir, 0).normalized()
 	return facing_dir.dot(dir_to_target) >= 0.7
+
+
+func _on_detection_range_area_body_entered(body: Node2D) -> void:
+	# 检查玩家是否在检测范围内，优先切换到 MOVE
+	if body is Player and current_state not in [State.ATK, State.HIT, State.DEATH]:
+		current_state = State.MOVE
+		current_walk_target = body
+
+
+func _on_detection_range_area_body_exited(body: Node2D) -> void:
+	if body is Player:
+		current_walk_target = null
+		var player_pos = GameManager.getPlayerPos()
+		
+		current_state = State.IDLE
+		nav.target_position = global_position  # 重置路径，清除缓存
+		velocity = Vector2.ZERO  # 强制停止
+		# 更新最后方向基于当前玩家位置，避免倒转
+		var dir_to_player = (player_pos - global_position).normalized()
+		last_velocity_dir = sign(dir_to_player.x) if dir_to_player.x != 0 else last_velocity_dir
+		print("Switched to IDLE: Reset nav and dir to ", last_velocity_dir)  # 调试输出
