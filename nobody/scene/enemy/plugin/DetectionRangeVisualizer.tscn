@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bvva2r6morhpn"]
+
+[ext_resource type="Script" uid="uid://c0h5fwve14mvm" path="res://scene/enemy/plugin/detection_range_visualizer.gd" id="1_omdju"]
+
+[node name="DetectionRangeVisualizer" type="Node2D"]
+script = ExtResource("1_omdju")
+
+[node name="Line2D" type="Line2D" parent="."]

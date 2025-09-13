@@ -34,7 +34,7 @@ func handle_hurt(body: Node2D):
 
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
-	print('xxxx',body)
+	#print('xxxx',body)
 	if body is BaseEnemy:
 		handle_hurt(body)
 		queue_free()

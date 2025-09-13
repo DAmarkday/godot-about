@@ -15,7 +15,7 @@ const STATE_ANIM_MAP: Dictionary = {
 
 # 导出属性，便于编辑器调整
 @export var speed: float = 25.0
-@export var detection_range: float = 300.0
+@export var detection_range: float = 100.0
 @export var idle_interval: float = 1.0
 @export var attack_cooldown: float = 1.0
 @export var max_health: int = 1000
@@ -32,6 +32,9 @@ const STATE_ANIM_MAP: Dictionary = {
 @onready var shadow: Node2D = $Shadow
 @onready var coll: CollisionShape2D = $CollisionShape2D
 @onready var nav: NavigationAgent2D = $NavigationRegion  # 修正：假设为 NavigationAgent2D 节点
+
+@onready var DetectionRangeVisualizer = $DetectionRangeVisualizer
+
 
 # 状态机
 enum State { CREAT, IDLE, PATROL, MOVE, ATK, HIT, DEATH }
@@ -98,7 +101,10 @@ func _on_create_finished() -> void:
 	current_state = State.IDLE
 	#change_anim()
 
+
 func _physics_process(delta: float) -> void:
+	DetectionRangeVisualizer.update_detection_range(global_position)
+	
 	if not is_alive or current_state == State.CREAT:
 		return
 	
@@ -297,7 +303,7 @@ func change_anim() -> void:
 		anim.play(target_anim)
 
 func _on_atk_area_body_entered(body: Node2D) -> void:
-	print("121212 ",body)
+	#print("121212 ",body)
 	if body is Player and current_state != State.DEATH:
 		current_state = State.ATK
 		current_target = body

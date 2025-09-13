@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://b6uk8va72066y"]
+[gd_scene load_steps=5 format=3 uid="uid://b6uk8va72066y"]
 
 [ext_resource type="Script" uid="uid://b6svsqnedicu5" path="res://scene/enemy/base_enemy.gd" id="1_vbd62"]
 [ext_resource type="Texture2D" uid="uid://db15ldjk0wehp" path="res://texture/shadow.png" id="2_0h2n2"]
+[ext_resource type="PackedScene" uid="uid://bvva2r6morhpn" path="res://scene/enemy/plugin/DetectionRangeVisualizer.tscn" id="3_opbg4"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_0h2n2"]
 
@@ -29,6 +30,8 @@ sprite_frames = SubResource("SpriteFrames_0h2n2")
 
 [node name="NavigationRegion" type="NavigationAgent2D" parent="." groups=["navgation"]]
 debug_enabled = true
+
+[node name="DetectionRangeVisualizer" parent="." instance=ExtResource("3_opbg4")]
 
 [connection signal="body_entered" from="AtkArea" to="." method="_on_atk_area_body_entered"]
 [connection signal="body_exited" from="AtkArea" to="." method="_on_atk_area_body_exited"]
