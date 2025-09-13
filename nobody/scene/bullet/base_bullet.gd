@@ -20,18 +20,23 @@ func _ready():
 	if(dir !=Vector2.ZERO):
 		velocity=dir *  speed
 
-
-func _on_area_2d_body_entered(body: Node2D) -> void:
-	print('xxxx',body)
-	if body is BaseEnemy:
+func handle_hurt(body: Node2D):
+	#print(' handle_hurt is  ',body)
+	if body:
 		body.take_damage(1)
 		#Game.damage(Game.player,body)
 		set_physics_process(false)
 		
 		#var ins = _pre_hit_effect.instantiate()
 		#ins.global_position = global_position
-		
 		#Game.map.add_child(ins)
+	
+
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	print('xxxx',body)
+	if body is BaseEnemy:
+		handle_hurt(body)
 		queue_free()
 
 

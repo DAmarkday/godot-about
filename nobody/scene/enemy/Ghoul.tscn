@@ -1,11 +1,19 @@
-[gd_scene load_steps=49 format=3 uid="uid://dqps0yqolir0v"]
+[gd_scene load_steps=51 format=3 uid="uid://dqps0yqolir0v"]
 
 [ext_resource type="PackedScene" uid="uid://b6uk8va72066y" path="res://scene/enemy/BaseEnemy.tscn" id="1_2d8q5"]
+[ext_resource type="Shader" uid="uid://b55nrsidh2ofm" path="res://scene/enemy/hit_flash.gdshader" id="2_fd232"]
 [ext_resource type="Texture2D" uid="uid://t0i4sum25arq" path="res://texture/enemy/ghoul/Ghoul Sprite Sheet 62 x 33.png" id="2_wjkkm"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wjkkm"]
 radius = 3.0
 height = 14.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fd232"]
+resource_local_to_scene = true
+shader = ExtResource("2_fd232")
+shader_parameter/flash_intensity = 0.0
+shader_parameter/brightness = 1.0
+shader_parameter/flash_color = Color(1, 1, 1, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wjkkm"]
 atlas = ExtResource("2_wjkkm")
@@ -359,6 +367,7 @@ shape = SubResource("CapsuleShape2D_wjkkm")
 metadata/_edit_lock_ = true
 
 [node name="AnimatedSprite2D" parent="Body" index="0"]
+material = SubResource("ShaderMaterial_fd232")
 position = Vector2(2.00003, -14.25)
 scale = Vector2(1.299, 1)
 sprite_frames = SubResource("SpriteFrames_2d8q5")

@@ -19,7 +19,7 @@ var _pre_bullet = preload("res://scene/bullet/BaseBullet.tscn")
 
 var current_bullet_count_in_single_magazine = 0 # 在当前弹夹中所有的子弹数量
 var current_magazine_counts = 0 # 当前所剩余的弹夹数量
-
+var current_nearness_enemy_target = null # 当前贴近的敌人
 
 var can_shoot = true
 
@@ -41,6 +41,17 @@ func shoot():
 	if can_shoot == false:
 		return
 	
+	can_shoot = false
+	anim.play("shoot")
+	fire_timer.start()
+	
+	if current_nearness_enemy_target:
+		var instance = _pre_bullet.instantiate()
+		instance.handle_hurt(current_nearness_enemy_target)
+		return
+	
+	
+	
 	var instance = _pre_bullet.instantiate()
 	instance.global_position = bullet_point.global_position
 	
@@ -54,7 +65,14 @@ func shoot():
 	instance.rotation = anim.global_rotation
 	
 	GameManager.getMapInstance().addEntityToBulletViewer(instance)
-	can_shoot = false
-	anim.play("shoot")
+	
 	#await anim.animation_finished
-	fire_timer.start()
+
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	current_nearness_enemy_target = body
+
+
+func _on_area_2d_body_exited(body: Node2D) -> void:
+	if current_nearness_enemy_target == body:
+		current_nearness_enemy_target = null

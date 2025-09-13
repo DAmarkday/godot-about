@@ -248,13 +248,25 @@ func take_damage(damage: int = 2) -> void:
 		die()
 	else:
 		hit()
+	
 
+func set_flash(value: float) -> void:
+	anim.material.set_shader_parameter("flash_intensity", value)
+	
 func hit() -> void:
 	if not is_alive:
 		return
 	current_state = State.HIT
 	velocity = Vector2.ZERO  # 强制停止
 	#change_anim()
+	
+	
+	# 触发 Shader 闪光	
+	anim.material.set_shader_parameter("flash_intensity", 1.0)
+	anim.material.set_shader_parameter("brightness", 2.5)  # 超亮白色
+	var tween = create_tween()
+	tween.tween_method(set_flash, 1.0, 0.0, 0.15)  # 0.15 秒渐隐
+	
 	if anim.is_connected('animation_finished',_on_hit_finished):
 		#anim.frame = 0
 		return

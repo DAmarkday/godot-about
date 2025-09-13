@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://rk22eedmqed4"]
+[gd_scene load_steps=14 format=3 uid="uid://rk22eedmqed4"]
 
 [ext_resource type="PackedScene" uid="uid://dkp5u2b4dr1wm" path="res://scene/weapon/BaseWeapon.tscn" id="1_d8pu0"]
 [ext_resource type="Texture2D" uid="uid://dv3raqhvnakx6" path="res://texture/gun/gun1.png" id="2_wd3dj"]
@@ -74,6 +74,9 @@ animations = [{
 "speed": 30.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wd3dj"]
+size = Vector2(16.5, 4)
+
 [node name="BaseWeapon" instance=ExtResource("1_d8pu0")]
 
 [node name="AnimatedSprite2D" parent="." index="0"]
@@ -88,3 +91,7 @@ metadata/_edit_lock_ = true
 [node name="BulletPoint" parent="." index="2"]
 position = Vector2(12, -5)
 metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" parent="Area2D" index="0"]
+position = Vector2(4.75, -4)
+shape = SubResource("RectangleShape2D_wd3dj")
