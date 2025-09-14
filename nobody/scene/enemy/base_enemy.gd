@@ -6,8 +6,11 @@ class_name BaseEnemy
 const STATE_ANIM_MAP: Dictionary = {
 	State.CREAT: "create",
 	State.IDLE: "idle",
+	# 巡逻
 	State.PATROL: "move",
 	State.MOVE: "move",
+	# 敌人消失后寻找
+	State.SEARCH: "move",  
 	State.ATK: "attack",
 	State.HIT: "hit",
 	State.DEATH: "death"
@@ -16,14 +19,14 @@ const STATE_ANIM_MAP: Dictionary = {
 # 导出属性，便于编辑器调整
 @export var speed: float = 25.0
 @export var detection_range: float = 100.0
-@export var idle_interval: float = 1.0
+@export var idle_interval: float = 2.0
 @export var attack_cooldown: float = 1.0
 @export var max_health: int = 1000
 @export var patrol_radius_min: float = 100.0
 @export var patrol_radius_max: float = 400.0
-@export var patrol_duration: float = 5.0
-@export var navigation_threshold: float = 4.0
-@export var path_desired_distance: float = 10.0  # 新增：导航路径点距离阈值，防止跳跃
+@export var patrol_duration: float = 10.0
+@export var navigation_threshold: float = 20.0
+@export var path_desired_distance: float = 30.0  # 新增：导航路径点距离阈值，防止跳跃
 @export var velocity_flip_threshold: float = 1.0  # 增大阈值，减少低速抖动
 
 # 节点引用
@@ -38,14 +41,14 @@ const STATE_ANIM_MAP: Dictionary = {
 
 
 # 状态机
-enum State { CREAT, IDLE, PATROL, MOVE, ATK, HIT, DEATH }
+enum State { CREAT, IDLE, PATROL, MOVE, ATK, HIT, DEATH,SEARCH }
 var current_state: State = State.CREAT
 var current_attack_target:Player = null
 var current_walk_target:Player = null
 # 计时器
 var timer: Timer
 var attack_timer: Timer
-var patrol_timer: Timer
+#var patrol_timer: Timer
 
 # 状态变量
 var is_alive: bool = true
@@ -54,7 +57,8 @@ var patrol_target: Vector2 = Vector2.ZERO
 var is_performing_attack: bool = false
 var facing_direction: float = 1.0  # 面向方向 (1.0: 右, -1.0: 左)
 var last_velocity_dir: float = 1.0  # 新增：最后移动方向，用于静止状态翻转
-
+var search_pos:Vector2 = Vector2.ZERO # 物体消失后的搜索坐标
+var search_sign:Sprite2D;
 # 信号，用于与其他系统集成
 signal damaged(amount: int)
 signal died()
@@ -91,11 +95,11 @@ func _ready() -> void:
 	attack_timer.one_shot = true
 	add_child(attack_timer)
 
-	patrol_timer = Timer.new()
-	patrol_timer.wait_time = patrol_duration
-	patrol_timer.one_shot = true
-	patrol_timer.timeout.connect(_on_patrol_timeout)
-	add_child(patrol_timer)
+	#patrol_timer = Timer.new()
+	#patrol_timer.wait_time = patrol_duration
+	#patrol_timer.one_shot = true
+	#patrol_timer.timeout.connect(_on_patrol_timeout)
+	#add_child(patrol_timer)
 
 	# 启动创建状态
 	if current_state == State.CREAT:
@@ -144,7 +148,9 @@ func _physics_process(delta: float) -> void:
 		State.PATROL:
 			_handle_patrol()
 		State.MOVE:
-			_handle_move()
+			_handle_move(player_pos)
+		State.SEARCH:
+			_handle_move(search_pos)
 		State.ATK:
 			_handle_attack()
 		State.HIT:
@@ -185,11 +191,10 @@ func _handle_patrol() -> void:
 	if to_next_dist > navigation_threshold:
 		velocity = (next_pos - global_position).normalized() * speed
 	else:
-		velocity = Vector2.ZERO
-		patrol_target = Vector2.ZERO  # 重置目标
+		#patrol_target = Vector2.ZERO  # 重置目标
+		_on_patrol_timeout()
 
-func _handle_move() -> void:
-	var player_pos = GameManager.getPlayerPos()
+func _handle_move(pos:Vector2) -> void:
 	#var dist_sq = global_position.distance_squared_to(player_pos)
 	#if dist_sq > detection_range * detection_range:
 		## 关键修复：切换到 IDLE 时重置导航和方向
@@ -201,14 +206,23 @@ func _handle_move() -> void:
 		#last_velocity_dir = sign(dir_to_player.x) if dir_to_player.x != 0 else last_velocity_dir
 		#print("Switched to IDLE: Reset nav and dir to ", last_velocity_dir)  # 调试输出
 		#return
-
-	nav.target_position = player_pos
+	if pos == Vector2.ZERO:
+		push_error("_handle_move pos is ZERO")
+		return
+	nav.target_position = pos
 	var next_pos = nav.get_next_path_position()
 	var to_next_dist = global_position.distance_to(next_pos)
 	if to_next_dist > navigation_threshold:
 		velocity = (next_pos - global_position).normalized() * speed
 	else:
 		velocity = Vector2.ZERO
+		current_state = State.IDLE
+		if search_sign:
+			search_sign.queue_free()
+			
+		# 更新最后方向基于当前玩家位置，避免倒转
+		#var dir_to_player = (player_pos - global_position).normalized()
+		#last_velocity_dir = sign(dir_to_player.x) if dir_to_player.x != 0 else last_velocity_dir
 
 func _handle_attack() -> void:
 	velocity = Vector2.ZERO
@@ -246,7 +260,8 @@ func _on_patrol_timeout() -> void:
 func _on_idle_timer_timeout() -> void:
 	if current_state == State.IDLE:
 		current_state = State.PATROL
-		patrol_timer.start()
+		#patrol_timer.start()
+		#_on_patrol_timeout()
 
 func take_damage(damage: int = 2) -> void:
 	if not is_alive:
@@ -305,16 +320,20 @@ func change_anim() -> void:
 	if anim.animation != target_anim:
 		anim.play(target_anim)
 
+#攻击范围中有物体进入
 func _on_atk_area_body_entered(body: Node2D) -> void:
-	#print("121212 ",body)
+	print("121212 ",body)
 	if body is Player and current_state != State.DEATH:
 		current_state = State.ATK
 		current_attack_target = body
+		current_walk_target = null
 
+#攻击范围中有物体离开
 func _on_atk_area_body_exited(body: Node2D) -> void:
 	if body is Player and current_state != State.DEATH:
 		current_state = State.IDLE
 		current_attack_target = null
+		current_walk_target = body
 		
 		
 
@@ -325,23 +344,58 @@ func is_facing_target() -> bool:
 	var facing_dir = Vector2(last_velocity_dir, 0).normalized()
 	return facing_dir.dot(dir_to_target) >= 0.7
 
-
+#检测范围中有物体进入
 func _on_detection_range_area_body_entered(body: Node2D) -> void:
+	if search_sign:
+		search_sign.queue_free()
 	# 检查玩家是否在检测范围内，优先切换到 MOVE
 	if body is Player and current_state not in [State.ATK, State.HIT, State.DEATH]:
 		current_state = State.MOVE
 		current_walk_target = body
 
-
+#检测范围中有物体离开
 func _on_detection_range_area_body_exited(body: Node2D) -> void:
-	if body is Player:
+	search_sign=create_circle(body.global_position,3,'green')
+	
+	if body == current_walk_target:
 		current_walk_target = null
+		# 移动到玩家消失的位置
 		var player_pos = GameManager.getPlayerPos()
-		
-		current_state = State.IDLE
-		nav.target_position = global_position  # 重置路径，清除缓存
-		velocity = Vector2.ZERO  # 强制停止
+		search_pos = body.global_position
+		current_state = State.SEARCH
+		#nav.target_position = global_position  # 重置路径，清除缓存
+		#velocity = Vector2.ZERO  # 强制停止
 		# 更新最后方向基于当前玩家位置，避免倒转
-		var dir_to_player = (player_pos - global_position).normalized()
-		last_velocity_dir = sign(dir_to_player.x) if dir_to_player.x != 0 else last_velocity_dir
-		print("Switched to IDLE: Reset nav and dir to ", last_velocity_dir)  # 调试输出
+		#var dir_to_player = (player_pos - global_position).normalized()
+		#last_velocity_dir = sign(dir_to_player.x) if dir_to_player.x != 0 else last_velocity_dir
+		#print("Switched to IDLE: Reset nav and dir to ", last_velocity_dir)  # 调试输出
+
+func create_circle(gposition: Vector2, radius: float, color: Color):
+	# 创建一个 Sprite2D 节点
+	var sprite = Sprite2D.new()
+	
+	# 创建圆形纹理
+	var texture = create_circle_texture(radius, color)
+	sprite.texture = texture
+	sprite.global_position = gposition
+	
+	# 添加到场景树
+	EnemyManager.getMapInstance().addEntityToViewer(sprite)
+	return sprite
+
+func create_circle_texture(radius: float, color: Color) -> ImageTexture:
+	# 创建图像
+	var image = Image.create(int(radius * 2), int(radius * 2), false, Image.FORMAT_RGBA8)
+	
+	# 填充透明背景
+	image.fill(Color.TRANSPARENT)
+	
+	# 绘制圆形
+	for x in range(-radius, radius):
+		for y in range(-radius, radius):
+			if Vector2(x, y).length() <= radius:
+				image.set_pixel(x + radius, y + radius, color)
+	
+	# 转换为纹理
+	var texture = ImageTexture.create_from_image(image)
+	return texture

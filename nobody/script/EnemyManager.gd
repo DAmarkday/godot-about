@@ -12,6 +12,9 @@ var mapInstance:Map = null;
 func create(mapNode):
 	mapInstance= mapNode
 	
+func getMapInstance():
+	return mapInstance
+	
 func createEnemy(enemyResource:Resource,once_count:int):
 	for i in once_count:
 		var enemy = enemyResource.instantiate()
