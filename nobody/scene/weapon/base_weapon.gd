@@ -8,11 +8,19 @@ class_name BaseWeapon
 @export var bullets_per_magazine = 30  # 每弹夹子弹数
 @export var max_magazine_counts = 5 # 最大弹夹数量
 @export var total_bullets_counts = 150  # 武器的总子弹数量
-@export var weapon_rof = 0.2  # 射速 射击间隔（秒）
+@export var weapon_rof = 0.5  # 射速 射击间隔（秒）
 @export var damage = 5
 @export var weapon_name = '默认枪械'
 @export var weapon_camera_offset_interval = 0.2
 @export var weapon_camera_offset_magnitude:Vector2 = Vector2(-1,2) 
+
+# 后坐力参数
+@export var thrust_distance: float = 2.0    # 推力距离（像素，父节点后移）
+@export var upward_rotation: float = -50.0     # 向上旋转角度（度，父节点上抬）
+@export var thrust_duration: float = 0.03    # 推力持续时间（秒）
+@export var rotation_duration: float = 0.06  # 旋转持续时间（秒）
+@export var recovery_ease: Tween.EaseType = Tween.EASE_OUT  # 恢复缓动曲线
+
 
 var _pre_bullet = preload("res://scene/bullet/BaseBullet.tscn")
 
@@ -39,7 +47,7 @@ func getCurRotateDeg():
 func getBollPointPos():
 	return bullet_point.global_position
 
-func shoot():
+func shoot(parent: Node2D,hand:Node2D):
 	if can_shoot == false:
 		return
 	
@@ -47,6 +55,8 @@ func shoot():
 	anim.play("shoot")
 	fire_timer.start()
 	camera_offset()
+	apply_thrust(parent,hand)
+	apply_rotation(parent)
 	if current_nearness_enemy_target:
 		var instance = _pre_bullet.instantiate()
 		instance.handle_hurt(current_nearness_enemy_target)
@@ -82,3 +92,27 @@ func camera_offset():
 	var player=GameManager.getPlayerInstance()
 	tween.tween_property(player.cameraViewer,'offset',Vector2.ZERO,weapon_camera_offset_interval).from(weapon_camera_offset_magnitude)
 	pass
+	
+
+# 施加推力（父节点的线性后移）
+func apply_thrust(parent: Node2D,hand:Node2D) -> void:
+	var initial_position = parent.position
+	var hand_initial_position = hand.position
+	var thrust_direction = -global_transform.x.normalized()  # 使用武器的朝向
+	var tween = create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	# 快速后移
+	tween.tween_property(parent, "position", initial_position + thrust_direction * thrust_distance, thrust_duration)
+	tween.tween_property(hand, "position", hand_initial_position + thrust_direction * thrust_distance, thrust_duration)
+	
+	# 恢复
+	tween.tween_property(parent, "position", initial_position, thrust_duration).set_ease(recovery_ease)
+	tween.tween_property(hand, "position", hand_initial_position, thrust_duration).set_ease(recovery_ease)
+
+# 施加旋转（父节点的枪口上抬）
+func apply_rotation(parent: Node2D) -> void:
+	var initial_rotation = parent.rotation_degrees
+	var tween = create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	# 向上旋转
+	tween.tween_property(parent, "rotation_degrees", initial_rotation + upward_rotation, rotation_duration)
+	# 恢复
+	tween.tween_property(parent, "rotation_degrees", initial_rotation, rotation_duration).set_ease(recovery_ease)

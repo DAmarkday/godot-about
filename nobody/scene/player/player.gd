@@ -70,7 +70,7 @@ func _physics_process(delta: float) -> void:
 	
 	# 射击逻辑
 	if Input.is_action_pressed("fire") and curWeapon:
-		curWeapon.shoot()
+		curWeapon.shoot(weapon_node,hand_nodeR)
 
 
 func _process(delta: float) -> void:	
