@@ -11,6 +11,8 @@ class_name BaseWeapon
 @export var weapon_rof = 0.2  # 射速 射击间隔（秒）
 @export var damage = 5
 @export var weapon_name = '默认枪械'
+@export var weapon_camera_offset_interval = 0.2
+@export var weapon_camera_offset_magnitude:Vector2 = Vector2(-1,2) 
 
 var _pre_bullet = preload("res://scene/bullet/BaseBullet.tscn")
 
@@ -44,13 +46,11 @@ func shoot():
 	can_shoot = false
 	anim.play("shoot")
 	fire_timer.start()
-	
+	camera_offset()
 	if current_nearness_enemy_target:
 		var instance = _pre_bullet.instantiate()
 		instance.handle_hurt(current_nearness_enemy_target)
 		return
-	
-	
 	
 	var instance = _pre_bullet.instantiate()
 	instance.global_position = bullet_point.global_position
@@ -76,3 +76,9 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 func _on_area_2d_body_exited(body: Node2D) -> void:
 	if current_nearness_enemy_target == body:
 		current_nearness_enemy_target = null
+		
+func camera_offset():
+	var tween = create_tween()
+	var player=GameManager.getPlayerInstance()
+	tween.tween_property(player.cameraViewer,'offset',Vector2.ZERO,weapon_camera_offset_interval).from(weapon_camera_offset_magnitude)
+	pass

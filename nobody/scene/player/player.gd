@@ -8,6 +8,7 @@ class_name Player
 @onready var weapon_node:Node2D = $Body/WeaponNode
 #@onready var hand_nodeL:Node2D = $Body/HandNodeL
 @onready var hand_nodeR:Node2D = $Body/HandNodeR
+@onready var cameraViewer = $Camera2D
 
 var _current_anim = 'down_'
 var _last_direction := Vector2.ZERO

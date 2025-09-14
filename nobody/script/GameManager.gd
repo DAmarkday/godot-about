@@ -8,5 +8,8 @@ func create(player,map):
 func getPlayerPos():
 	return _player.global_position
 	
+func getPlayerInstance():
+	return _player
+	
 func getMapInstance():
 	return _map
