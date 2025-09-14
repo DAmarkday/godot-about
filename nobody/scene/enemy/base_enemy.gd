@@ -19,7 +19,7 @@ const STATE_ANIM_MAP: Dictionary = {
 # 导出属性，便于编辑器调整
 @export var speed: float = 25.0
 @export var detection_range: float = 100.0
-@export var idle_interval: float = 2.0
+@export var idle_interval: float = 1.0
 @export var attack_cooldown: float = 1.0
 @export var max_health: int = 1000
 @export var patrol_radius_min: float = 100.0
