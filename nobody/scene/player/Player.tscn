@@ -1,8 +1,9 @@
-[gd_scene load_steps=55 format=3 uid="uid://73fiwmaucsya"]
+[gd_scene load_steps=57 format=3 uid="uid://73fiwmaucsya"]
 
 [ext_resource type="Texture2D" uid="uid://db15ldjk0wehp" path="res://texture/shadow.png" id="1_88688"]
 [ext_resource type="Script" uid="uid://bopkijuk0xvy7" path="res://scene/player/player.gd" id="1_sw8x8"]
 [ext_resource type="Texture2D" uid="uid://c21yn4gbiurr2" path="res://texture/player/backlr-idle.png" id="3_mc8hd"]
+[ext_resource type="Shader" uid="uid://b55nrsidh2ofm" path="res://shader/hit_flash.gdshader" id="3_pnt7x"]
 [ext_resource type="Script" uid="uid://dvqu3gh7s3tlq" path="res://scene/player/camera_2d.gd" id="3_qt1gw"]
 [ext_resource type="Texture2D" uid="uid://cuoirxmvcj1h2" path="res://texture/player/idle.png" id="3_rvvvr"]
 [ext_resource type="Texture2D" uid="uid://dw4o8phng88ph" path="res://texture/player/backlr-walk.png" id="4_77j1f"]
@@ -15,6 +16,12 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_77j1f"]
 size = Vector2(25, 10)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_seimy"]
+shader = ExtResource("3_pnt7x")
+shader_parameter/flash_intensity = 0.0
+shader_parameter/brightness = 1.0
+shader_parameter/flash_color = Color(1, 1, 1, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2l1ko"]
 atlas = ExtResource("3_mc8hd")
@@ -363,6 +370,7 @@ shape = SubResource("RectangleShape2D_77j1f")
 metadata/_edit_lock_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Body"]
+material = SubResource("ShaderMaterial_seimy")
 position = Vector2(-13, 1)
 sprite_frames = SubResource("SpriteFrames_sldpn")
 animation = &"down_idle"

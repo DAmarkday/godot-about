@@ -10,6 +10,9 @@ class_name Player
 @onready var hand_nodeR:Node2D = $Body/HandNodeR
 @onready var cameraViewer = $Camera2D
 
+signal on_player_is_hurted(value:int)
+
+
 var _current_anim = 'down_'
 var _last_direction := Vector2.ZERO
 
@@ -17,7 +20,21 @@ var curWeapon = null;
 var isFlip = false;
 	
 func _ready():
+	connect('on_player_is_hurted',hurted)
 	pass
+	
+
+func set_flash(value: float) -> void:
+	anim.material.set_shader_parameter("flash_intensity", value)
+
+func hurted(value:int):
+	# 触发 Shader 闪光	
+	anim.material.set_shader_parameter("flash_intensity", 1.0)
+	anim.material.set_shader_parameter("brightness", 2.5)  # 超亮白色
+	var tween = create_tween()
+	tween.tween_method(set_flash, 1.0, 0.0, 0.15)  # 0.15 秒渐隐
+	pass
+	
 
 var last_mouse_pos = Vector2.ZERO  # 记录上一次鼠标位置
 var mouse_move_threshold = 10.0  # 鼠标移动最小距离阈值

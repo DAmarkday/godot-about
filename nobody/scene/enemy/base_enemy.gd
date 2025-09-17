@@ -21,6 +21,7 @@ const STATE_ANIM_MAP: Dictionary = {
 @export var detection_range: float = 100.0
 @export var idle_interval: float = 1.0
 @export var attack_cooldown: float = 1.0
+@export var damage: int = 1
 @export var max_health: int = 1000
 @export var patrol_radius_min: float = 100.0
 @export var patrol_radius_max: float = 400.0
@@ -38,6 +39,7 @@ const STATE_ANIM_MAP: Dictionary = {
 
 @onready var DetectionRangeVisualizer = $DetectionRangeVisualizer
 @onready var DetectionRangeAreaCollisionShape:CollisionShape2D = $DetectionRangeArea/CollisionShape2D
+
 
 
 # 状态机
@@ -62,6 +64,7 @@ var search_sign:Sprite2D;
 # 信号，用于与其他系统集成
 signal damaged(amount: int)
 signal died()
+
 
 func _ready() -> void:
 	# 延迟初始化，确保玩家位置可用
@@ -226,7 +229,8 @@ func _handle_move(pos:Vector2) -> void:
 
 func _handle_attack() -> void:
 	velocity = Vector2.ZERO
-	if attack_timer.is_stopped() and not is_performing_attack:
+	#print('12121212',attack_timer.is_stopped(),is_performing_attack)aa
+	if attack_timer.is_stopped():
 		perform_attack()
 
 func perform_attack() -> void:
@@ -236,12 +240,18 @@ func perform_attack() -> void:
 	# 更新方向面向玩家
 	var player_pos = GameManager.getPlayerPos()
 	update_facing_direction(player_pos)
+	print('attacjaaaa')
 	#change_anim()
-	anim.animation_finished.connect(_on_attack_finished, CONNECT_ONE_SHOT)
+	#emit_signal('')
+	#if anim.frame == 2:
+		#_on_attack_finished()
 
 func _on_attack_finished() -> void:
 	is_performing_attack = false
+	GameManager.getPlayerInstance().on_player_is_hurted.emit(damage)
+	
 	attack_timer.start()
+	print('qqqq')
 
 func _handle_hit() -> void:
 	velocity = Vector2.ZERO
@@ -319,10 +329,13 @@ func change_anim() -> void:
 		target_anim = "move" if velocity.length() > velocity_flip_threshold else "idle"
 	if anim.animation != target_anim:
 		anim.play(target_anim)
+	#else:
+		#anim.frame = 0
+		#anim.play(target_anim)
 
 #攻击范围中有物体进入
 func _on_atk_area_body_entered(body: Node2D) -> void:
-	print("121212 ",body)
+	#print("121212 ",body)
 	if body is Player and current_state != State.DEATH:
 		current_state = State.ATK
 		current_attack_target = body
