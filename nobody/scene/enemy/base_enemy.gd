@@ -281,6 +281,7 @@ func _on_attack_timer_timeout() -> void:
 func _on_attack_frame_changed() -> void:
 	if current_state == State.ATK and anim.frame == attack_hit_frame:
 		hitbox.monitoring = true
+		current_attack_target.on_player_is_hurted.emit(5)
 	else:
 		hitbox.monitoring = false
 
