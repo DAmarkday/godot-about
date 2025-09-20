@@ -57,12 +57,13 @@ func shoot(parent: Node2D,hand:Node2D):
 	camera_offset()
 	apply_thrust(parent,hand)
 	apply_rotation(parent)
+	var instance;
 	if current_nearness_enemy_target:
-		var instance = _pre_bullet.instantiate()
+		instance = _pre_bullet.instantiate()
 		instance.handle_hurt(current_nearness_enemy_target)
 		return
 	
-	var instance = _pre_bullet.instantiate()
+	instance = _pre_bullet.instantiate()
 	instance.global_position = bullet_point.global_position
 	
 	# 使用枪械的朝向计算子弹方向

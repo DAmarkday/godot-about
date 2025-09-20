@@ -13,7 +13,7 @@ func getMapCenterPos():
 	
 	var width = (used_rect.size.x) *tile_map_size.x
 	var height = (used_rect.size.y)*tile_map_size.y
-	var centerPos = Vector2( round(width /2),round(height/2))
+	var centerPos = Vector2( round((width *1.0) /2),round((height*1.0)/2))
 	return centerPos
 
 func getMapLandTileMap():

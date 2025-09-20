@@ -27,6 +27,3 @@ func set_camera_limits():
 	
 	limit_right = (used_rect.size.x) *tile_map_size.x
 	limit_bottom = (used_rect.size.y)*tile_map_size.y
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass

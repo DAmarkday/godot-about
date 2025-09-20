@@ -42,7 +42,20 @@ collision_layer = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionRangeArea"]
 shape = SubResource("CircleShape2D_opbg4")
 
+[node name="Hitbox" type="Area2D" parent="."]
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+
+[node name="Hurtbox" type="Area2D" parent="."]
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+
 [connection signal="body_entered" from="AtkArea" to="." method="_on_atk_area_body_entered"]
 [connection signal="body_exited" from="AtkArea" to="." method="_on_atk_area_body_exited"]
 [connection signal="body_entered" from="DetectionRangeArea" to="." method="_on_detection_range_area_body_entered"]
 [connection signal="body_exited" from="DetectionRangeArea" to="." method="_on_detection_range_area_body_exited"]
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
+[connection signal="body_entered" from="Hurtbox" to="." method="_on_hurtbox_body_entered"]

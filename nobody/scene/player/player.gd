@@ -14,8 +14,6 @@ signal on_player_is_hurted(value:int)
 
 
 var _current_anim = 'down_'
-var _last_direction := Vector2.ZERO
-
 var curWeapon = null;
 var isFlip = false;
 	
@@ -27,7 +25,7 @@ func _ready():
 func set_flash(value: float) -> void:
 	anim.material.set_shader_parameter("flash_intensity", value)
 
-func hurted(value:int):
+func hurted(_value:int):
 	# 触发 Shader 闪光	
 	anim.material.set_shader_parameter("flash_intensity", 1.0)
 	anim.material.set_shader_parameter("brightness", 2.5)  # 超亮白色
@@ -39,7 +37,7 @@ func hurted(value:int):
 var last_mouse_pos = Vector2.ZERO  # 记录上一次鼠标位置
 var mouse_move_threshold = 10.0  # 鼠标移动最小距离阈值
 var min_distance_threshold = 8.0
-func _input(event):
+func _input(_event):
 	#var mouse_position = get_global_mouse_position()
 	#var bp= weapon_node.get_child(0).getBollPointPos()
 	#var temp= mouse_position - bp
@@ -67,7 +65,7 @@ func _input(event):
 				#update_animation_and_facing(mouse_position)
 				##last_direction = direction.normalized()
 				##update_animation(last_direction)
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	var dir = Vector2.ZERO
 	dir.x = Input.get_axis("move_left","move_right")
 	dir.y = Input.get_axis("move_up","move_down")
@@ -90,7 +88,7 @@ func _physics_process(delta: float) -> void:
 		curWeapon.shoot(weapon_node,hand_nodeR)
 
 
-func _process(delta: float) -> void:	
+func _process(_delta: float) -> void:	
 	
 	#var mouse_position = get_global_mouse_position()
 	#var to_mouse = mouse_position - global_position
