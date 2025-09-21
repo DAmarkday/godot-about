@@ -73,6 +73,7 @@ func shoot(parent: Node2D,hand:Node2D):
 	instance.dir = direction
 	
 	# 设置子弹旋转，使长方形朝向与移动方向一致
+	#print('global_rotation is ',global_rotation)
 	instance.rotation = anim.global_rotation
 	
 	GameManager.getMapInstance().addEntityToBulletViewer(instance)

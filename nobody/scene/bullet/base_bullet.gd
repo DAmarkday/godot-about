@@ -1,7 +1,7 @@
 extends Node2D
 class_name BaseBullet
 
-@export var speed = 500
+@export var speed = 300
 @export var dir = Vector2.ZERO
 
 var _tick = 0
