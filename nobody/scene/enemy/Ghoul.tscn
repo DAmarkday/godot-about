@@ -1,8 +1,9 @@
-[gd_scene load_steps=51 format=3 uid="uid://dqps0yqolir0v"]
+[gd_scene load_steps=52 format=3 uid="uid://dqps0yqolir0v"]
 
 [ext_resource type="PackedScene" uid="uid://b6uk8va72066y" path="res://scene/enemy/BaseEnemy.tscn" id="1_2d8q5"]
 [ext_resource type="Shader" uid="uid://b55nrsidh2ofm" path="res://shader/hit_flash.gdshader" id="2_fd232"]
 [ext_resource type="Texture2D" uid="uid://t0i4sum25arq" path="res://texture/enemy/ghoul/Ghoul Sprite Sheet 62 x 33.png" id="2_wjkkm"]
+[ext_resource type="AudioStream" uid="uid://0i7xh48tqxnt" path="res://audio/physics_body_impact_bullet_1.mp3" id="4_qb10w"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wjkkm"]
 radius = 3.0
@@ -381,3 +382,6 @@ rotation = 1.5708
 scale = Vector2(1.14603, 1.00003)
 shape = SubResource("CapsuleShape2D_fd232")
 debug_color = Color(0.956863, 0.168627, 0.313726, 0.419608)
+
+[node name="hitAudio" parent="." index="9"]
+stream = ExtResource("4_qb10w")

@@ -53,6 +53,8 @@ monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
 
+[node name="hitAudio" type="AudioStreamPlayer2D" parent="."]
+
 [connection signal="body_entered" from="AtkArea" to="." method="_on_atk_area_body_entered"]
 [connection signal="body_exited" from="AtkArea" to="." method="_on_atk_area_body_exited"]
 [connection signal="body_entered" from="DetectionRangeArea" to="." method="_on_detection_range_area_body_entered"]

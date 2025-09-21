@@ -9,6 +9,7 @@ class_name Player
 #@onready var hand_nodeL:Node2D = $Body/HandNodeL
 @onready var hand_nodeR:Node2D = $Body/HandNodeR
 @onready var cameraViewer = $Camera2D
+@onready var hitAudio = $hitAudio
 
 signal on_player_is_hurted(value:int)
 
@@ -31,6 +32,8 @@ func hurted(_value:int):
 	anim.material.set_shader_parameter("brightness", 2.5)  # 超亮白色
 	var tween = create_tween()
 	tween.tween_method(set_flash, 1.0, 0.0, 0.15)  # 0.15 秒渐隐
+	
+	hitAudio.play()
 	pass
 	
 

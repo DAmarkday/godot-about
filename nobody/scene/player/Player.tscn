@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=3 uid="uid://73fiwmaucsya"]
+[gd_scene load_steps=58 format=3 uid="uid://73fiwmaucsya"]
 
 [ext_resource type="Texture2D" uid="uid://db15ldjk0wehp" path="res://texture/shadow.png" id="1_88688"]
 [ext_resource type="Script" uid="uid://bopkijuk0xvy7" path="res://scene/player/player.gd" id="1_sw8x8"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://baa17aqodivie" path="res://texture/player/back-idle.png" id="7_a5dh7"]
 [ext_resource type="Texture2D" uid="uid://d2pmt1d4d43kb" path="res://texture/player/back-walk.png" id="8_a5dh7"]
 [ext_resource type="Texture2D" uid="uid://dxwwi3chkwlsu" path="res://texture/player/hand.png" id="11_77j1f"]
+[ext_resource type="AudioStream" uid="uid://0i7xh48tqxnt" path="res://audio/physics_body_impact_bullet_1.mp3" id="14_seimy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_77j1f"]
 size = Vector2(25, 10)
@@ -396,3 +397,6 @@ metadata/_edit_lock_ = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 script = ExtResource("3_qt1gw")
+
+[node name="hitAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("14_seimy")

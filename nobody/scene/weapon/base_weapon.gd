@@ -4,6 +4,7 @@ class_name BaseWeapon
 @onready var fire_timer = $Timer 
 @onready var bullet_point = $BulletPoint
 @onready var anim = $AnimatedSprite2D
+@onready var fireAudio = $fireAudio
 
 @export var bullets_per_magazine = 30  # 每弹夹子弹数
 @export var max_magazine_counts = 5 # 最大弹夹数量
@@ -57,6 +58,7 @@ func shoot(parent: Node2D,hand:Node2D):
 	camera_offset()
 	apply_thrust(parent,hand)
 	apply_rotation(parent)
+	fireAudio.play()
 	var instance;
 	if current_nearness_enemy_target:
 		instance = _pre_bullet.instantiate()

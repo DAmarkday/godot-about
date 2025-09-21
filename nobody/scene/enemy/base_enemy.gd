@@ -37,7 +37,7 @@ const STATE_ANIM_MAP: Dictionary = {
 @onready var nav: NavigationAgent2D = $NavigationRegion
 @onready var DetectionRangeVisualizer = $DetectionRangeVisualizer
 @onready var detection_range_area_collision_shape: CollisionShape2D = $DetectionRangeArea/CollisionShape2D
-
+@onready var hitAudio = $hitAudio
 
 @onready var hitbox: Area2D = $Hitbox
 @onready var hurtbox: Area2D = $Hurtbox
@@ -323,6 +323,7 @@ func take_damage(hurt_damage: int = 2) -> void:
 	if not is_alive:
 		return
 	current_health -= hurt_damage
+	hitAudio.play()
 	damaged.emit(hurt_damage)
 	if current_health <= 0:
 		die()
@@ -373,7 +374,7 @@ func _on_atk_area_body_exited(body: Node2D) -> void:
 func _on_detection_range_area_body_entered(body: Node2D) -> void:
 	if search_sign:
 		search_sign.queue_free()
-	if body is Player and current_state not in [State.ATK, State.HIT, State.DEATH]:
+	if body is Player and current_state not in [State.ATK, State.DEATH]:
 		current_walk_target = body
 		set_state(State.MOVE)
 
