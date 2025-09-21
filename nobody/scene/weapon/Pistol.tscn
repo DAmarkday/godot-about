@@ -1,8 +1,7 @@
-[gd_scene load_steps=15 format=3 uid="uid://rk22eedmqed4"]
+[gd_scene load_steps=14 format=3 uid="uid://rk22eedmqed4"]
 
 [ext_resource type="PackedScene" uid="uid://dkp5u2b4dr1wm" path="res://scene/weapon/BaseWeapon.tscn" id="1_d8pu0"]
 [ext_resource type="Texture2D" uid="uid://dv3raqhvnakx6" path="res://texture/gun/gun1.png" id="2_wd3dj"]
-[ext_resource type="AudioStream" uid="uid://dal8ayr7uyjs8" path="res://audio/wpn_fire_m4.mp3" id="3_j187p"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_j187p"]
 atlas = ExtResource("2_wd3dj")
@@ -97,5 +96,5 @@ metadata/_edit_lock_ = true
 position = Vector2(4.75, -4)
 shape = SubResource("RectangleShape2D_wd3dj")
 
-[node name="fireAudio" parent="." index="4"]
-stream = ExtResource("3_j187p")
+[node name="Shell" parent="." index="5"]
+position = Vector2(3, -5)

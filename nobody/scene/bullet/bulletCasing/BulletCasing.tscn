@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://7myid086b73g"]
+
+[ext_resource type="Script" uid="uid://c85pf7r3kjekm" path="res://scene/bullet/bulletCasing/bullet_casing.gd" id="1_3nfn2"]
+[ext_resource type="Texture2D" uid="uid://cxj57y1i306j4" path="res://texture/bullet/gun/one/shell.png" id="2_vjn7x"]
+
+[node name="BulletCasing" type="Node2D"]
+script = ExtResource("1_3nfn2")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_vjn7x")

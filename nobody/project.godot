@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 EnemyManager="*res://script/EnemyManager.gd"
 GameManager="*res://script/GameManager.gd"
+CasingManager="*res://script/CasingManager.gd"
 
 [display]
 

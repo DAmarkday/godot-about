@@ -42,3 +42,4 @@ func _ready():
 	
 	GameManager.create(player,map)
 	
+	CasingManager.create()

@@ -4,7 +4,8 @@ class_name BaseWeapon
 @onready var fire_timer = $Timer 
 @onready var bullet_point = $BulletPoint
 @onready var anim = $AnimatedSprite2D
-@onready var fireAudio = $fireAudio
+@onready var fireAudio = $FireAudio
+@onready var shell = $Shell
 
 @export var bullets_per_magazine = 30  # 每弹夹子弹数
 @export var max_magazine_counts = 5 # 最大弹夹数量
@@ -59,6 +60,7 @@ func shoot(parent: Node2D,hand:Node2D):
 	apply_thrust(parent,hand)
 	apply_rotation(parent)
 	fireAudio.play()
+	
 	var instance;
 	if current_nearness_enemy_target:
 		instance = _pre_bullet.instantiate()
@@ -80,6 +82,9 @@ func shoot(parent: Node2D,hand:Node2D):
 	
 	GameManager.getMapInstance().addEntityToBulletViewer(instance)
 	
+	# 弹出壳体
+	CasingManager.eject_casing(getShellPos(), GameManager.getPlayerPos(),direction)
+	
 	#await anim.animation_finished
 
 
@@ -97,6 +102,9 @@ func camera_offset():
 	tween.tween_property(player.cameraViewer,'offset',Vector2.ZERO,weapon_camera_offset_interval).from(weapon_camera_offset_magnitude)
 	pass
 	
+
+func getShellPos():
+	return shell.global_position
 
 # 施加推力（父节点的线性后移）
 func apply_thrust(parent: Node2D,hand:Node2D) -> void:

@@ -263,11 +263,6 @@ func _handle_move(pos: Vector2,isMustArrived:bool = false) -> void:
 
 func _handle_attack() -> void:
 	velocity = Vector2.ZERO
-	#if not current_attack_target:
-		#set_state(State.IDLE)
-		#return
-	#if attack_timer.is_stopped() and not is_performing_attack:
-		#set_state(State.ATK)
 
 func _on_attack_timer_timeout() -> void:
 	if current_attack_target and current_state == State.ATK:
@@ -370,12 +365,13 @@ func _on_atk_area_body_exited(body: Node2D) -> void:
 	if body is Player and current_state != State.DEATH:
 		#如果玩家在攻击范围则攻击,在攻击时如果玩家脱离了攻击范围则等待攻击完成后再切换状态
 		current_attack_target = null
-		if current_state == State.ATK:
-			anim.animation_finished.connect(func ():
-				current_walk_target = body
-				, CONNECT_ONE_SHOT)
-		else:
-			current_walk_target = body
+		current_walk_target = body
+		#if current_state == State.ATK:
+			#anim.animation_finished.connect(func ():
+				#current_walk_target = body
+				#, CONNECT_ONE_SHOT)
+		#else:
+			#current_walk_target = body
 
 
 func _on_detection_range_area_body_entered(body: Node2D) -> void:
