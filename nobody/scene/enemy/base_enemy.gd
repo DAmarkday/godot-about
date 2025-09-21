@@ -280,8 +280,9 @@ func _on_attack_timer_timeout() -> void:
 			
 func _on_attack_frame_changed() -> void:
 	if current_state == State.ATK and anim.frame == attack_hit_frame:
-		hitbox.monitoring = true
-		current_attack_target.on_player_is_hurted.emit(5)
+		if current_attack_target:
+			hitbox.monitoring = true
+			current_attack_target.on_player_is_hurted.emit(5)
 	else:
 		hitbox.monitoring = false
 
@@ -367,10 +368,15 @@ func _on_atk_area_body_entered(body: Node2D) -> void:
 
 func _on_atk_area_body_exited(body: Node2D) -> void:
 	if body is Player and current_state != State.DEATH:
+		#如果玩家在攻击范围则攻击,在攻击时如果玩家脱离了攻击范围则等待攻击完成后再切换状态
 		current_attack_target = null
-		#if not is_performing_attack:
-			#set_state(State.IDLE)
-		current_walk_target = body
+		if current_state == State.ATK:
+			anim.animation_finished.connect(func ():
+				current_walk_target = body
+				, CONNECT_ONE_SHOT)
+		else:
+			current_walk_target = body
+
 
 func _on_detection_range_area_body_entered(body: Node2D) -> void:
 	if search_sign:
