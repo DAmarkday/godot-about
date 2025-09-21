@@ -336,7 +336,8 @@ func set_flash(value: float) -> void:
 func hit() -> void:
 	if not is_alive:
 		return
-	set_state(State.HIT)
+	if current_state != State.ATK:
+		set_state(State.HIT)
 	anim.material.set_shader_parameter("flash_intensity", 1.0)
 	anim.material.set_shader_parameter("brightness", 2.5)
 	var tween = create_tween()
