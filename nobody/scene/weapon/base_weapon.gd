@@ -6,6 +6,7 @@ class_name BaseWeapon
 @onready var anim = $AnimatedSprite2D
 @onready var fireAudio = $FireAudio
 @onready var shell = $Shell
+@onready var shell_gpu=$GPUParticles2D
 
 @export var bullets_per_magazine = 30  # 每弹夹子弹数
 @export var max_magazine_counts = 5 # 最大弹夹数量
@@ -60,6 +61,17 @@ func shoot(parent: Node2D,hand:Node2D):
 	apply_thrust(parent,hand)
 	apply_rotation(parent)
 	fireAudio.play()
+	#shell_gpu.restart()
+	#shell_gpu.emitting = true
+	#shell_gpu.amount = max(shell_gpu.amount, 10)  # 确保 amount 足够
+	shell_gpu.emitting = true
+	#shell_gpu.amount_ratio = 1.0 / shell_gpu.amount  # 只发射1个（如果amount>1）
+	#shell_gpu.restart()  # 重启粒子系统，发射新粒子
+	#shell_gpu.amount += 1  # 增加 amount 以支持新粒子
+	shell_gpu.finished.connect(func ():
+		shell_gpu.emitting = false
+		)
+	
 	
 	var instance;
 	if current_nearness_enemy_target:
@@ -83,7 +95,7 @@ func shoot(parent: Node2D,hand:Node2D):
 	GameManager.getMapInstance().addEntityToBulletViewer(instance)
 	
 	# 弹出壳体
-	CasingManager.eject_casing(getShellPos(), GameManager.getPlayerPos(),direction)
+	#CasingManager.eject_casing(getShellPos(), GameManager.getPlayerPos(),direction)
 	
 	#await anim.animation_finished
 
