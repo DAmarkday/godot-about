@@ -1,19 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://dkp5u2b4dr1wm"]
+[gd_scene load_steps=2 format=3 uid="uid://dkp5u2b4dr1wm"]
 
 [ext_resource type="Script" uid="uid://cajdca2bpqa7c" path="res://scene/weapon/base_weapon.gd" id="1_qficx"]
-[ext_resource type="Texture2D" uid="uid://cxj57y1i306j4" path="res://texture/bullet/gun/one/shell.png" id="2_d1kll"]
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_d1kll"]
-particle_flag_disable_z = true
-direction = Vector3(-1, -1, 0)
-spread = 30.0
-initial_velocity_min = 100.0
-initial_velocity_max = 200.0
-angular_velocity_min = -360.0
-angular_velocity_max = 359.99997
-gravity = Vector3(0, 200, 0)
-scale_min = 0.79999995
-scale_max = 1.1999999
 
 [node name="BaseWeapon" type="Node2D"]
 script = ExtResource("1_qficx")
@@ -35,15 +22,6 @@ collision_mask = 2
 [node name="FireAudio" type="AudioStreamPlayer2D" parent="."]
 
 [node name="Shell" type="Node2D" parent="."]
-
-[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
-emitting = false
-amount = 5
-texture = ExtResource("2_d1kll")
-lifetime = 2.0
-one_shot = true
-randomness = 0.5
-process_material = SubResource("ParticleProcessMaterial_d1kll")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

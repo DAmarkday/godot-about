@@ -6,7 +6,6 @@ class_name BaseWeapon
 @onready var anim = $AnimatedSprite2D
 @onready var fireAudio = $FireAudio
 @onready var shell = $Shell
-@onready var shell_gpu=$GPUParticles2D
 
 @export var bullets_per_magazine = 30  # 每弹夹子弹数
 @export var max_magazine_counts = 5 # 最大弹夹数量
@@ -26,7 +25,7 @@ class_name BaseWeapon
 
 
 var _pre_bullet = preload("res://scene/bullet/BaseBullet.tscn")
-
+var _shell:PackedScene = load("res://scene/bullet/bulletCasing/BulletCasing.tscn")
 
 @onready var sprite = $AnimatedSprite2D
 
@@ -64,14 +63,14 @@ func shoot(parent: Node2D,hand:Node2D):
 	#shell_gpu.restart()
 	#shell_gpu.emitting = true
 	#shell_gpu.amount = max(shell_gpu.amount, 10)  # 确保 amount 足够
-	shell_gpu.emitting = true
+	#shell_gpu.emitting = true
 	#shell_gpu.amount_ratio = 1.0 / shell_gpu.amount  # 只发射1个（如果amount>1）
 	#shell_gpu.restart()  # 重启粒子系统，发射新粒子
 	#shell_gpu.amount += 1  # 增加 amount 以支持新粒子
-	shell_gpu.finished.connect(func ():
-		shell_gpu.emitting = false
-		)
-	
+	#shell_gpu.finished.connect(func ():
+		#shell_gpu.emitting = false
+		#)
+
 	
 	var instance;
 	if current_nearness_enemy_target:
@@ -85,7 +84,7 @@ func shoot(parent: Node2D,hand:Node2D):
 	# 使用枪械的朝向计算子弹方向
 	#var direction = Vector2(cos(anim.global_rotation), sin(anim.global_rotation)).normalized()
 	var mouse_pos = get_global_mouse_position()
-	var direction = (mouse_pos - bullet_point.global_position).normalized()
+	var direction:Vector2 = (mouse_pos - bullet_point.global_position).normalized()
 	instance.dir = direction
 	
 	# 设置子弹旋转，使长方形朝向与移动方向一致
@@ -93,6 +92,23 @@ func shoot(parent: Node2D,hand:Node2D):
 	instance.rotation = anim.global_rotation
 	
 	GameManager.getMapInstance().addEntityToBulletViewer(instance)
+	
+	var sh=_shell.instantiate()
+	GameManager.getMapInstance().addEntityToViewer(sh)
+
+	var isNormal= GameManager.getPlayerInstance().body.scale.x == 1
+	if isNormal:
+		var gravity=direction.rotated(PI / 2).normalized() * 200
+		var rotated_vector =direction.rotated(-(PI * 2) / 3)
+		sh.process_material.gravity = Vector3(gravity.x,gravity.y,0)
+		sh.process_material.direction = Vector3(rotated_vector.x,rotated_vector.y,0)
+	else:
+		var gravity=direction.rotated(-PI / 2).normalized() * 200
+		var rotated_vector =direction.rotated(PI-(PI) / 3)
+		sh.process_material.gravity = Vector3(gravity.x,gravity.y,0)
+		sh.process_material.direction = Vector3(rotated_vector.x,rotated_vector.y,0)
+	sh.global_position = shell.global_position
+	sh.emitting = true
 	
 	# 弹出壳体
 	#CasingManager.eject_casing(getShellPos(), GameManager.getPlayerPos(),direction)
@@ -140,3 +156,7 @@ func apply_rotation(parent: Node2D) -> void:
 	tween.tween_property(parent, "rotation_degrees", initial_rotation + upward_rotation, rotation_duration)
 	# 恢复
 	tween.tween_property(parent, "rotation_degrees", initial_rotation, rotation_duration).set_ease(recovery_ease)
+	
+
+
+	

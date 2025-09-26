@@ -98,3 +98,9 @@ shape = SubResource("RectangleShape2D_wd3dj")
 
 [node name="Shell" parent="." index="5"]
 position = Vector2(3, -5)
+
+[node name="GPUParticles2D" parent="." index="6"]
+position = Vector2(3, -5)
+amount = 1
+explosiveness = 1.0
+fixed_fps = 60
