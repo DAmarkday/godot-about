@@ -99,12 +99,12 @@ func shoot(parent: Node2D,hand:Node2D):
 	var isNormal= GameManager.getPlayerInstance().body.scale.x == 1
 	if isNormal:
 		var gravity=direction.rotated(PI / 2).normalized() * 200
-		var rotated_vector =direction.rotated(-(PI * 2) / 3)
+		var rotated_vector =direction.rotated(-(PI * 3) / 4)
 		sh.process_material.gravity = Vector3(gravity.x,gravity.y,0)
 		sh.process_material.direction = Vector3(rotated_vector.x,rotated_vector.y,0)
 	else:
 		var gravity=direction.rotated(-PI / 2).normalized() * 200
-		var rotated_vector =direction.rotated(PI-(PI) / 3)
+		var rotated_vector =direction.rotated(PI-(PI) / 4)
 		sh.process_material.gravity = Vector3(gravity.x,gravity.y,0)
 		sh.process_material.direction = Vector3(rotated_vector.x,rotated_vector.y,0)
 	sh.global_position = shell.global_position

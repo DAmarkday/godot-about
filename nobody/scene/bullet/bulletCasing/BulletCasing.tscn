@@ -7,14 +7,16 @@
 resource_local_to_scene = true
 particle_flag_disable_z = true
 direction = Vector3(-1, -1, 0)
-spread = 0.0
+spread = 5.0
 initial_velocity_min = 90.0
 initial_velocity_max = 100.0
-angular_velocity_min = -360.0
-angular_velocity_max = 359.99997
+angular_velocity_min = -720.0
+angular_velocity_max = 719.99994
 gravity = Vector3(0, 0, 0)
-scale_min = 0.79999995
-scale_max = 1.1999999
+damping_min = 50.000004
+damping_max = 100.00001
+scale_min = 0.5
+scale_max = 0.59999996
 
 [node name="BulletCasing" type="GPUParticles2D"]
 emitting = false
