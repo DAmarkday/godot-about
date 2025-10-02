@@ -1,6 +1,7 @@
-[gd_scene load_steps=14 format=3 uid="uid://rk22eedmqed4"]
+[gd_scene load_steps=15 format=3 uid="uid://rk22eedmqed4"]
 
 [ext_resource type="PackedScene" uid="uid://dkp5u2b4dr1wm" path="res://scene/weapon/BaseWeapon.tscn" id="1_d8pu0"]
+[ext_resource type="AudioStream" uid="uid://dal8ayr7uyjs8" path="res://audio/wpn_fire_m4.mp3" id="2_j187p"]
 [ext_resource type="Texture2D" uid="uid://dv3raqhvnakx6" path="res://texture/gun/gun1.png" id="2_wd3dj"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_j187p"]
@@ -78,6 +79,8 @@ animations = [{
 size = Vector2(16.5, 4)
 
 [node name="BaseWeapon" instance=ExtResource("1_d8pu0")]
+weapon_rof = 0.1
+fire_audio = ExtResource("2_j187p")
 
 [node name="AnimatedSprite2D" parent="." index="0"]
 position = Vector2(0, 0)
@@ -97,10 +100,4 @@ position = Vector2(4.75, -4)
 shape = SubResource("RectangleShape2D_wd3dj")
 
 [node name="Shell" parent="." index="5"]
-position = Vector2(3, -5)
-
-[node name="GPUParticles2D" parent="." index="6"]
-position = Vector2(3, -5)
-amount = 1
-explosiveness = 1.0
-fixed_fps = 60
+position = Vector2(2, -5)
