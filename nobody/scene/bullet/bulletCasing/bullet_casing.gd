@@ -12,8 +12,8 @@ var dir:Vector2 = get_random_unit_vector();
 var init_x_speed_counts = 100
 var init_y_speed_counts = 200
 @onready var timer:Timer = $Timer
-var yTopMax = 0
-
+#var start_time: float = 0.0
+#@export var lifetime: float = 1.5  # 总存活时间
 var topP=0; # top point一定是最小的 初始化为初始位置
 var is_arrived_top:bool = false
 func ani_play():
@@ -23,6 +23,7 @@ func ani_play():
 	anim.frame  = w
 
 func _ready() -> void:
+	#start_time = Time.get_unix_time_from_system()
 	motion = Vector2(dir.x*init_x_speed_counts,dir.y* init_y_speed_counts)
 	bound = GameManager.getPlayerPos().y
 	topP = global_position.y
@@ -74,7 +75,7 @@ func apply_bound(_delta):
 		print("下落")
 	# Should bounce
 	else:
-		motion.y = -0.55 * motion.y
+		motion.y = -0.7 * motion.y
 		motion.x = 0.5 * motion.x
 		print("反弹")
 		if motion.length()<=1:
@@ -82,6 +83,17 @@ func apply_bound(_delta):
 			if not timer.is_stopped():
 				timer.stop()
 				set_physics_process(false)
+	
+				await get_tree().create_timer(1.5).timeout
+				# 落地后动画：缩放 + 淡出
+				#var time_passed = Time.get_unix_time_from_system() - start_time
+				#var fade_time = max(1, lifetime - time_passed)  # 确保至少1秒淡出
+				var fade_time = 2
+				var tween = create_tween()
+				tween.tween_property(self, "scale", Vector2(0.7, 0.7), fade_time)
+				tween.parallel().tween_property(self, "modulate:a", 0.0, fade_time)
+				tween.tween_callback(func(): queue_free())  # 通知 CasingManager 回收
+	
 		
 	velocity = motion
 	move_and_slide()
