@@ -1,71 +1,39 @@
-[gd_scene load_steps=10 format=3 uid="uid://7myid086b73g"]
+[gd_scene load_steps=5 format=3 uid="uid://7myid086b73g"]
 
 [ext_resource type="Script" uid="uid://beipqj62cvmgp" path="res://scene/bullet/bulletCasing/bullet_casing.gd" id="1_3nfn2"]
 [ext_resource type="Texture2D" uid="uid://kp0rcfsjljn1" path="res://texture/bullet/gun/one/bullet_shell.png" id="2_vjn7x"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_vjn7x"]
-atlas = ExtResource("2_vjn7x")
-region = Rect2(0, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_lv57b"]
-atlas = ExtResource("2_vjn7x")
-region = Rect2(32, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_a5gfd"]
-atlas = ExtResource("2_vjn7x")
-region = Rect2(96, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_b4rtv"]
-atlas = ExtResource("2_vjn7x")
-region = Rect2(128, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_t1gc2"]
-atlas = ExtResource("2_vjn7x")
-region = Rect2(160, 0, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_a5gfd"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_vjn7x")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_lv57b")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_a5gfd")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_b4rtv")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_t1gc2")
+"texture": ExtResource("2_vjn7x")
 }],
-"loop": false,
+"loop": true,
 "name": &"default",
 "speed": 5.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vjn7x"]
-size = Vector2(1, 2)
+size = Vector2(4, 4)
 
 [node name="BulletCasing" type="CharacterBody2D"]
-collision_layer = 4
+y_sort_enabled = true
+collision_layer = 16
 collision_mask = 8
+motion_mode = 1
 script = ExtResource("1_3nfn2")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_a5gfd")
-frame = 4
-frame_progress = 1.0
 offset = Vector2(0, -2)
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
 emitting = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0.5, -1)
+position = Vector2(0, -2)
 shape = SubResource("RectangleShape2D_vjn7x")
 
 [node name="Timer" type="Timer" parent="."]

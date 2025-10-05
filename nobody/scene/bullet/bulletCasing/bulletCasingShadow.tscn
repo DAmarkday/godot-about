@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://ca7ak8xvt8ndj"]
+
+[ext_resource type="Texture2D" uid="uid://cy58oa541i22r" path="res://texture/bullet/gun/one/shell_shadow.png" id="1_51asv"]
+[ext_resource type="Script" uid="uid://cue5eijb2bcmr" path="res://scene/bullet/bulletCasing/bullet_casing_shadow.gd" id="2_4d3f0"]
+
+[node name="BulletCasingShadow" type="Sprite2D"]
+scale = Vector2(2, 2)
+texture = ExtResource("1_51asv")
+offset = Vector2(0, -1)
+script = ExtResource("2_4d3f0")

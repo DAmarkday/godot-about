@@ -355,6 +355,7 @@ animations = [{
 [node name="Player" type="CharacterBody2D"]
 z_index = 1
 collision_mask = 3
+motion_mode = 1
 platform_floor_layers = 4294967040
 script = ExtResource("1_sw8x8")
 

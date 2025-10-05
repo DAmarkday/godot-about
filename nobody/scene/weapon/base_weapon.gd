@@ -101,20 +101,19 @@ func shoot(parent: Node2D,hand:Node2D):
 	var isNormal= GameManager.getPlayerInstance().body.scale.x == 1
 	var deg:Vector2;
 	if isNormal:
-		deg=sh.get_random_unit_vector([-160,-110])
+		deg=sh.get_random_unit_vector([-150,-130])
 		#var gravity=direction.rotated(PI / 2).normalized() * 200
 		#rotated_vector =direction.rotated(-(PI * 3) / 4)
 		#sh.process_material.gravity = Vector3(gravity.x,gravity.y,0)
 		#sh.process_material.direction = Vector3(rotated_vector.x,rotated_vector.y,0)
 	else:
-		deg=sh.get_random_unit_vector([-70,-20])
+		deg=sh.get_random_unit_vector([-60,-40])
 		#var gravity=direction.rotated(-PI / 2).normalized() * 200
 		#rotated_vector =direction.rotated(PI-(PI) / 4)
 		#sh.process_material.gravity = Vector3(gravity.x,gravity.y,0)
 		#sh.process_material.direction = Vector3(rotated_vector.x,rotated_vector.y,0)
 	#sh.setup()
 	sh.dir = deg
-	sh.player_pos = GameManager.getPlayerPos()
 	sh.global_position = shell.global_position
 	GameManager.getMapInstance().addEntityToViewer(sh)
 	
