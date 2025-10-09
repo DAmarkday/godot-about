@@ -6,9 +6,9 @@ class_name Tools
 # - init_vel: Vector2, 初始速度
 # - grav: float, 重力加速度
 # - random_land_y_range: Array [min_offset, max_offset], 随机 y 偏移范围
-# - 着陆点 y = 最高点 y - 随机值（从 random_land_y_range 抽取），且在抛物线上
+# - 着陆点 y = 初始点 y + 随机值（从 random_land_y_range 抽取），且在抛物线上
 # - 返回：{"apex": Vector2, "landing": Vector2}
-# - 如果无有效着陆点，回退到初始 y 作为地面，计算完整抛物线
+# - 如果无有效着陆点，计算完整抛物线（y = init_pos.y）
 static func calculate_trajectory_points(init_pos: Vector2, init_vel: Vector2, grav: float, random_land_y_range: Array) -> Dictionary:
 	var gravity_vector = Vector2(0, grav)  # 重力仅在 y 方向
 	
@@ -28,7 +28,11 @@ static func calculate_trajectory_points(init_pos: Vector2, init_vel: Vector2, gr
 	var min_offset: float = random_land_y_range[0]
 	var max_offset: float = random_land_y_range[1]
 	var random_offset: float = randf_range(min_offset, max_offset)
-	var y_landing: float = apex_pos.y - random_offset
+	var y_landing: float = init_pos.y + random_offset
+	
+	# 限制 y_landing 在抛物线可达范围内
+	var max_y_drop: float = abs(apex_pos.y - init_pos.y) + 100.0  # 允许额外下降
+	y_landing = clamp(y_landing, init_pos.y - max_y_drop, init_pos.y)
 	print("random_offset: ", random_offset, ", y_landing: ", y_landing)
 	
 	# 抛物线方程求 t

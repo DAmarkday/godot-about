@@ -50,13 +50,13 @@ func get_random_unit_vector(random_range:Array=[-130, -150]) -> Vector2:
 	
 	return unit_vector
 	
-func update_trajectory() -> void:
+func update_trajectory(y_range:Array=[-20, 0]) -> void:
 	# 计算抛物线的顶点和着地点
-	var result = Tools.calculate_trajectory_points(global_position, motion, gravity, [-2, 0])
+	var result = Tools.calculate_trajectory_points(global_position, motion, gravity, y_range)
 	#print('1222222is ',motion)
 	caculate_top_point = result.apex
 	caculate_land_point = result.landing
-	print('12121 is ',result)
+	#print('12121 is ',result)
 	
 	is_cur_created_landing = true
 	
@@ -97,7 +97,7 @@ func _ready() -> void:
 	shad.mapping_shell_instance = self
 	shell_shadow_instance = shad
 		
-	update_trajectory()
+	update_trajectory([-50,-30])
 	
 func _physics_process(delta):
 	#没有落地
@@ -135,10 +135,10 @@ func bound():
 	init_shell_shadow_pos = global_position
 	#反弹
 	if bounce_count < max_bounces:
-		motion.y = -1.5 * motion.y
+		motion.y = -0.7 * motion.y
 		motion.x = 0.5 * motion.x
 		landing = false
 		
-		update_trajectory()
+		update_trajectory([-50,-30])
 	else:
 		stop_motion()	
