@@ -28,10 +28,10 @@ static func calculate_trajectory_points(init_pos: Vector2, init_vel: Vector2, gr
 	var min_offset: float = random_land_y_range[0]
 	var max_offset: float = random_land_y_range[1]
 	var random_offset: float = randf_range(min_offset, max_offset)
-	var y_landing: float = init_pos.y + random_offset
+	var y_landing: float = apex_pos.y + random_offset
 	
 	# 限制 y_landing 在抛物线可达范围内
-	var max_y_drop: float = abs(apex_pos.y - init_pos.y) + 100.0  # 允许额外下降
+	var max_y_drop: float = abs(apex_pos.y - init_pos.y) # 允许额外下降
 	y_landing = clamp(y_landing, init_pos.y - max_y_drop, init_pos.y)
 	print("random_offset: ", random_offset, ", y_landing: ", y_landing)
 	
@@ -94,3 +94,49 @@ static func calculate_trajectory_points(init_pos: Vector2, init_vel: Vector2, gr
 		"apex": apex_pos,
 		"landing": landing_pos
 	}
+	
+	
+# 函数：计算抛物线的最高点和与直线的另一个交点（着陆点）
+# 参数：
+#   initial_pos: Vector2 - 初始坐标 (x0, y0)
+#   velocity: Vector2 - 速度向量 (vx, vy)，vy 若向上发射则为负
+#   gravity: float - 重力加速度 g（正值，向下）
+#   k: float - 直线斜率
+#   b: float - 直线截距
+# 返回：Dictionary - 包含 "apex"（最高点坐标，Vector2）和 "landing"（着陆点坐标，Vector2）
+# 若无有效着陆点，landing 返回 Vector2.ZERO；若无有效最高点，apex 返回 initial_pos
+static func calculate_intersection_point(initial_pos: Vector2, velocity: Vector2, gravity: float, k: float, b: float) -> Dictionary:
+	var x0 = initial_pos.x
+	var y0 = initial_pos.y
+	var vx = velocity.x
+	var vy = velocity.y
+	var g = gravity  # g > 0
+	
+	# 初始化返回字典
+	var result = {"apex": initial_pos, "landing": Vector2.ZERO}
+	
+	# 检查重力是否为 0
+	if g == 0:
+		return result  # 无重力，无抛物线
+	
+	# 检查初始点是否在直线上
+	if abs(y0 - (k * x0 + b)) > 0.0001:  # 使用小容差避免浮点误差
+		return result  # 初始点不在直线上，无意义交点
+	
+	# 计算最高点
+	var t_apex = -vy / g
+	if t_apex >= 0:
+		var x_apex = x0 + vx * t_apex
+		var y_apex = y0 + vy * t_apex + 0.5 * g * t_apex * t_apex
+		result["apex"] = Vector2(x_apex, y_apex)
+	
+	# 计算着陆点（交点 C）
+	var numerator = -2 * (vy - k * vx)
+	var t_landing = numerator / g
+	
+	if t_landing > 0:  # 仅当 t > 0 时有效
+		var x_landing = x0 + vx * t_landing
+		var y_landing = y0 + vy * t_landing + 0.5 * g * t_landing * t_landing
+		result["landing"] = Vector2(x_landing, y_landing)
+	
+	return result
