@@ -105,38 +105,38 @@ static func calculate_trajectory_points(init_pos: Vector2, init_vel: Vector2, gr
 #   b: float - 直线截距
 # 返回：Dictionary - 包含 "apex"（最高点坐标，Vector2）和 "landing"（着陆点坐标，Vector2）
 # 若无有效着陆点，landing 返回 Vector2.ZERO；若无有效最高点，apex 返回 initial_pos
-static func calculate_intersection_point(initial_pos: Vector2, velocity: Vector2, gravity: float, k: float, b: float) -> Dictionary:
-	var x0 = initial_pos.x
-	var y0 = initial_pos.y
-	var vx = velocity.x
-	var vy = velocity.y
-	var g = gravity  # g > 0
-	
-	# 初始化返回字典
-	var result = {"apex": initial_pos, "landing": Vector2.ZERO}
-	
-	# 检查重力是否为 0
-	if g == 0:
-		return result  # 无重力，无抛物线
-	
-	# 检查初始点是否在直线上
-	if abs(y0 - (k * x0 + b)) > 0.0001:  # 使用小容差避免浮点误差
-		return result  # 初始点不在直线上，无意义交点
-	
-	# 计算最高点
-	var t_apex = -vy / g
-	if t_apex >= 0:
-		var x_apex = x0 + vx * t_apex
-		var y_apex = y0 + vy * t_apex + 0.5 * g * t_apex * t_apex
-		result["apex"] = Vector2(x_apex, y_apex)
-	
-	# 计算着陆点（交点 C）
-	var numerator = -2 * (vy - k * vx)
-	var t_landing = numerator / g
-	
-	if t_landing > 0:  # 仅当 t > 0 时有效
-		var x_landing = x0 + vx * t_landing
-		var y_landing = y0 + vy * t_landing + 0.5 * g * t_landing * t_landing
-		result["landing"] = Vector2(x_landing, y_landing)
-	
-	return result
+#static func calculate_intersection_point(initial_pos: Vector2, velocity: Vector2, gravity: float, k: float, b: float) -> Dictionary:
+	#var x0 = initial_pos.x
+	#var y0 = initial_pos.y
+	#var vx = velocity.x
+	#var vy = velocity.y
+	#var g = gravity  # g > 0
+	#
+	## 初始化返回字典
+	#var result = {"apex": initial_pos, "landing": Vector2.ZERO}
+	#
+	## 检查重力是否为 0
+	#if g == 0:
+		#return result  # 无重力，无抛物线
+	#
+	## 检查初始点是否在直线上
+	#if abs(y0 - (k * x0 + b)) > 0.0001:  # 使用小容差避免浮点误差
+		#return result  # 初始点不在直线上，无意义交点
+	#
+	## 计算最高点
+	#var t_apex = -vy / g
+	#if t_apex >= 0:
+		#var x_apex = x0 + vx * t_apex
+		#var y_apex = y0 + vy * t_apex + 0.5 * g * t_apex * t_apex
+		#result["apex"] = Vector2(x_apex, y_apex)
+	#
+	## 计算着陆点（交点 C）
+	#var numerator = -2 * (vy - k * vx)
+	#var t_landing = numerator / g
+	#
+	#if t_landing > 0:  # 仅当 t > 0 时有效
+		#var x_landing = x0 + vx * t_landing
+		#var y_landing = y0 + vy * t_landing + 0.5 * g * t_landing * t_landing
+		#result["landing"] = Vector2(x_landing, y_landing)
+	#
+	#return result

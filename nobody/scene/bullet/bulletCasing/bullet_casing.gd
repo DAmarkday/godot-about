@@ -16,7 +16,7 @@ var is_cur_created_landing:bool = false
 var shell_shadow_instance:BulletCasingShadow;
 var init_shell_shadow_pos:Vector2
 var landing:bool = false
-var max_bounces: int = 6  # 最大反弹次数 1次代表不反弹
+var max_bounces: int = 10  # 最大反弹次数 1次代表不反弹
 var bounce_count: int = 0  # 当前反弹次数
 func ani_play():
 	var w=1
@@ -66,32 +66,32 @@ func create_new_trajectory(y_range:Array=[5, 10]) -> void:
 	shell_shadow_instance.caculate_Y(caculate_land_point, init_shell_shadow_pos, global_position.x)
 	shell_shadow_instance.move(global_position.x)
 	# 生成最高点和着地点的标识
-	create_circle(caculate_top_point, 1, Color.GREEN)
-	create_circle(caculate_land_point, 1, Color.RED)
+	#create_circle(caculate_top_point, 1, Color.GREEN)
+	#create_circle(caculate_land_point, 1, Color.RED)
 	
-#再次生成一个抛物线,着地点会根据首次生成的影子路径生成
-func use_shadow_path_to_create_land_pos():
-	# 计算抛物线的顶点和着地点
-	var result = Tools.calculate_intersection_point(global_position, motion, gravity, shell_shadow_instance.k,shell_shadow_instance.b)
-	if result.landing == Vector2.ZERO:
-		#说明没有交点 则不反弹
-		stop_motion()
-		print('xxxxxxxxxxxx')
-		pass
-	else:
-		caculate_top_point = result.apex
-		caculate_land_point = result.landing
-		#print('12121 is ',result)
-		is_cur_created_landing = true
-		
-		# 计算生成影子的移动公式
-		shell_shadow_instance.caculate_Y(caculate_land_point, init_shell_shadow_pos, global_position.x)
-		shell_shadow_instance.move(global_position.x)
-		# 生成最高点和着地点的标识
-		create_circle(caculate_top_point, 1, Color.GREEN)
-		create_circle(caculate_land_point, 1, Color.RED)
-		
-	
+##再次生成一个抛物线,着地点会根据首次生成的影子路径生成
+#func use_shadow_path_to_create_land_pos():
+	## 计算抛物线的顶点和着地点
+	#var result = Tools.calculate_intersection_point(global_position, motion, gravity, shell_shadow_instance.k,shell_shadow_instance.b)
+	#if result.landing == Vector2.ZERO:
+		##说明没有交点 则不反弹
+		#stop_motion()
+		#print('xxxxxxxxxxxx')
+		#pass
+	#else:
+		#caculate_top_point = result.apex
+		#caculate_land_point = result.landing
+		##print('12121 is ',result)
+		#is_cur_created_landing = true
+		#
+		## 计算生成影子的移动公式
+		#shell_shadow_instance.caculate_Y(caculate_land_point, init_shell_shadow_pos, global_position.x)
+		#shell_shadow_instance.move(global_position.x)
+		## 生成最高点和着地点的标识
+		#create_circle(caculate_top_point, 1, Color.GREEN)
+		#create_circle(caculate_land_point, 1, Color.RED)
+		#
+	#
 	
 	pass
 #func update_trajectory(y_range:Array=[0, 20]) -> void:
@@ -201,7 +201,7 @@ func bound():
 		# 竖直速度：反转并衰减（e=0.8），弧形高度减小
 		motion.y = dir.y* init_y_speed_counts * pow(0.6,bounce_count)
 		# 水平速度：轻微衰减，模拟摩擦
-		motion.x = dir.x* init_x_speed_counts * pow(0.4,bounce_count)
+		motion.x = dir.x* init_x_speed_counts * pow(0.5,bounce_count)
 		# 限制速度，避免过小
 		#motion.y = clamp(motion.y, -200, 0)
 		#motion.x = clamp(motion.x, 20, 200)
