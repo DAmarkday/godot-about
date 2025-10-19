@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://7myid086b73g"]
+[gd_scene load_steps=6 format=3 uid="uid://7myid086b73g"]
 
 [ext_resource type="Script" uid="uid://beipqj62cvmgp" path="res://scene/bullet/bulletCasing/bullet_casing.gd" id="1_3nfn2"]
 [ext_resource type="Texture2D" uid="uid://kp0rcfsjljn1" path="res://texture/bullet/gun/one/bullet_shell.png" id="2_vjn7x"]
@@ -17,6 +17,19 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vjn7x"]
 size = Vector2(4, 2)
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_vjn7x"]
+resource_local_to_scene = true
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 10.0
+initial_velocity_max = 50.0
+gravity = Vector3(0, 98, 0)
+damping_min = 10.0
+damping_max = 50.000004
+scale_min = 0.5
+scale_max = 2.0
+color = Color(0.8, 0.8, 0.8, 0.5)
+
 [node name="BulletCasing" type="CharacterBody2D"]
 y_sort_enabled = true
 collision_layer = 16
@@ -26,13 +39,17 @@ script = ExtResource("1_3nfn2")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 z_index = 1
+position = Vector2(0, -1)
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_a5gfd")
-offset = Vector2(0, -1.5)
+offset = Vector2(0, -0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -1)
+shape = SubResource("RectangleShape2D_vjn7x")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
 emitting = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -2)
-shape = SubResource("RectangleShape2D_vjn7x")
+amount = 20
+explosiveness = 0.8
+process_material = SubResource("ParticleProcessMaterial_vjn7x")

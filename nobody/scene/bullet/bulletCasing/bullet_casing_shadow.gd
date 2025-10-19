@@ -31,11 +31,16 @@ func caculate_Y(landPos: Vector2, initPos: Vector2, curX: float):
 # - initPos: 起始点
 # - landPos: 结束点（例如抛物线着陆点）
 # - curX: 目标 x 坐标
+# - is_up_to_bottom: 是向上移动还是向下移动
 # - 返回 Vector2(curX, curY)，如果无效（例如垂直直线且 curX 不匹配），返回 Vector2.INF
-func move(curX: float,init_shell_shadow_pos:Vector2):
+func move(curX: float,init_shell_shadow_pos:Vector2,is_up_to_bottom:bool):
 	# 计算 curY
 	var curY: float = k * curX + b
-	if curY > init_shell_shadow_pos.y:
+	# 如果是向下运动则 当前的Y轴的值必须要大于 初始的Y值 不然就会一直在人物影子中
+	var re = curY < init_shell_shadow_pos.y if is_up_to_bottom else curY > init_shell_shadow_pos.y
+	
+	if re:
+		# 保证子弹影子在人物影子中
 		global_position = init_shell_shadow_pos
 	else:
 		target_pos = Vector2(curX, curY)

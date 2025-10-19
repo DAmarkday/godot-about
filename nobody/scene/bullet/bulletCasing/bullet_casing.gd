@@ -2,12 +2,12 @@
 extends CharacterBody2D
 class_name BulletCasing
 @onready var anim:AnimatedSprite2D = $AnimatedSprite2D
-@export var gravity: float = 98
+@export var gravity: float = 300
 
 var motion: Vector2 = Vector2.ZERO # 初始速度
 var dir:Vector2 = Tools.get_random_unit_vector();
-var init_x_speed_counts = 40
-var init_y_speed_counts = 100
+var init_x_speed_counts = 60
+var init_y_speed_counts = 130
 var shadow = preload("res://scene/bullet/bulletCasing/bulletCasingShadow.tscn")
 
 var caculate_top_point:Vector2 = Vector2.ZERO
@@ -22,11 +22,22 @@ func ani_play():
 	var w=1
 	anim.frame  = w
 
-
+var is_shadow_up_to_bottom:bool = false
 #第一次抛出时生成一个新的抛物线
-func create_new_trajectory(y_range:Array=[5, 10]) -> void:
-	# 计算抛物线的顶点和着地点
-	var result = Tools.calculate_trajectory_points(global_position, motion, gravity, y_range)
+func create_new_trajectory() -> void:
+	var y_range = [0, 10]
+	var result
+	if is_shadow_up_to_bottom:
+		var minC = 30 - 20*bounce_count if 30 - 20*bounce_count >0 else 0
+		var maxC = 40 - 20*bounce_count if 40 - 20*bounce_count >0 else 0
+		y_range = [minC,maxC]
+		result = Tools.calculate_landing_points(global_position, motion, gravity,y_range,true)
+		# 计算抛物线的顶点和着地点
+	else:
+		# 计算抛物线的顶点和着地点
+		result = Tools.calculate_landing_points(global_position, motion, gravity, y_range,false)
+		
+	
 	#print('1222222is ',motion)
 	caculate_top_point = result.apex
 	caculate_land_point = result.landing
@@ -36,7 +47,7 @@ func create_new_trajectory(y_range:Array=[5, 10]) -> void:
 	
 	# 计算生成影子的移动公式
 	shell_shadow_instance.caculate_Y(caculate_land_point, init_shell_shadow_pos, global_position.x)
-	shell_shadow_instance.move(global_position.x,init_shell_shadow_pos)
+	shell_shadow_instance.move(global_position.x,init_shell_shadow_pos,is_shadow_up_to_bottom)
 	# 生成最高点和着地点的标识
 	#Tools.create_circle(caculate_top_point, 1, Color.GREEN)
 	#Tools.create_circle(caculate_land_point, 1, Color.RED)
@@ -61,7 +72,6 @@ func stop_motion() -> void:
 func _ready() -> void:
 	motion = Vector2(dir.x*init_x_speed_counts,dir.y* init_y_speed_counts)
 	velocity = motion
-	
 	# 生成影子
 	var shad=shadow.instantiate()
 	# 影子生成在人物影子中
@@ -72,18 +82,19 @@ func _ready() -> void:
 	
 	shell_shadow_instance = shad
 		
-	create_new_trajectory([0,10])
+	create_new_trajectory()
 	
 func _physics_process(delta):
 	#没有落地
 	#弹壳移动()
+	
 	if not landing:
 		# 弹壳模拟重力
 		motion.y += gravity * delta 
 		velocity = motion
 		move_and_slide()
 		
-		shell_shadow_instance.move(global_position.x,init_shell_shadow_pos)
+		shell_shadow_instance.move(global_position.x,init_shell_shadow_pos,is_shadow_up_to_bottom)
 		
 		
 		# 检查是否到达落地点
@@ -125,6 +136,6 @@ func bound():
 		motion.x = dir.x* init_x_speed_counts * pow(xk,bounce_count)
 		
 		landing = false
-		create_new_trajectory([0,10])
+		create_new_trajectory()
 	else:
 		stop_motion()	

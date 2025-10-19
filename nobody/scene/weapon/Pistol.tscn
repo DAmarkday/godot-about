@@ -79,7 +79,7 @@ animations = [{
 size = Vector2(16.5, 4)
 
 [node name="BaseWeapon" instance=ExtResource("1_d8pu0")]
-weapon_rof = 0.8
+weapon_rof = 0.1
 fire_audio = ExtResource("2_j187p")
 
 [node name="AnimatedSprite2D" parent="." index="0"]
@@ -98,6 +98,3 @@ metadata/_edit_lock_ = true
 [node name="CollisionShape2D" parent="Area2D" index="0"]
 position = Vector2(4.75, -4)
 shape = SubResource("RectangleShape2D_wd3dj")
-
-[node name="Shell" parent="." index="5"]
-position = Vector2(2, -5)

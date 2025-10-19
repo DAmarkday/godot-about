@@ -6,5 +6,5 @@
 [node name="BulletCasingShadow" type="Sprite2D"]
 scale = Vector2(2, 2)
 texture = ExtResource("1_51asv")
-offset = Vector2(0, -1)
+offset = Vector2(0, -0.5)
 script = ExtResource("2_4d3f0")

@@ -98,20 +98,44 @@ func shoot(parent: Node2D,hand:Node2D):
 
 
 	var isNormal= GameManager.getPlayerInstance().body.scale.x == 1
+	
+	var x_axis = Vector2.RIGHT # X轴正向，等价于 Vector2(1, 0)
+	var angle = direction.angle_to(x_axis) # 计算夹角（弧度）
+	var angle_deg = rad_to_deg(angle) # 转换为角度
+	
 	var deg:Vector2;
+	#deg=Tools.get_random_unit_vector([-40,-10])
+	print('angle_deg is ,',angle_deg)
 	if isNormal:
-		deg=Tools.get_random_unit_vector([-140,-130])
+		# 朝向
+		if angle_deg>0 and angle_deg<=90:
+			# 右上角
+			deg=Tools.get_random_unit_vector([-150,-165])
+
+			sh.is_shadow_up_to_bottom = true
+		elif angle_deg<=0 and angle_deg>-90:
+			# 右下角
+			deg=Tools.get_random_unit_vector([-145,-130])
+			sh.is_shadow_up_to_bottom = false
 		#var gravity=direction.rotated(PI / 2).normalized() * 200
 		#rotated_vector =direction.rotated(-(PI * 3) / 4)
 		#sh.process_material.gravity = Vector3(gravity.x,gravity.y,0)
 		#sh.process_material.direction = Vector3(rotated_vector.x,rotated_vector.y,0)
 	else:
-		deg=Tools.get_random_unit_vector([-50,-40])
+		if angle_deg>90 and angle_deg<=180:
+			# 左上角
+			#deg=Tools.get_random_unit_vector([-40,-10])
+			deg=Tools.get_random_unit_vector([-30,-15])
+			sh.is_shadow_up_to_bottom = true
+		elif angle_deg<-90 and angle_deg>=-180:
+			# 左下角
+			deg=Tools.get_random_unit_vector([-55,-40])
+			sh.is_shadow_up_to_bottom = false
 		#var gravity=direction.rotated(-PI / 2).normalized() * 200
 		#rotated_vector =direction.rotated(PI-(PI) / 4)
 		#sh.process_material.gravity = Vector3(gravity.x,gravity.y,0)
 		#sh.process_material.direction = Vector3(rotated_vector.x,rotated_vector.y,0)
-	#sh.setup()
+	##sh.setup()
 	sh.dir = deg
 	sh.global_position = GameManager.getPlayerInstance().get_shell_pos()
 	GameManager.getMapInstance().addEntityToViewer(sh)

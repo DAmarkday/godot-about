@@ -1,7 +1,7 @@
 extends Node
 class_name Tools
 
-func create_circle(gposition: Vector2, radius: float, color: Color) -> Sprite2D:
+static func create_circle(gposition: Vector2, radius: float, color: Color) -> Sprite2D:
 	var sprite = Sprite2D.new()
 	var texture = create_circle_texture(radius, color)
 	sprite.texture = texture
@@ -9,7 +9,7 @@ func create_circle(gposition: Vector2, radius: float, color: Color) -> Sprite2D:
 	EnemyManager.getMapInstance().addEntityToViewer(sprite)
 	return sprite
 	
-func create_circle_texture(radius: float, color: Color) -> ImageTexture:
+static func create_circle_texture(radius: float, color: Color) -> ImageTexture:
 	var image = Image.create(int(radius * 2), int(radius * 2), false, Image.FORMAT_RGBA8)
 	image.fill(Color.TRANSPARENT)
 	for x in range(-radius, radius):
@@ -29,19 +29,16 @@ static func get_random_unit_vector(random_range:Array=[-130, -150]) -> Vector2:
 	
 	return unit_vector
 
-# 计算抛物线轨迹的最高点和着陆点
+# 计算抛物线轨迹的最高点
 # - init_pos: Vector2, 初始坐标
 # - init_vel: Vector2, 初始速度
 # - grav: float, 重力加速度
-# - random_land_y_range: Array [min_offset, max_offset], 随机 y 偏移范围
-# - 着陆点 y = 初始点 y + 随机值（从 random_land_y_range 抽取），且在抛物线上
-# - 返回：{"apex": Vector2, "landing": Vector2}
-# - 如果无有效着陆点，计算完整抛物线（y = init_pos.y）
-static func calculate_trajectory_points(init_pos: Vector2, init_vel: Vector2, grav: float, random_land_y_range: Array) -> Dictionary:
+# - 返回：{"apex": Vector2, "t_apex": float}
+static func calculate_apex_points(init_pos: Vector2, init_vel: Vector2, grav: float) -> Dictionary:
 	var gravity_vector = Vector2(0, grav)  # 重力仅在 y 方向
 	
 	# 调试输入参数
-	print("init_pos: ", init_pos, ", init_vel: ", init_vel, ", grav: ", grav, ", random_land_y_range: ", random_land_y_range)
+	print("init_pos: ", init_pos, ", init_vel: ", init_vel, ", grav: ", grav)
 	
 	# 计算最高点时间
 	var t_apex: float = -init_vel.y / grav
@@ -52,6 +49,26 @@ static func calculate_trajectory_points(init_pos: Vector2, init_vel: Vector2, gr
 	var apex_pos: Vector2 = init_pos + init_vel * t_apex + 0.5 * gravity_vector * t_apex * t_apex
 	print("apex_pos: ", apex_pos, ", t_apex: ", t_apex)
 	
+	return {
+		"apex": apex_pos,
+		"t_apex":t_apex
+	}
+	
+	# 计算抛物线轨迹的着陆点
+# - init_pos: Vector2, 初始坐标
+# - init_vel: Vector2, 初始速度
+# - grav: float, 重力加速度
+# - random_land_y_range: Array [min_offset, max_offset], 随机 y 偏移范围
+# - is_shadow_up_to_bottom: 影子是否从上到下移动(着陆点位于初始点下方)
+# - 着陆点 y = 初始点 y + 随机值（从 random_land_y_range 抽取），且在抛物线上
+# - 返回：{"apex": Vector2, "landing": Vector2}
+# - 如果无有效着陆点，计算完整抛物线（y = init_pos.y）
+static func calculate_landing_points(init_pos: Vector2, init_vel: Vector2, grav: float, random_land_y_range: Array,is_shadow_up_to_bottom:bool) -> Dictionary:
+	# 调试输入参数
+	var temp=calculate_apex_points(init_pos,init_vel,grav)
+	var apex_pos = temp.apex
+	var t_apex = temp.t_apex
+	
 	# 计算着陆点的 y 值
 	var min_offset: float = random_land_y_range[0]
 	var max_offset: float = random_land_y_range[1]
@@ -59,8 +76,12 @@ static func calculate_trajectory_points(init_pos: Vector2, init_vel: Vector2, gr
 	var y_landing: float = apex_pos.y + random_offset
 	
 	# 限制 y_landing 在抛物线可达范围内
-	var max_y_drop: float = abs(apex_pos.y - init_pos.y) # 允许额外下降
-	y_landing = clamp(y_landing, init_pos.y - max_y_drop, init_pos.y)
+	if not is_shadow_up_to_bottom:
+		var max_y_drop: float = abs(apex_pos.y - init_pos.y) # 允许额外下降
+		y_landing = clamp(y_landing, init_pos.y - max_y_drop, init_pos.y)
+	else:
+		# 当着陆点位于最高点下方时 y值为任意值
+		y_landing = apex_pos.y + random_offset
 	print("random_offset: ", random_offset, ", y_landing: ", y_landing)
 	
 	# 抛物线方程求 t
