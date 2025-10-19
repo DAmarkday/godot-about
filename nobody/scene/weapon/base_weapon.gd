@@ -5,7 +5,6 @@ class_name BaseWeapon
 @onready var bullet_point = $BulletPoint
 @onready var anim = $AnimatedSprite2D
 @onready var fireAudio = $FireAudio
-@onready var shell = $Shell
 
 @export var bullets_per_magazine = 30  # 每弹夹子弹数
 @export var max_magazine_counts = 5 # 最大弹夹数量
@@ -101,20 +100,20 @@ func shoot(parent: Node2D,hand:Node2D):
 	var isNormal= GameManager.getPlayerInstance().body.scale.x == 1
 	var deg:Vector2;
 	if isNormal:
-		deg=sh.get_random_unit_vector([-150,-130])
+		deg=Tools.get_random_unit_vector([-140,-130])
 		#var gravity=direction.rotated(PI / 2).normalized() * 200
 		#rotated_vector =direction.rotated(-(PI * 3) / 4)
 		#sh.process_material.gravity = Vector3(gravity.x,gravity.y,0)
 		#sh.process_material.direction = Vector3(rotated_vector.x,rotated_vector.y,0)
 	else:
-		deg=sh.get_random_unit_vector([-60,-40])
+		deg=Tools.get_random_unit_vector([-60,-40])
 		#var gravity=direction.rotated(-PI / 2).normalized() * 200
 		#rotated_vector =direction.rotated(PI-(PI) / 4)
 		#sh.process_material.gravity = Vector3(gravity.x,gravity.y,0)
 		#sh.process_material.direction = Vector3(rotated_vector.x,rotated_vector.y,0)
 	#sh.setup()
 	sh.dir = deg
-	sh.global_position = shell.global_position
+	sh.global_position = GameManager.getPlayerInstance().get_shell_pos()
 	GameManager.getMapInstance().addEntityToViewer(sh)
 	
 	apply_thrust_restore(parent,hand,tween_thrust_restore)
@@ -138,10 +137,6 @@ func camera_offset():
 	var player=GameManager.getPlayerInstance()
 	tween.tween_property(player.cameraViewer,'offset',Vector2.ZERO,weapon_camera_offset_interval).from(weapon_camera_offset_magnitude)
 	pass
-	
-
-func getShellPos():
-	return shell.global_position
 
 # 施加推力（父节点的线性后移）
 func apply_thrust(parent: Node2D,hand:Node2D) -> Tween:

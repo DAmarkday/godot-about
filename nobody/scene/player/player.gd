@@ -18,6 +18,10 @@ var _current_anim = 'down_'
 var curWeapon = null;
 var isFlip = false;
 	
+func get_shell_pos():
+	return $Body/shellPos.global_position
+	
+	
 func _ready():
 	connect('on_player_is_hurted',hurted)
 	pass

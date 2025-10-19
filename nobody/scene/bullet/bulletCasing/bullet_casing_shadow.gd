@@ -32,15 +32,14 @@ func caculate_Y(landPos: Vector2, initPos: Vector2, curX: float):
 # - landPos: 结束点（例如抛物线着陆点）
 # - curX: 目标 x 坐标
 # - 返回 Vector2(curX, curY)，如果无效（例如垂直直线且 curX 不匹配），返回 Vector2.INF
-func move(curX: float):
+func move(curX: float,init_shell_shadow_pos:Vector2):
 	# 计算 curY
 	var curY: float = k * curX + b
-	target_pos = Vector2(curX, curY)
-	global_position = target_pos
-	if curY >=GameManager.getPlayerPos().y:
-		visible = false
+	if curY > init_shell_shadow_pos.y:
+		global_position = init_shell_shadow_pos
 	else:
-		visible = true
+		target_pos = Vector2(curX, curY)
+		global_position = target_pos
 
 
 #func _physics_process(_delta):

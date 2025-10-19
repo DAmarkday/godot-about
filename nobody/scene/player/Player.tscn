@@ -396,6 +396,9 @@ texture = ExtResource("11_77j1f")
 offset = Vector2(0, -1)
 metadata/_edit_lock_ = true
 
+[node name="shellPos" type="Node2D" parent="Body"]
+position = Vector2(5, -10)
+
 [node name="Camera2D" type="Camera2D" parent="."]
 script = ExtResource("3_qt1gw")
 

@@ -15,7 +15,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vjn7x"]
-size = Vector2(4, 4)
+size = Vector2(4, 2)
 
 [node name="BulletCasing" type="CharacterBody2D"]
 y_sort_enabled = true
@@ -25,9 +25,10 @@ motion_mode = 1
 script = ExtResource("1_3nfn2")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 1
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_a5gfd")
-offset = Vector2(0, -2)
+offset = Vector2(0, -1.5)
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
 emitting = false

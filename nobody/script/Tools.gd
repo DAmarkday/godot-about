@@ -1,6 +1,16 @@
 extends Node
 class_name Tools
 
+static func get_random_unit_vector(random_range:Array=[-130, -150]) -> Vector2:
+	# 生成 0 到 180 度的随机角度（转换为弧度）
+	var angle_degrees = randf_range(random_range[0], random_range[1])
+	var angle_radians = deg_to_rad(angle_degrees)
+	
+	# 使用 cos 和 sin 计算单位向量的 x 和 y 分量
+	var unit_vector = Vector2(cos(angle_radians), sin(angle_radians))
+	
+	return unit_vector
+
 # 计算抛物线轨迹的最高点和着陆点
 # - init_pos: Vector2, 初始坐标
 # - init_vel: Vector2, 初始速度

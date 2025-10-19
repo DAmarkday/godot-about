@@ -5,9 +5,9 @@ class_name BulletCasing
 @export var gravity: float = 98
 
 var motion: Vector2 = Vector2.ZERO # 初始速度
-var dir:Vector2 = get_random_unit_vector();
+var dir:Vector2 = Tools.get_random_unit_vector();
 var init_x_speed_counts = 50
-var init_y_speed_counts = 150
+var init_y_speed_counts = 130
 var shadow = preload("res://scene/bullet/bulletCasing/bulletCasingShadow.tscn")
 
 var caculate_top_point:Vector2 = Vector2.ZERO
@@ -16,7 +16,7 @@ var is_cur_created_landing:bool = false
 var shell_shadow_instance:BulletCasingShadow;
 var init_shell_shadow_pos:Vector2
 var landing:bool = false
-var max_bounces: int = 10  # 最大反弹次数 1次代表不反弹
+var max_bounces: int = 4  # 最大反弹次数 1次代表不反弹
 var bounce_count: int = 0  # 当前反弹次数
 func ani_play():
 	var w=1
@@ -39,17 +39,7 @@ func create_circle_texture(radius: float, color: Color) -> ImageTexture:
 				image.set_pixel(round(x + radius), round(y + radius), color)
 	var texture = ImageTexture.create_from_image(image)
 	return texture
-	
-func get_random_unit_vector(random_range:Array=[-130, -150]) -> Vector2:
-	# 生成 0 到 180 度的随机角度（转换为弧度）
-	var angle_degrees = randf_range(random_range[0], random_range[1])
-	var angle_radians = deg_to_rad(angle_degrees)
-	
-	# 使用 cos 和 sin 计算单位向量的 x 和 y 分量
-	var unit_vector = Vector2(cos(angle_radians), sin(angle_radians))
-	
-	return unit_vector
-	
+
 
 #第一次抛出时生成一个新的抛物线
 func create_new_trajectory(y_range:Array=[5, 10]) -> void:
@@ -64,7 +54,7 @@ func create_new_trajectory(y_range:Array=[5, 10]) -> void:
 	
 	# 计算生成影子的移动公式
 	shell_shadow_instance.caculate_Y(caculate_land_point, init_shell_shadow_pos, global_position.x)
-	shell_shadow_instance.move(global_position.x)
+	shell_shadow_instance.move(global_position.x,init_shell_shadow_pos)
 	# 生成最高点和着地点的标识
 	#create_circle(caculate_top_point, 1, Color.GREEN)
 	#create_circle(caculate_land_point, 1, Color.RED)
@@ -134,11 +124,12 @@ func _ready() -> void:
 	
 	# 生成影子
 	var shad=shadow.instantiate()
-	GameManager.getMapInstance().addEntityToViewer(shad)
 	# 影子生成在人物影子中
 	init_shell_shadow_pos = GameManager.getPlayerPos()
 	shad.global_position = init_shell_shadow_pos
 	shad.mapping_shell_instance = self
+	GameManager.getMapInstance().addEntityToViewer(shad)
+	
 	shell_shadow_instance = shad
 		
 	create_new_trajectory([5,10])
@@ -152,7 +143,7 @@ func _physics_process(delta):
 		velocity = motion
 		move_and_slide()
 		
-		shell_shadow_instance.move(global_position.x)
+		shell_shadow_instance.move(global_position.x,init_shell_shadow_pos)
 		
 		
 		# 检查是否到达落地点
@@ -197,11 +188,7 @@ func bound():
 		
 		#update_trajectory([10,20])
 		#use_shadow_path_to_create_land_pos()
-		
-		# 竖直速度：反转并衰减（e=0.8），弧形高度减小
-		motion.y = dir.y* init_y_speed_counts * pow(0.6,bounce_count)
-		# 水平速度：轻微衰减，模拟摩擦
-		motion.x = dir.x* init_x_speed_counts * pow(0.5,bounce_count)
+	
 		# 限制速度，避免过小
 		#motion.y = clamp(motion.y, -200, 0)
 		#motion.x = clamp(motion.x, 20, 200)
@@ -211,7 +198,25 @@ func bound():
 		#angle += random_angle_offset
 		#var speed = Vector2(motion.x, motion.y).length()
 		#motion = Vector2(cos(angle), sin(angle)) * speed
+		var yk = 0.7
+		var xk = 0.7
+		if abs(motion.x)<10  and abs(motion.y) <10:
+			stop_motion()
+			return
+		#elif abs(motion.y)<10:
+			#xk = 0.3
+		elif abs(motion.x)<10:
+			yk = 0.3
+		#elif abs(motion.y)<20:
+			#xk = 0.6
+		elif abs(motion.x)<20:
+			yk = 0.6
+		# 竖直速度：反转并衰减（e=0.8），弧形高度减小
+		motion.y = dir.y* init_y_speed_counts * pow(yk,bounce_count)
+		# 水平速度：轻微衰减，模拟摩擦
+		motion.x = dir.x* init_x_speed_counts * pow(xk,bounce_count)
+		
 		landing = false
-		create_new_trajectory([5,10])
+		create_new_trajectory([0,10])
 	else:
 		stop_motion()	
