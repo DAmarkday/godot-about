@@ -2,11 +2,11 @@
 extends CharacterBody2D
 class_name BulletCasing
 @onready var anim:AnimatedSprite2D = $AnimatedSprite2D
-@export var gravity: float = 300
+@export var gravity: float = 350
 
 var motion: Vector2 = Vector2.ZERO # 初始速度
 var dir:Vector2 = Tools.get_random_unit_vector();
-var init_x_speed_counts = 60
+var init_x_speed_counts = 80
 var init_y_speed_counts = 130
 var shadow = preload("res://scene/bullet/bulletCasing/bulletCasingShadow.tscn")
 
@@ -28,8 +28,8 @@ func create_new_trajectory() -> void:
 	var y_range = [0, 10]
 	var result
 	if is_shadow_up_to_bottom:
-		var minC = 30 - 20*bounce_count if 30 - 20*bounce_count >0 else 0
-		var maxC = 40 - 20*bounce_count if 40 - 20*bounce_count >0 else 0
+		var minC = 20 - 20*bounce_count if 20 - 20*bounce_count >0 else 0
+		var maxC = 30 - 20*bounce_count if 30 - 20*bounce_count >0 else 0
 		y_range = [minC,maxC]
 		result = Tools.calculate_landing_points(global_position, motion, gravity,y_range,true)
 		# 计算抛物线的顶点和着地点

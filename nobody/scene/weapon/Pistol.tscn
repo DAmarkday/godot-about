@@ -79,7 +79,7 @@ animations = [{
 size = Vector2(16.5, 4)
 
 [node name="BaseWeapon" instance=ExtResource("1_d8pu0")]
-weapon_rof = 0.1
+weapon_rof = 0.8
 fire_audio = ExtResource("2_j187p")
 
 [node name="AnimatedSprite2D" parent="." index="0"]
