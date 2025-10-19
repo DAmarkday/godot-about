@@ -1,6 +1,24 @@
 extends Node
 class_name Tools
 
+func create_circle(gposition: Vector2, radius: float, color: Color) -> Sprite2D:
+	var sprite = Sprite2D.new()
+	var texture = create_circle_texture(radius, color)
+	sprite.texture = texture
+	sprite.global_position = gposition
+	EnemyManager.getMapInstance().addEntityToViewer(sprite)
+	return sprite
+	
+func create_circle_texture(radius: float, color: Color) -> ImageTexture:
+	var image = Image.create(int(radius * 2), int(radius * 2), false, Image.FORMAT_RGBA8)
+	image.fill(Color.TRANSPARENT)
+	for x in range(-radius, radius):
+		for y in range(-radius, radius):
+			if Vector2(x, y).length() <= radius:
+				image.set_pixel(round(x + radius), round(y + radius), color)
+	var texture = ImageTexture.create_from_image(image)
+	return texture
+
 static func get_random_unit_vector(random_range:Array=[-130, -150]) -> Vector2:
 	# 生成 0 到 180 度的随机角度（转换为弧度）
 	var angle_degrees = randf_range(random_range[0], random_range[1])
