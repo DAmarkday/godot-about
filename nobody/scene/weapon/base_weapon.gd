@@ -106,7 +106,7 @@ func shoot(parent: Node2D,hand:Node2D):
 		#sh.process_material.gravity = Vector3(gravity.x,gravity.y,0)
 		#sh.process_material.direction = Vector3(rotated_vector.x,rotated_vector.y,0)
 	else:
-		deg=Tools.get_random_unit_vector([-60,-40])
+		deg=Tools.get_random_unit_vector([-50,-40])
 		#var gravity=direction.rotated(-PI / 2).normalized() * 200
 		#rotated_vector =direction.rotated(PI-(PI) / 4)
 		#sh.process_material.gravity = Vector3(gravity.x,gravity.y,0)

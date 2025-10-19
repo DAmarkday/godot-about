@@ -6,8 +6,8 @@ class_name BulletCasing
 
 var motion: Vector2 = Vector2.ZERO # 初始速度
 var dir:Vector2 = Tools.get_random_unit_vector();
-var init_x_speed_counts = 50
-var init_y_speed_counts = 130
+var init_x_speed_counts = 40
+var init_y_speed_counts = 100
 var shadow = preload("res://scene/bullet/bulletCasing/bulletCasingShadow.tscn")
 
 var caculate_top_point:Vector2 = Vector2.ZERO
@@ -16,7 +16,7 @@ var is_cur_created_landing:bool = false
 var shell_shadow_instance:BulletCasingShadow;
 var init_shell_shadow_pos:Vector2
 var landing:bool = false
-var max_bounces: int = 4  # 最大反弹次数 1次代表不反弹
+var max_bounces: int = randi_range(1,2)  # 最大反弹次数 1次代表不反弹
 var bounce_count: int = 0  # 当前反弹次数
 func ani_play():
 	var w=1
@@ -132,7 +132,7 @@ func _ready() -> void:
 	
 	shell_shadow_instance = shad
 		
-	create_new_trajectory([5,10])
+	create_new_trajectory([0,10])
 	
 func _physics_process(delta):
 	#没有落地
@@ -203,12 +203,8 @@ func bound():
 		if abs(motion.x)<10  and abs(motion.y) <10:
 			stop_motion()
 			return
-		#elif abs(motion.y)<10:
-			#xk = 0.3
 		elif abs(motion.x)<10:
 			yk = 0.3
-		#elif abs(motion.y)<20:
-			#xk = 0.6
 		elif abs(motion.x)<20:
 			yk = 0.6
 		# 竖直速度：反转并衰减（e=0.8），弧形高度减小
