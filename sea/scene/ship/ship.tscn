@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://303aaf3de0pm"]
+
+[ext_resource type="Script" uid="uid://uqc7figcwvxa" path="res://scene/ship/ship.gd" id="1_ukw0k"]
+
+[node name="Ship" type="CharacterBody2D"]
+script = ExtResource("1_ukw0k")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="RopeAnchor" type="Marker2D" parent="."]
