@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://303aaf3de0pm"]
+[gd_scene load_steps=3 format=3 uid="uid://303aaf3de0pm"]
 
 [ext_resource type="Script" uid="uid://uqc7figcwvxa" path="res://scene/ship/ship.gd" id="1_ukw0k"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ukw0k"]
 
 [node name="Ship" type="CharacterBody2D"]
 script = ExtResource("1_ukw0k")
@@ -8,3 +10,7 @@ script = ExtResource("1_ukw0k")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 
 [node name="RopeAnchor" type="Marker2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ukw0k")
+disabled = true

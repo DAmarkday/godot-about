@@ -1,6 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://cs7fi4povcdjx"]
+[gd_scene load_steps=3 format=3 uid="uid://cs7fi4povcdjx"]
 
 [ext_resource type="Script" uid="uid://ckgqy6jr05gsk" path="res://scene/fish/Fish.gd" id="1_xu20i"]
 
-[node name="Fish" type="Node2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_2j8cv"]
+
+[node name="Fish" type="CharacterBody2D"]
 script = ExtResource("1_xu20i")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_2j8cv")
