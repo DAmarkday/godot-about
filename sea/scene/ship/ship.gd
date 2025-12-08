@@ -5,7 +5,8 @@ extends CharacterBody2D
 
 #@onready var rope_anchor: Marker2D = $RopeAnchor
 @onready var sprite_node: Sprite2D = $Sprite2D
-
+@export var rotation_speed: float = 0.9  # 延迟控制：小值=慢（更多延迟），大值=快（接近瞬间）
+var target_rotation: float = 0.0
 func _ready():
 	#global_position = Vector2(400, 300)
 	#NativeRopeServer.on_pre_pre_update.connect(per_pp)
@@ -69,8 +70,15 @@ func shoot_rope():
 func _physics_process(delta):
 	per_pp(delta)
 	
+	#look_at(get_global_mouse_position())
+	var mouse_pos = get_global_mouse_position()
+	target_rotation = (mouse_pos - global_position).angle()
+	
+	# 平滑插值旋转（lerp_angle 处理角度循环问题，如从 359° 到 1°）
+	rotation = lerp_angle(rotation, target_rotation, rotation_speed * delta)
+	
 func per_pp(delta):
-	#velocity = Vector2.ZERO
+	velocity = Vector2.ZERO
 	var input_dir := Vector2.ZERO
 	if Input.is_action_pressed("up"): input_dir.y -= 1
 	if Input.is_action_pressed("down"): input_dir.y += 1

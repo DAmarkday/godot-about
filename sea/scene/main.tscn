@@ -16,13 +16,13 @@ script = ExtResource("1_ig7tw")
 [node name="Rope" type="Node2D" parent="."]
 position = Vector2(74, 67)
 script = ExtResource("4_0ha60")
-rope_length = 0.0
+num_segments = 15
+rope_length = 200.0
 gravity = 0.0
 gravity_direction = Vector2(0, 0)
 fixate_begin = false
 max_endpoint_distance = 300.0
 resolve_to_begin = true
-num_constraint_iterations = 5
 line_width = 5.0
 color = Color(0.53333336, 0.38431373, 0.25882354, 1)
 metadata/_custom_type_script = "uid://b2shq2gjd4fvt"

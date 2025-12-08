@@ -27,7 +27,7 @@ func _physics_process(_delta: float) -> void:
 	if $"../Rope".pause == true:
 		swim_speed = 5000
 	else:
-		swim_speed = 20000
+		swim_speed = 10000
 	per_pp()
 
 # 每秒固定概率随机转向 + 边界反弹
