@@ -1,0 +1,38 @@
+extends Node2D
+@onready var grid = $container
+@onready var tile_layer = $container/TileMapLayer
+
+
+var grid_chess:Chess_Instance;
+func setup_camera(pointer:Vector2):
+	var camera = Camera2D.new()
+	camera.position = pointer
+	camera.zoom = Vector2(1, 1)
+	add_child(camera)
+	# #关键：使用 call_deferred 等待一帧，确保布局完成后再精确居中
+	#await get_tree().process_frame
+	camera.make_current()
+
+var json = [
+	[0,1,1,1,1,1,1,0],
+	[0,1,1,1,1,1,1,0],
+	[0,1,1,1,1,1,1,0],
+	[0,1,1,1,1,0,1,0],
+	[0,1,1,1,1,1,1,0],
+	[0,1,1,1,1,1,1,0],
+	[0,1,1,1,1,1,1,0],
+	[1,1,1,1,1,1,1,1],
+]
+
+func _ready():
+	# 初始化 Chess 对象并传入 JSON 数据
+	grid_chess = Chess_Instance.new(64,grid, tile_layer)
+	# 根据 JSON 数据生成地图
+	grid_chess.create_map_from_json(json,$container)
+	
+	# 创建完地图后更新网格线
+	grid_chess.update_grid_lines()
+	grid_chess.set_highlight(Vector2i(2,2))
+	
+	# 设置相机，居中显示地图
+	setup_camera(grid_chess.get_grid_center_position())

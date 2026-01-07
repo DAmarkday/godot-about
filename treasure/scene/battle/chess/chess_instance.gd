@@ -1,0 +1,128 @@
+extends Node2D
+
+class_name Chess_Instance
+
+var ground_textures = preload("res://texture/map/Tilemap_Flat.png")
+
+
+# 格子类，代表地图上的一个单元格
+class Cell:
+	var cell_size: int   # 格子像素尺寸
+	var grid_position: Vector2i  # 格子坐标（棋盘坐标系）
+	var actual_position: Vector2  # 像素坐标
+	var is_visible: bool  # 是否显示格子
+	var cell_node: ColorRect  # 格子背景节点
+	func _init(csize:int,x: int, y: int, visible: bool):
+		grid_position = Vector2i(x, y)
+		cell_size = csize
+		actual_position = Vector2(x * cell_size, y * cell_size)
+		is_visible = visible
+		if visible:
+			cell_node = ColorRect.new()
+			cell_node.size = Vector2(cell_size, cell_size)
+			cell_node.position = actual_position
+			cell_node.color = Color(0.2, 0.2, 0.2)  # 背景色
+
+var _grid_node: Node2D  # 网格的父节点
+var _tile_layer: TileMapLayer  # 瓦片图层
+var _grid_cell_size:int
+# grid 棋盘整体挂载节点 
+func _init(_grid_csize:int,grid: Node2D, tile_layer: TileMapLayer):
+	_grid_node = grid
+	_tile_layer = tile_layer
+	_grid_cell_size = _grid_csize
+	_tile_layer.z_index = 1
+	
+var _grid_size: Vector2i  # 网格尺寸，动态从 JSON 获取
+var _grid_cells: Array[Array] = []  # 存储所有格子
+
+var _grid_overlay: GridOverlay  # 新增引用      # 专门负责绘制网格线的 Node2D 子节点
+func create_map_from_json(json_data:Array,lineNode2DContainer:Node2D):
+	# 创建 TileSet
+	# 先预设为8 后续需要从json中找到最大的长度
+	var grid_size = Vector2i(8,8)
+	_grid_size = grid_size
+	var tile_set = TileSet.new()
+	tile_set.tile_size = Vector2i(_grid_cell_size, _grid_cell_size)
+	# 创建 TileSetAtlasSource
+	if not is_instance_valid(ground_textures):
+		push_error("地面纹理未正确加载！")
+		return
+	var atlas_source = TileSetAtlasSource.new()
+	atlas_source.texture = ground_textures
+	atlas_source.texture_region_size = Vector2i(_grid_cell_size, _grid_cell_size)
+	# 假设 Tilemap_Flat.png 包含以下瓦片：
+	# (1,1): 普通格子（带细网格线，1 像素宽）
+	# (2,1): 高亮格子（带加粗边框，4 像素宽，或高亮颜色）
+	# (3,1): 棋盘外边框（加粗，4 像素宽）
+	atlas_source.create_tile(Vector2i(1, 1))  # 普通格子
+	atlas_source.create_tile(Vector2i(2, 1))  # 高亮格子
+	atlas_source.create_tile(Vector2i(3, 1))  # 外边框
+	tile_set.add_source(atlas_source)
+	
+	# 设置 TileMapLayer 的 TileSet
+	if not is_instance_valid(_tile_layer):
+		push_error("TileMapLayer 未正确初始化！")
+		return
+	_tile_layer.tile_set = tile_set
+	
+	# 初始化格子数组
+	for x in range(grid_size.x):
+		var row = []
+		for y in range(grid_size.y):
+			row.append(null)
+		_grid_cells.append(row)
+	
+	# 根据 JSON 数据创建格子和瓦片
+	for y in range(grid_size.y):
+		for x in range(grid_size.x):
+			var is_visible = json_data[y][x] == 1
+			var cell = Cell.new(_grid_cell_size,x, y, is_visible)
+			_grid_cells[x][y] = cell
+			if is_visible:
+				# 添加背景格子
+				_grid_node.add_child(cell.cell_node)
+				# 设置瓦片
+				_tile_layer.set_cell(Vector2i(x, y), 0, Vector2i(1, 1))
+				
+				
+	# 创建一个专用于绘制的 Node2D 子节点
+	_grid_overlay = GridOverlay.new(self)  # 传入 self 作为 parent_chess
+	lineNode2DContainer.add_child(_grid_overlay)
+	
+func get_grid_center_position() -> Vector2:
+	# 返回网格中心像素坐标
+	return Vector2(_grid_size.x * _grid_cell_size / 2, _grid_size.y * _grid_cell_size / 2)
+
+
+var h_lines: PackedVector2Array = []
+var v_lines: PackedVector2Array = []
+var highlighted_tile: Vector2i = Vector2i(-999, -999)
+var grid_color: Color = Color(1, 1, 1, 0.2)  # 基础线
+var highlight_color: Color = Color(0, 1, 1, 0.8)  # 高亮蓝
+var line_width: float = 3.0
+var highlight_width: float =1.0
+func update_grid_lines():
+	if not _tile_layer: return
+	var rect = _tile_layer.get_used_rect()
+	var tile_size = _tile_layer.tile_set.tile_size  # 或 rendered_tile_size
+	h_lines.clear()
+	v_lines.clear()
+	# 水平线（格子间共享）
+	for y in range(rect.position.y, rect.end.y + 1):
+		h_lines.append(Vector2(rect.position.x * tile_size.x, y * tile_size.y))
+		h_lines.append(Vector2(rect.end.x * tile_size.x, y * tile_size.y))
+	# 垂直线（格子间共享）
+	for x in range(rect.position.x, rect.end.x + 1):
+		v_lines.append(Vector2(x * tile_size.x, rect.position.y * tile_size.y))
+		v_lines.append(Vector2(x * tile_size.x, rect.end.y * tile_size.y))
+		
+	_grid_overlay.queue_redraw()  # 手动触发绘制！
+	
+func set_highlight(coord: Vector2i):
+	highlighted_tile = coord
+	_grid_overlay.queue_redraw()  # 手动触发高亮更新
+
+func clear_highlight():
+	highlighted_tile = Vector2i(-999, -999)
+	_grid_overlay.queue_redraw()
