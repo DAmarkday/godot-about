@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://cfwerl3popwgv"]
+
+[node name="Ship" type="CharacterBody2D"]

@@ -19,15 +19,15 @@ signal on_movement_request(target: Node2D, requested_position: Vector2)
 
 ## Determines how the position of the target node is updated.
 enum PositionUpdateMode {
-    ## Set [member Node2D.global_position] directly.
-    SetGlobalPosition,
+	## Set [member Node2D.global_position] directly.
+	SetGlobalPosition,
 
-    ## Use [method CharacterBody2D.move_and_slide]. Only applicable to [CharacterBody2D] targets.
-    MoveAndSlide,
+	## Use [method CharacterBody2D.move_and_slide]. Only applicable to [CharacterBody2D] targets.
+	MoveAndSlide,
 
-    ## Do not set the position automatically, but emit the [signal RopeInteraction.on_movement_request]
-    ## signal to allow manual handling.
-    EmitSignal,
+	## Do not set the position automatically, but emit the [signal RopeInteraction.on_movement_request]
+	## signal to allow manual handling.
+	EmitSignal,
 }
 
 ## Enable or disable.
