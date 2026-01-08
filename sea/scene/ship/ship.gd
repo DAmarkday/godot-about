@@ -90,6 +90,7 @@ func per_pp(delta):
 	# 如果没有输入，保留被鱼拖的惯性
 	
 	#if velocity.length() > 10:
+	global_rotation = $"../Fish".global_rotation
 		#rotation = lerp_angle(rotation, velocity.angle(), delta * 10)
 	
 	move_and_slide()
