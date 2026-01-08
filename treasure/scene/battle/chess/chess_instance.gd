@@ -12,6 +12,7 @@ class Cell:
 	var actual_position: Vector2  # 像素坐标
 	var is_visible: bool  # 是否显示格子
 	var cell_node: ColorRect  # 格子背景节点
+	var container: Array  # 存储 NPC 或其他对象的容器
 	func _init(csize:int,x: int, y: int, visible: bool):
 		grid_position = Vector2i(x, y)
 		cell_size = csize
@@ -126,3 +127,34 @@ func set_highlight(coord: Vector2i):
 func clear_highlight():
 	highlighted_tile = Vector2i(-999, -999)
 	_grid_overlay.queue_redraw()
+
+func _is_valid_grid_position(grid_pos: Vector2i) -> bool:
+	# 检查棋盘坐标是否有效
+	return grid_pos.x >= 0 and grid_pos.x < _grid_size.x and grid_pos.y >= 0 and grid_pos.y < _grid_size.y
+
+func _grid_to_pixel_position(grid_pos: Vector2i) -> Vector2:
+	# 将棋盘坐标转换为像素坐标（中心点）
+	if _is_valid_grid_position(grid_pos):
+		return Vector2(grid_pos.x * _grid_cell_size + _grid_cell_size / 2, grid_pos.y * _grid_cell_size + _grid_cell_size / 2)
+	return Vector2.ZERO
+
+func add_piece(piece: CharacterBody2D, grid_pos: Vector2i):
+	# 在指定格子添加棋子
+	if not _is_valid_grid_position(grid_pos):
+		push_error("无效的棋盘坐标: ", grid_pos)
+		return
+	var cell = _grid_cells[grid_pos.x][grid_pos.y] as Cell
+	if not cell.is_visible:
+		push_error("目标格子不可用: ", grid_pos)
+		return
+	if not cell.container.is_empty():
+		push_error("目标格子已有棋子: ", grid_pos)
+		return
+	cell.container.push_back(piece)
+	piece.global_position = _grid_to_pixel_position(grid_pos)
+	_grid_node.add_child(piece)
+	piece.z_index = 99
+	# 初始化棋子，传递棋盘信息
+	#if piece.has_method("initialize"):
+		#piece.initialize(grid_cells, grid_size)
+		#piece.set_piece_position(grid_pos)

@@ -2,7 +2,7 @@ extends Node2D
 @onready var grid = $container
 @onready var tile_layer = $container/TileMapLayer
 
-
+@onready var enemy = preload("res://scene/battle/chess/piece/enemy/gebulin/gebulin.tscn")
 var grid_chess:Chess_Instance;
 func setup_camera(pointer:Vector2):
 	var camera = Camera2D.new()
@@ -36,3 +36,5 @@ func _ready():
 	
 	# 设置相机，居中显示地图
 	setup_camera(grid_chess.get_grid_center_position())
+	
+	grid_chess.add_piece(enemy.instantiate(),Vector2i(3,3))

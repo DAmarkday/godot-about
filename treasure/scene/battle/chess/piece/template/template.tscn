@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dprdx63olkvba"]
+
+[ext_resource type="Script" uid="uid://b38x23dqa21ew" path="res://scene/battle/chess/piece/template/template.gd" id="1_u08tq"]
+
+[node name="Template" type="CharacterBody2D"]
+script = ExtResource("1_u08tq")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
