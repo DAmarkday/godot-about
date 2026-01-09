@@ -35,11 +35,11 @@ func _draw():
 		var center = tile_layer.map_to_local(highlighted_tile)
 		var half = tile_layer.tile_set.tile_size / 2.0
 		var tl = center - half
-		var tr = center + Vector2(half.x, -half.y)
+		var tright = center + Vector2(half.x, -half.y)
 		var br = center + half
 		var bl = center + Vector2(-half.x, half.y)
 
-		draw_line(tl, tr, highlight_color, highlight_width)
-		draw_line(tr, br, highlight_color, highlight_width)
+		draw_line(tl, tright, highlight_color, highlight_width)
+		draw_line(tright, br, highlight_color, highlight_width)
 		draw_line(br, bl, highlight_color, highlight_width)
 		draw_line(bl, tl, highlight_color, highlight_width)

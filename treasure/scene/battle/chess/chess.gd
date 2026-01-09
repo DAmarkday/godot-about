@@ -3,6 +3,8 @@ extends Node2D
 @onready var tile_layer = $container/TileMapLayer
 
 @onready var enemy = preload("res://scene/battle/chess/piece/enemy/gebulin/gebulin.tscn")
+
+@onready var npc1 = preload("res://scene/battle/chess/piece/npc/npc.tscn")
 var grid_chess:Chess_Instance;
 func setup_camera(pointer:Vector2):
 	var camera = Camera2D.new()
@@ -14,14 +16,15 @@ func setup_camera(pointer:Vector2):
 	camera.make_current()
 
 var json = [
-	[0,1,1,1,1,1,1,0],
-	[0,1,1,1,1,1,1,0],
-	[0,1,1,1,1,1,1,0],
-	[0,1,1,1,1,0,1,0],
-	[0,1,1,1,1,1,1,0],
-	[0,1,1,1,1,1,1,0],
-	[0,1,1,1,1,1,1,0],
-	[1,1,1,1,1,1,1,1],
+	[0,1,1,1,1,1,1,1,0],
+	[0,1,1,1,1,1,1,1,0],
+	[0,1,1,1,1,1,1,1,0],
+	[0,1,1,1,1,1,0,1,0],
+	[0,1,1,1,1,1,1,1,0],
+	[0,1,1,1,1,1,1,1,0],
+	[0,1,1,1,1,1,1,1,0],
+	[1,1,1,1,1,1,1,1,1],
+	[1,1,1,1,1,1,1,1,1],
 ]
 
 func _ready():
@@ -30,11 +33,11 @@ func _ready():
 	# 根据 JSON 数据生成地图
 	grid_chess.create_map_from_json(json,$container)
 	
-	# 创建完地图后更新网格线
-	grid_chess.update_grid_lines()
 	grid_chess.set_highlight(Vector2i(2,2))
 	
 	# 设置相机，居中显示地图
 	setup_camera(grid_chess.get_grid_center_position())
 	
-	grid_chess.add_piece(enemy.instantiate(),Vector2i(3,3))
+	grid_chess.add_piece(enemy.instantiate(),Vector2i(5,5))
+	
+	grid_chess.add_piece(npc1.instantiate(),Vector2i(3,3))

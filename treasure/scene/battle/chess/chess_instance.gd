@@ -40,8 +40,10 @@ var _grid_cells: Array[Array] = []  # 存储所有格子
 var _grid_overlay: GridOverlay  # 新增引用      # 专门负责绘制网格线的 Node2D 子节点
 func create_map_from_json(json_data:Array,lineNode2DContainer:Node2D):
 	# 创建 TileSet
-	# 先预设为8 后续需要从json中找到最大的长度
-	var grid_size = Vector2i(8,8)
+	# 要保证json文件中元素必须>1，并且每个元素的长度都是一样的
+	var max_y_length = json_data.size()
+	var max_x_length =json_data[0].size()
+	var grid_size = Vector2i(max_x_length,max_y_length)
 	_grid_size = grid_size
 	var tile_set = TileSet.new()
 	tile_set.tile_size = Vector2i(_grid_cell_size, _grid_cell_size)
@@ -77,10 +79,10 @@ func create_map_from_json(json_data:Array,lineNode2DContainer:Node2D):
 	# 根据 JSON 数据创建格子和瓦片
 	for y in range(grid_size.y):
 		for x in range(grid_size.x):
-			var is_visible = json_data[y][x] == 1
-			var cell = Cell.new(_grid_cell_size,x, y, is_visible)
+			var cell_is_visible = json_data[y][x] == 1
+			var cell = Cell.new(_grid_cell_size,x, y, cell_is_visible)
 			_grid_cells[x][y] = cell
-			if is_visible:
+			if cell_is_visible:
 				# 添加背景格子
 				_grid_node.add_child(cell.cell_node)
 				# 设置瓦片
@@ -91,9 +93,12 @@ func create_map_from_json(json_data:Array,lineNode2DContainer:Node2D):
 	_grid_overlay = GridOverlay.new(self)  # 传入 self 作为 parent_chess
 	lineNode2DContainer.add_child(_grid_overlay)
 	
+	# 创建完地图后更新网格线
+	_update_grid_lines()
+	
 func get_grid_center_position() -> Vector2:
 	# 返回网格中心像素坐标
-	return Vector2(_grid_size.x * _grid_cell_size / 2, _grid_size.y * _grid_cell_size / 2)
+	return Vector2( _grid_size.x * _grid_cell_size * 0.5, _grid_size.y * _grid_cell_size * 0.5)
 
 
 var h_lines: PackedVector2Array = []
@@ -103,7 +108,7 @@ var grid_color: Color = Color(1, 1, 1, 0.2)  # 基础线
 var highlight_color: Color = Color(0, 1, 1, 0.8)  # 高亮蓝
 var line_width: float = 3.0
 var highlight_width: float =1.0
-func update_grid_lines():
+func _update_grid_lines():
 	if not _tile_layer: return
 	var rect = _tile_layer.get_used_rect()
 	var tile_size = _tile_layer.tile_set.tile_size  # 或 rendered_tile_size
@@ -135,7 +140,7 @@ func _is_valid_grid_position(grid_pos: Vector2i) -> bool:
 func _grid_to_pixel_position(grid_pos: Vector2i) -> Vector2:
 	# 将棋盘坐标转换为像素坐标（中心点）
 	if _is_valid_grid_position(grid_pos):
-		return Vector2(grid_pos.x * _grid_cell_size + _grid_cell_size / 2, grid_pos.y * _grid_cell_size + _grid_cell_size / 2)
+		return Vector2(grid_pos.x * _grid_cell_size + _grid_cell_size * 0.5, grid_pos.y * _grid_cell_size + _grid_cell_size * 0.5)
 	return Vector2.ZERO
 
 func add_piece(piece: CharacterBody2D, grid_pos: Vector2i):
