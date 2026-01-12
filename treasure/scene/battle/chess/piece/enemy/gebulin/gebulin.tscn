@@ -60,3 +60,7 @@ sprite_frames = SubResource("SpriteFrames_3n141")
 autoplay = "default"
 frame_progress = 0.8372364
 offset = Vector2(2, -16)
+
+[node name="Health" parent="." index="1"]
+max_health = 10
+current_health = 1

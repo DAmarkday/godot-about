@@ -60,3 +60,8 @@ position = Vector2(0, -14)
 sprite_frames = SubResource("SpriteFrames_wgprr")
 autoplay = "default"
 frame_progress = 0.9752401
+
+[node name="Health" parent="." index="1"]
+max_health = 3
+current_health = 3
+full_health_color = Color(0.4862745, 0.9843137, 0.35686275, 1)
