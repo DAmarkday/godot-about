@@ -163,3 +163,30 @@ func add_piece(piece: CharacterBody2D, grid_pos: Vector2i):
 	#if piece.has_method("initialize"):
 		#piece.initialize(grid_cells, grid_size)
 		#piece.set_piece_position(grid_pos)
+		
+func handle_input(mouse_pos: Vector2):
+	# 处理鼠标点击，转换为棋盘坐标
+	var cell_x = int(mouse_pos.x / _grid_cell_size)
+	var cell_y = int(mouse_pos.y / _grid_cell_size)
+	if _is_valid_grid_position(Vector2i(cell_x, cell_y)):
+		set_highlight(Vector2i(cell_x, cell_y))
+		#handle_click_cell(Vector2i(cell_x, cell_y))
+		
+#func handle_click_cell(cell_pos: Vector2i):
+	#var cell = _grid_cells[cell_pos.x][cell_pos.y] as Cell
+	#if not cell or not cell.is_visible:
+		#return
+	#
+	## 如果已选中 NPC，尝试移动
+	#if selected_npc and selected_npc.has_method("is_valid_move") and selected_npc.is_valid_move(cell_pos):
+		#move_piece(selected_npc, cell_pos)
+		#clear_selection()
+		#return
+	#
+	## 检查格子中是否有 NPC
+	#for item in cell.container:
+		#if item:  # 假设容器中的对象为 NPC
+			#select_npc_in_cell(item, cell)
+			#return
+	#
+	#clear_selection()

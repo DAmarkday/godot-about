@@ -41,3 +41,8 @@ func _ready():
 	grid_chess.add_piece(enemy.instantiate(),Vector2i(5,5))
 	
 	grid_chess.add_piece(npc1.instantiate(),Vector2i(3,3))
+	
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		var mouse_pos = get_global_mouse_position()
+		grid_chess.handle_input(mouse_pos)
