@@ -27,6 +27,7 @@ class Cell:
 var _grid_node: Node2D  # 网格的父节点
 var _tile_layer: TileMapLayer  # 瓦片图层
 var _grid_cell_size:int
+var _current_selected_node # 当前选中的人物
 # grid 棋盘整体挂载节点 
 func _init(_grid_csize:int,grid: Node2D, tile_layer: TileMapLayer):
 	_grid_node = grid
@@ -143,6 +144,9 @@ func _grid_to_pixel_position(grid_pos: Vector2i) -> Vector2:
 		return Vector2(grid_pos.x * _grid_cell_size + _grid_cell_size * 0.5, grid_pos.y * _grid_cell_size + _grid_cell_size * 0.5)
 	return Vector2.ZERO
 
+	
+
+
 func add_piece(piece: CharacterBody2D, grid_pos: Vector2i):
 	# 在指定格子添加棋子
 	if not _is_valid_grid_position(grid_pos):
@@ -168,8 +172,22 @@ func handle_input(mouse_pos: Vector2):
 	# 处理鼠标点击，转换为棋盘坐标
 	var cell_x = int(mouse_pos.x / _grid_cell_size)
 	var cell_y = int(mouse_pos.y / _grid_cell_size)
-	if _is_valid_grid_position(Vector2i(cell_x, cell_y)):
-		set_highlight(Vector2i(cell_x, cell_y))
+	if not _is_valid_grid_position(Vector2i(cell_x, cell_y)):
+		return
+	if _current_selected_node:
+		add_piece(_current_selected_node,Vector2i(cell_x, cell_y))
+		_current_selected_node = null
+		
+		return
+		
+	var curCell=_grid_cells[cell_x][cell_y] as Cell
+	set_highlight(Vector2i(cell_x, cell_y))
+	if not curCell.container.is_empty():
+		_current_selected_node =  curCell.container[0]
+			
+			
+		
+		
 		#handle_click_cell(Vector2i(cell_x, cell_y))
 		
 #func handle_click_cell(cell_pos: Vector2i):
