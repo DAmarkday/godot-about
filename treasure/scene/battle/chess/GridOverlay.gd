@@ -21,7 +21,7 @@ func _draw():
 	var highlighted_tile: Vector2i = parent_chess.highlighted_tile
 	var highlight_color: Color = parent_chess.highlight_color
 	var highlight_width: float = parent_chess.highlight_width
-	var tile_layer: TileMapLayer = parent_chess._tile_layer
+	var tile_layer: TileMapLayer = parent_chess._ground_layer
 
 	# 绘制基础网格线（格子间共享）
 	if h_lines.size() > 1:

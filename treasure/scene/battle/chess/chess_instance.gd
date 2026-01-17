@@ -24,16 +24,16 @@ class Cell:
 			cell_node.position = actual_position
 			cell_node.color = Color(0.2, 0.2, 0.2)  # 背景色
 
-var _grid_node: Node2D  # 网格的父节点
-var _tile_layer: TileMapLayer  # 瓦片图层
+var _tile_map_layer_container: Node2D  # 网格的父节点
+var _ground_layer: TileMapLayer  # 瓦片图层
 var _grid_cell_size:int
 var _current_selected_node # 当前选中的人物
 # grid 棋盘整体挂载节点 
 func _init(_grid_csize:int,grid: Node2D, tile_layer: TileMapLayer):
-	_grid_node = grid
-	_tile_layer = tile_layer
+	_tile_map_layer_container = grid
+	_ground_layer = tile_layer
 	_grid_cell_size = _grid_csize
-	_tile_layer.z_index = 1
+	_ground_layer.z_index = 1
 	
 var _grid_size: Vector2i  # 网格尺寸，动态从 JSON 获取
 var _grid_cells: Array[Array] = []  # 存储所有格子
@@ -65,10 +65,10 @@ func create_map_from_json(json_data:Array,lineNode2DContainer:Node2D):
 	tile_set.add_source(atlas_source)
 	
 	# 设置 TileMapLayer 的 TileSet
-	if not is_instance_valid(_tile_layer):
+	if not is_instance_valid(_ground_layer):
 		push_error("TileMapLayer 未正确初始化！")
 		return
-	_tile_layer.tile_set = tile_set
+	_ground_layer.tile_set = tile_set
 	
 	# 初始化格子数组
 	for x in range(grid_size.x):
@@ -84,10 +84,8 @@ func create_map_from_json(json_data:Array,lineNode2DContainer:Node2D):
 			var cell = Cell.new(_grid_cell_size,x, y, cell_is_visible)
 			_grid_cells[x][y] = cell
 			if cell_is_visible:
-				# 添加背景格子
-				_grid_node.add_child(cell.cell_node)
 				# 设置瓦片
-				_tile_layer.set_cell(Vector2i(x, y), 0, Vector2i(1, 1))
+				_ground_layer.set_cell(Vector2i(x, y), 0, Vector2i(1, 1))
 				
 				
 	# 创建一个专用于绘制的 Node2D 子节点
@@ -110,9 +108,9 @@ var highlight_color: Color = Color(0, 1, 1, 0.8)  # 高亮蓝
 var line_width: float = 3.0
 var highlight_width: float =1.0
 func _update_grid_lines():
-	if not _tile_layer: return
-	var rect = _tile_layer.get_used_rect()
-	var tile_size = _tile_layer.tile_set.tile_size  # 或 rendered_tile_size
+	if not _ground_layer: return
+	var rect = _ground_layer.get_used_rect()
+	var tile_size = _ground_layer.tile_set.tile_size  # 或 rendered_tile_size
 	h_lines.clear()
 	v_lines.clear()
 	# 水平线（格子间共享）
@@ -126,11 +124,11 @@ func _update_grid_lines():
 		
 	_grid_overlay.queue_redraw()  # 手动触发绘制！
 	
-func set_highlight(coord: Vector2i):
+func set_grid_line_highlight(coord: Vector2i):
 	highlighted_tile = coord
 	_grid_overlay.queue_redraw()  # 手动触发高亮更新
 
-func clear_highlight():
+func clear_grid_line_highlight():
 	highlighted_tile = Vector2i(-999, -999)
 	_grid_overlay.queue_redraw()
 
@@ -144,10 +142,24 @@ func _grid_to_pixel_position(grid_pos: Vector2i) -> Vector2:
 		return Vector2(grid_pos.x * _grid_cell_size + _grid_cell_size * 0.5, grid_pos.y * _grid_cell_size + _grid_cell_size * 0.5)
 	return Vector2.ZERO
 
+func pixel_to_grid_position(pixel_pos: Vector2) -> Variant:
+	# 将像素坐标转换为棋盘坐标
+	# floor 用于修复当鼠标不在棋盘上时(-50<一个格子高度) 高亮位置错误的情况
+	var cell_x := int(floor(pixel_pos.x / _grid_cell_size))
+	var cell_y := int(floor(pixel_pos.y / _grid_cell_size))
+	var grid_pos := Vector2i(cell_x, cell_y)
+	print('_grid_cell_size is ',_grid_cell_size)
+	print('pixel_pos is ',pixel_pos)
+	print('grid_pos is ',grid_pos)
+
+	if _is_valid_grid_position(grid_pos):
+		return grid_pos
+	else:
+		return null   
 	
 
 
-func add_piece(piece: CharacterBody2D, grid_pos: Vector2i):
+func add_piece(piece: CharacterBody2D, grid_pos: Vector2i,containerNode:Node2D):
 	# 在指定格子添加棋子
 	if not _is_valid_grid_position(grid_pos):
 		push_error("无效的棋盘坐标: ", grid_pos)
@@ -161,29 +173,29 @@ func add_piece(piece: CharacterBody2D, grid_pos: Vector2i):
 		return
 	cell.container.push_back(piece)
 	piece.global_position = _grid_to_pixel_position(grid_pos)
-	_grid_node.add_child(piece)
+	containerNode.add_child(piece)
 	piece.z_index = 99
 	# 初始化棋子，传递棋盘信息
 	#if piece.has_method("initialize"):
 		#piece.initialize(grid_cells, grid_size)
 		#piece.set_piece_position(grid_pos)
 		
-func handle_input(mouse_pos: Vector2):
-	# 处理鼠标点击，转换为棋盘坐标
-	var cell_x = int(mouse_pos.x / _grid_cell_size)
-	var cell_y = int(mouse_pos.y / _grid_cell_size)
-	if not _is_valid_grid_position(Vector2i(cell_x, cell_y)):
-		return
-	if _current_selected_node:
-		add_piece(_current_selected_node,Vector2i(cell_x, cell_y))
-		_current_selected_node = null
-		
-		return
-		
-	var curCell=_grid_cells[cell_x][cell_y] as Cell
-	set_highlight(Vector2i(cell_x, cell_y))
-	if not curCell.container.is_empty():
-		_current_selected_node =  curCell.container[0]
+#func handle_input(mouse_pos: Vector2):
+	## 处理鼠标点击，转换为棋盘坐标
+	#var cell_x = int(mouse_pos.x / _grid_cell_size)
+	#var cell_y = int(mouse_pos.y / _grid_cell_size)
+	#if not _is_valid_grid_position(Vector2i(cell_x, cell_y)):
+		#return
+	#if _current_selected_node:
+		#add_piece(_current_selected_node,Vector2i(cell_x, cell_y))
+		#_current_selected_node = null
+		#
+		#return
+		#
+	#var curCell=_grid_cells[cell_x][cell_y] as Cell
+	#set_grid_line_highlight(Vector2i(cell_x, cell_y))
+	#if not curCell.container.is_empty():
+		#_current_selected_node =  curCell.container[0]
 			
 			
 		
