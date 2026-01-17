@@ -47,11 +47,13 @@ func init_map():
 	# 根据 JSON 数据生成地图 container 用于新增线条
 	grid_chess.create_map_from_json(json,container)
 	grid_chess.set_grid_line_highlight(Vector2i(2,2))
-	
+
+var _current_selected_node # 当前选中的人物
+
 
 	
 func _input(event: InputEvent) -> void:
-	#print(event)
+	print(event)
 	if event is InputEventMouseMotion:
 		#鼠标移动时高亮对应格子的线条
 		var mouse_pos = get_global_mouse_position()
@@ -62,7 +64,10 @@ func _input(event: InputEvent) -> void:
 			grid_chess.clear_grid_line_highlight()
 			return
 		grid_chess.set_grid_line_highlight(grid_pos)
-	#if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		var _grid_pos = grid_chess.pixel_to_grid_position(event.position)
+		#pass
+		
 		#var mouse_pos = get_global_mouse_position()
 		#grid_chess.handle_input(mouse_pos)
 

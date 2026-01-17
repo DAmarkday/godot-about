@@ -27,7 +27,6 @@ class Cell:
 var _tile_map_layer_container: Node2D  # 网格的父节点
 var _ground_layer: TileMapLayer  # 瓦片图层
 var _grid_cell_size:int
-var _current_selected_node # 当前选中的人物
 # grid 棋盘整体挂载节点 
 func _init(_grid_csize:int,grid: Node2D, tile_layer: TileMapLayer):
 	_tile_map_layer_container = grid
