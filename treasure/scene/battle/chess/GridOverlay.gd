@@ -1,5 +1,7 @@
 # GridOverlay.gd
 extends Node2D
+#线条类
+#只负责棋盘线条的生成 高亮线条生成
 class_name GridOverlay
 
 var parent_chess: Node  # 引用 Chess_Instance，用于访问数据

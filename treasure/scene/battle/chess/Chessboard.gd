@@ -1,5 +1,7 @@
 extends Node2D
-
+#棋盘类
+#不负责棋子
+#只负责棋盘的生成 地形生成
 class_name Chessboard
 
 var ground_textures = preload("res://texture/map/Tilemap_Flat.png")
@@ -10,19 +12,13 @@ class Cell:
 	var grid_position: Vector2i  # 格子坐标（棋盘坐标系）
 	var actual_position: Vector2  # 像素坐标
 	var is_visible: bool  # 是否显示格子
-	var cell_node: ColorRect  # 格子背景节点
-	var container: Array  # 存储 NPC 或其他对象的容器
+	
 	func _init(csize:int,x: int, y: int, visible: bool):
 		grid_position = Vector2i(x, y)
 		cell_size = csize
 		actual_position = Vector2(x * cell_size, y * cell_size)
 		is_visible = visible
-		if visible:
-			cell_node = ColorRect.new()
-			cell_node.size = Vector2(cell_size, cell_size)
-			cell_node.position = actual_position
-			cell_node.color = Color(0.2, 0.2, 0.2)  # 背景色
-
+		
 var _tile_map_layer_container: Node2D  # 网格的父节点
 var _ground_layer: TileMapLayer  # 瓦片图层
 var _grid_cell_size:int

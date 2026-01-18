@@ -84,11 +84,6 @@ func move_piece(last_grid_pos: Vector2i,to_grid_pos:Vector2i,layer:TileMapLayer,
 	piece.global_position = chessboard.grid_to_global_pixel_position(layer,to_grid_pos)
 	return
 	
-	
-	
-	
-	
-	
 func query_piece_in_current_grid_pos(grid_pos: Vector2i)->CharacterBody2D:
 	if TypesTools.is_vector2i(grid_pos)== false:
 		push_error("grid_pos 参数错误")
