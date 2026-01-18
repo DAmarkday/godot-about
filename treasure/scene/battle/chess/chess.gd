@@ -1,4 +1,5 @@
 extends Node2D
+
 @onready var container = $TileMapLayerContainer
 @onready var ground_layer = $TileMapLayerContainer/GroundLayer
 
@@ -98,7 +99,10 @@ func _input(event: InputEvent) -> void:
 				grid_piece_mapping_manager_instance.move_piece(_current_selected_node_grid_position,_grid_pos,ground_layer,chessboard_instance)
 				_current_selected_node_grid_position =Vector2i(-1,-1)
 			else:
+				#高亮当前棋子
 				_current_selected_node_grid_position = _grid_pos
+				var piece = grid_piece_mapping_manager_instance.query_piece_in_current_grid_pos(_grid_pos)
+				hight_light_piece(piece)
 			return
 			
 		#开始选中
@@ -108,6 +112,9 @@ func _input(event: InputEvent) -> void:
 			return
 			
 		_current_selected_node_grid_position = _grid_pos
+		#高亮当前棋子
+		hight_light_piece(cur_piece)
+		
 		
 		
 			
@@ -116,6 +123,15 @@ func _input(event: InputEvent) -> void:
 		#var mouse_pos = get_global_mouse_position()
 		#grid_chess.handle_input(mouse_pos)
 
+func hight_light_piece(cur_piece:CharacterBody2D):
+	#var all_pieces = get_tree().get_nodes_in_group("pieces")
+	#for piece in all_pieces:
+	Events.piece_selected.emit(cur_piece)
+		
+func clear_hight_light_piece(cur_piece:CharacterBody2D):
+	#var all_pieces = get_tree().get_nodes_in_group("pieces")
+	#for piece in all_pieces:
+	Events.piece_deselected.emit(cur_piece)
 
 
 #测试功能
