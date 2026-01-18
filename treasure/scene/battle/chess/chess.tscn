@@ -16,9 +16,12 @@ script = ExtResource("1_rq406")
 [node name="HighlightLayer" type="TileMapLayer" parent="TileMapLayerContainer"]
 
 [node name="Units" type="Node2D" parent="."]
+y_sort_enabled = true
 
 [node name="PlayerUnits" type="Node2D" parent="Units"]
+y_sort_enabled = true
 
 [node name="EnemyUnits" type="Node2D" parent="Units"]
+y_sort_enabled = true
 
 [node name="OtherUnits" type="Node2D" parent="Units"]

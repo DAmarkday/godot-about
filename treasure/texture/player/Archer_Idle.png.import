@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c1rigg7um7ipg"
-path="res://.godot/imported/Warrior_Blue.png-d19678d0c9ec3067a7d07e3b4cb1b24a.ctex"
+uid="uid://bejr6bvu4axgo"
+path="res://.godot/imported/Archer_Idle.png-36b36ec83eba1a925ff3de87ce1168d1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://texture/npc/Warrior_Blue.png"
-dest_files=["res://.godot/imported/Warrior_Blue.png-d19678d0c9ec3067a7d07e3b4cb1b24a.ctex"]
+source_file="res://texture/player/Archer_Idle.png"
+dest_files=["res://.godot/imported/Archer_Idle.png-36b36ec83eba1a925ff3de87ce1168d1.ctex"]
 
 [params]
 

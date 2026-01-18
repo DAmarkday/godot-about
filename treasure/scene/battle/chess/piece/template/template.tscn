@@ -1,13 +1,18 @@
-[gd_scene load_steps=4 format=3 uid="uid://dprdx63olkvba"]
+[gd_scene load_steps=5 format=3 uid="uid://dprdx63olkvba"]
 
 [ext_resource type="Script" uid="uid://b38x23dqa21ew" path="res://scene/battle/chess/piece/template/template.gd" id="1_u08tq"]
-[ext_resource type="Material" uid="uid://tr1gmjxai0hl" path="res://scene/battle/chess/shader/outline_shader_material.tres" id="1_ubfir"]
 [ext_resource type="PackedScene" uid="uid://bgon20tnvxkaw" path="res://plugin/health/health.tscn" id="2_7yuck"]
+[ext_resource type="Shader" uid="uid://hjjkohihl1ex" path="res://scene/battle/chess/shader/outline.gdshader" id="2_ubfir"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j07ll"]
+shader = ExtResource("2_ubfir")
+shader_parameter/line_color = Color(1, 0.2, 0.8, 1)
+shader_parameter/outline_width = 0.005
 
 [node name="Template" type="CharacterBody2D"]
 script = ExtResource("1_u08tq")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-material = ExtResource("1_ubfir")
+material = SubResource("ShaderMaterial_j07ll")
 
 [node name="Health" parent="." instance=ExtResource("2_7yuck")]

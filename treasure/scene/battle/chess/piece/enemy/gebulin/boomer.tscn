@@ -7,9 +7,8 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gsot3"]
 resource_local_to_scene = true
 shader = ExtResource("2_iebwo")
-shader_parameter/outline_color = Color(0.988235, 0, 0, 1)
-shader_parameter/progress = 1.0
-shader_parameter/width = 0.002
+shader_parameter/line_color = Color(1, 1, 0, 1)
+shader_parameter/outline_width = 2.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_iebwo"]
 atlas = ExtResource("2_whrn6")
@@ -62,7 +61,7 @@ animations = [{
 }]
 
 [node name="Template" instance=ExtResource("1_q72rx")]
-outline_color_high_light = Color(0.875938, 0.200614, 0.225816, 1)
+outline_color_high_light = Color(1, 0.101961, 0.329412, 1)
 
 [node name="AnimatedSprite2D" parent="." index="0"]
 material = SubResource("ShaderMaterial_gsot3")

@@ -1,30 +1,38 @@
-[gd_scene load_steps=10 format=3 uid="uid://0enh3ldboiv4"]
+[gd_scene load_steps=12 format=3 uid="uid://0enh3ldboiv4"]
 
-[ext_resource type="PackedScene" uid="uid://dprdx63olkvba" path="res://scene/battle/chess/piece/template/template.tscn" id="1_wxohu"]
-[ext_resource type="Texture2D" uid="uid://c1rigg7um7ipg" path="res://texture/npc/Warrior_Blue.png" id="2_e73go"]
+[ext_resource type="PackedScene" uid="uid://dprdx63olkvba" path="res://scene/battle/chess/piece/template/template.tscn" id="1_3s8na"]
+[ext_resource type="Shader" uid="uid://hjjkohihl1ex" path="res://scene/battle/chess/shader/outline.gdshader" id="2_reqns"]
+[ext_resource type="Texture2D" uid="uid://c1rigg7um7ipg" path="res://texture/player/Warrior_Blue.png" id="3_72d2k"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e3v4b"]
+resource_local_to_scene = true
+shader = ExtResource("2_reqns")
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/progress = 1.0
+shader_parameter/width = 0.002
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bafbj"]
-atlas = ExtResource("2_e73go")
+atlas = ExtResource("3_72d2k")
 region = Rect2(0, 0, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_e3v4b"]
-atlas = ExtResource("2_e73go")
+atlas = ExtResource("3_72d2k")
 region = Rect2(192, 0, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qpe2a"]
-atlas = ExtResource("2_e73go")
+atlas = ExtResource("3_72d2k")
 region = Rect2(384, 0, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_csqa1"]
-atlas = ExtResource("2_e73go")
+atlas = ExtResource("3_72d2k")
 region = Rect2(576, 0, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_op6jy"]
-atlas = ExtResource("2_e73go")
+atlas = ExtResource("3_72d2k")
 region = Rect2(768, 0, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1nmff"]
-atlas = ExtResource("2_e73go")
+atlas = ExtResource("3_72d2k")
 region = Rect2(960, 0, 192, 192)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_wgprr"]
@@ -53,15 +61,16 @@ animations = [{
 "speed": 6.0
 }]
 
-[node name="Template" instance=ExtResource("1_wxohu")]
+[node name="Template" instance=ExtResource("1_3s8na")]
 
 [node name="AnimatedSprite2D" parent="." index="0"]
+material = SubResource("ShaderMaterial_e3v4b")
 position = Vector2(0, -14)
 sprite_frames = SubResource("SpriteFrames_wgprr")
 autoplay = "default"
-frame_progress = 0.9752401
+frame_progress = 0.97524
 
 [node name="Health" parent="." index="1"]
 max_health = 3
 current_health = 3
-full_health_color = Color(0.4862745, 0.9843137, 0.35686275, 1)
+full_health_color = Color(0.486275, 0.984314, 0.356863, 1)

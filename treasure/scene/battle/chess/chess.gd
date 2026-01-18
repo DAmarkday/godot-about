@@ -135,8 +135,10 @@ func clear_hight_light_piece(cur_piece:CharacterBody2D):
 
 
 #测试功能
-@onready var enemy = preload("res://scene/battle/chess/piece/enemy/gebulin/gebulin.tscn")
-@onready var npc1 = preload("res://scene/battle/chess/piece/npc/npc.tscn")
+@onready var boomer = preload("res://scene/battle/chess/piece/enemy/gebulin/boomer.tscn")
+@onready var fire = preload("res://scene/battle/chess/piece/enemy/gebulin/fire.tscn")
+@onready var knight = preload("res://scene/battle/chess/piece/player/knight.tscn")
+@onready var spear = preload("res://scene/battle/chess/piece/player/spear.tscn")
 func _ready():
 	init_map()
 	
@@ -145,8 +147,12 @@ func _ready():
 	# 设置相机，居中显示地图
 	setup_camera(chessboard_instance.get_grid_center_global_position(ground_layer))
 	
-	add_player_unit(npc1.instantiate(),Vector2i(3,3))
+	add_player_unit(knight.instantiate(),Vector2i(3,3))
 	
-	add_enemy_unit(enemy.instantiate(),Vector2i(5,5))
+	add_enemy_unit(boomer.instantiate(),Vector2i(5,5))
+	
+	add_enemy_unit(fire.instantiate(),Vector2i(6,6))
+	
+	add_player_unit(spear.instantiate(),Vector2i(2,2))
 
 	

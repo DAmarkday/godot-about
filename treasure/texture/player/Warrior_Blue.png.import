@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dfeoxd7a7d8dr"
-path="res://.godot/imported/Lancer_Idle.png-69f804e8ed106c8d42b8351ebd73a80c.ctex"
+uid="uid://c1rigg7um7ipg"
+path="res://.godot/imported/Warrior_Blue.png-1738de00cb68ea5a45e67732bf419d42.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://texture/npc/Lancer_Idle.png"
-dest_files=["res://.godot/imported/Lancer_Idle.png-69f804e8ed106c8d42b8351ebd73a80c.ctex"]
+source_file="res://texture/player/Warrior_Blue.png"
+dest_files=["res://.godot/imported/Warrior_Blue.png-1738de00cb68ea5a45e67732bf419d42.ctex"]
 
 [params]
 

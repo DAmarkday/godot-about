@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bejr6bvu4axgo"
-path="res://.godot/imported/Archer_Idle.png-46bf0715ba151fd9c8f1b85eadbed276.ctex"
+uid="uid://dfeoxd7a7d8dr"
+path="res://.godot/imported/Lancer_Idle.png-c9d86bc1a1a9c6df499be2f633b8ec0b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://texture/npc/Archer_Idle.png"
-dest_files=["res://.godot/imported/Archer_Idle.png-46bf0715ba151fd9c8f1b85eadbed276.ctex"]
+source_file="res://texture/player/Lancer_Idle.png"
+dest_files=["res://.godot/imported/Lancer_Idle.png-c9d86bc1a1a9c6df499be2f633b8ec0b.ctex"]
 
 [params]
 

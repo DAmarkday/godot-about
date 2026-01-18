@@ -1,16 +1,36 @@
 shader_type canvas_item;
 
-uniform vec3 outline_color: source_color;
-uniform float progress: hint_range(0.0, 1.0);
-uniform float width: hint_range(0.0, 0.006, 0.001) = 0.001;
+uniform vec4 line_color : source_color = vec4(1.0, 1.0, 0.0, 1.0); // 默认黄色
+uniform float outline_width : hint_range(0.0, 20.0, 0.1) = 2.0;
 
 void fragment() {
-	vec4 line_neg_y = vec4(outline_color.rgb, texture(TEXTURE, vec2(UV.x, UV.y - width)).a);
-	vec4 line_pos_y = vec4(outline_color.rgb, texture(TEXTURE, vec2(UV.x, UV.y + width)).a);
-	vec4 line_neg_x = vec4(outline_color.rgb, texture(TEXTURE, vec2(UV.x - width, UV.y)).a);
-	vec4 line_pos_x = vec4(outline_color.rgb, texture(TEXTURE, vec2(UV.x + width, UV.y)).a);
-	vec4 outline_y = mix(line_neg_y, line_pos_y, line_pos_y);
-	vec4 outline_x = mix(line_neg_x, line_pos_x, line_pos_x);
-	vec4 outline = mix(outline_y, outline_x, outline_x);
-	COLOR.rgba = mix(COLOR, outline, progress * (1.0 - COLOR.a));
+    vec2 pixel = TEXTURE_PIXEL_SIZE * outline_width;
+    
+    // 采样周围（8方向）
+    float outline = 0.0;
+    outline += texture(TEXTURE, UV + vec2(-pixel.x, 0.0)).a;
+    outline += texture(TEXTURE, UV + vec2( pixel.x, 0.0)).a;
+    outline += texture(TEXTURE, UV + vec2(0.0, -pixel.y)).a;
+    outline += texture(TEXTURE, UV + vec2(0.0,  pixel.y)).a;
+    outline += texture(TEXTURE, UV + vec2(-pixel.x, -pixel.y)).a;
+    outline += texture(TEXTURE, UV + vec2(-pixel.x,  pixel.y)).a;
+    outline += texture(TEXTURE, UV + vec2( pixel.x, -pixel.y)).a;
+    outline += texture(TEXTURE, UV + vec2( pixel.x,  pixel.y)).a;
+    
+    // 把 outline 限制在 0~1 之间（可选，但更稳定）
+    outline = clamp(outline, 0.0, 1.0);
+    
+    vec4 tex = texture(TEXTURE, UV);
+    
+    // 关键：只在原图透明的地方绘制描边
+    if (tex.a > 0.01) {          // 原像素不透明 → 保持原样
+        COLOR = tex;
+    } else {                     // 原像素透明 → 如果有邻居，就画描边
+        if (outline > 0.01) {
+            COLOR = line_color;
+            COLOR.a *= outline;   // 让描边边缘更柔和（可选）
+        } else {
+            COLOR = vec4(0.0);    // 完全没邻居 → 透明
+        }
+    }
 }

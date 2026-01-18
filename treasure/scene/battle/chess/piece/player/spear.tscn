@@ -1,0 +1,109 @@
+[gd_scene load_steps=16 format=3 uid="uid://ifpxukxdvct7"]
+
+[ext_resource type="PackedScene" uid="uid://dprdx63olkvba" path="res://scene/battle/chess/piece/template/template.tscn" id="1_v8805"]
+[ext_resource type="Texture2D" uid="uid://dfeoxd7a7d8dr" path="res://texture/player/Lancer_Idle.png" id="3_515sd"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q5gff"]
+atlas = ExtResource("3_515sd")
+region = Rect2(0, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v8805"]
+atlas = ExtResource("3_515sd")
+region = Rect2(320, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cxrvd"]
+atlas = ExtResource("3_515sd")
+region = Rect2(640, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_515sd"]
+atlas = ExtResource("3_515sd")
+region = Rect2(960, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c88rn"]
+atlas = ExtResource("3_515sd")
+region = Rect2(1280, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a2xcm"]
+atlas = ExtResource("3_515sd")
+region = Rect2(1600, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a3hhd"]
+atlas = ExtResource("3_515sd")
+region = Rect2(1920, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f7xks"]
+atlas = ExtResource("3_515sd")
+region = Rect2(2240, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_evef1"]
+atlas = ExtResource("3_515sd")
+region = Rect2(2560, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ae782"]
+atlas = ExtResource("3_515sd")
+region = Rect2(2880, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_avmv8"]
+atlas = ExtResource("3_515sd")
+region = Rect2(3200, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xwkrt"]
+atlas = ExtResource("3_515sd")
+region = Rect2(3520, 0, 320, 320)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qf3c3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q5gff")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v8805")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cxrvd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_515sd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c88rn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a2xcm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a3hhd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f7xks")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_evef1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ae782")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_avmv8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xwkrt")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Template" instance=ExtResource("1_v8805")]
+
+[node name="AnimatedSprite2D" parent="." index="0"]
+position = Vector2(0, -14)
+sprite_frames = SubResource("SpriteFrames_qf3c3")
+autoplay = "default"
+frame_progress = 0.630695
+
+[node name="Health" parent="." index="1"]
+max_health = 2
+current_health = 2
+full_health_color = Color(0.486275, 0.984314, 0.356863, 1)
