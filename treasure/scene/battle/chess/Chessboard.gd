@@ -1,9 +1,8 @@
 extends Node2D
 
-class_name Chess_Instance
+class_name Chessboard
 
 var ground_textures = preload("res://texture/map/Tilemap_Flat.png")
-
 
 # 格子类，代表地图上的一个单元格
 class Cell:
@@ -93,10 +92,17 @@ func create_map_from_json(json_data:Array,lineNode2DContainer:Node2D):
 	
 	# 创建完地图后更新网格线
 	_update_grid_lines()
+
+# 返回网格中心像素坐标
+func get_grid_center_global_position(layer:TileMapLayer) -> Vector2:
+	var rect: Rect2i = layer.get_used_rect()  # 获取实际使用的 tiles 边界 (position 到 end)
+	if not rect.has_area():
+		return Vector2.ZERO  # 无 tiles 时返回原点
 	
-func get_grid_center_position() -> Vector2:
-	# 返回网格中心像素坐标
-	return Vector2( _grid_size.x * _grid_cell_size * 0.5, _grid_size.y * _grid_cell_size * 0.5)
+	var center_cell: Vector2i = rect.get_center()  # 中心 cell 坐标 (e.g., (-1, -1) 如果从负开始)
+	var local_pos = layer.map_to_local(center_cell)  # 转换为 TileMapLayer 的 local 像素坐标（中心已内置 half cell）
+	var global_pos = layer.to_global(local_pos)        # 转成全局
+	return global_pos
 
 
 var h_lines: PackedVector2Array = []
@@ -131,53 +137,64 @@ func clear_grid_line_highlight():
 	highlighted_tile = Vector2i(-999, -999)
 	_grid_overlay.queue_redraw()
 
-func _is_valid_grid_position(grid_pos: Vector2i) -> bool:
+func is_valid_grid_position(grid_pos: Vector2i) -> bool:
 	# 检查棋盘坐标是否有效
 	return grid_pos.x >= 0 and grid_pos.x < _grid_size.x and grid_pos.y >= 0 and grid_pos.y < _grid_size.y
 
-func _grid_to_pixel_position(grid_pos: Vector2i) -> Vector2:
-	# 将棋盘坐标转换为像素坐标（中心点）
-	if _is_valid_grid_position(grid_pos):
-		return Vector2(grid_pos.x * _grid_cell_size + _grid_cell_size * 0.5, grid_pos.y * _grid_cell_size + _grid_cell_size * 0.5)
-	return Vector2.ZERO
+func grid_to_global_pixel_position(layer:TileMapLayer,grid_pos: Vector2i) -> Vector2:
+	# 将棋盘坐标转换为全局像素坐标（中心点）
+	if not is_valid_grid_position(grid_pos):
+		return Vector2.ZERO
+		
+	var local_pos =  layer.map_to_local(grid_pos)
+	var global_pos = to_global(local_pos)
+	return global_pos
 
-func pixel_to_grid_position(pixel_pos: Vector2) -> Variant:
+func global_pixel_position_to_grid_position(pixel_pos: Vector2,layer:TileMapLayer) -> Variant:
 	# 将像素坐标转换为棋盘坐标
-	# floor 用于修复当鼠标不在棋盘上时(-50<一个格子高度) 高亮位置错误的情况
-	var cell_x := int(floor(pixel_pos.x / _grid_cell_size))
-	var cell_y := int(floor(pixel_pos.y / _grid_cell_size))
-	var grid_pos := Vector2i(cell_x, cell_y)
-	print('_grid_cell_size is ',_grid_cell_size)
-	print('pixel_pos is ',pixel_pos)
-	print('grid_pos is ',grid_pos)
+	## floor 用于修复当鼠标不在棋盘上时(-50<一个格子高度) 高亮位置错误的情况
+	#var cell_x := int(floor(pixel_pos.x / _grid_cell_size))
+	#var cell_y := int(floor(pixel_pos.y / _grid_cell_size))
+	#var grid_pos := Vector2i(cell_x, cell_y)
+	#print('_grid_cell_size is ',_grid_cell_size)
+	#print('pixel_pos is ',pixel_pos)
+	#print('grid_pos is ',grid_pos)
+	var grid_pos = layer.local_to_map(to_local(pixel_pos))
 
-	if _is_valid_grid_position(grid_pos):
+	if is_valid_grid_position(grid_pos):
 		return grid_pos
 	else:
 		return null   
+
+#通过格子坐标去查询格子信息
+func use_grid_pos_query_cell(grid_pos:Vector2i)->Cell:
+	if not is_valid_grid_position(grid_pos):
+		push_error("无效的棋盘坐标: ", grid_pos)
+		return null
+	var cell = _grid_cells[grid_pos.x][grid_pos.y] as Cell
+	return cell
 	
 
-
-func add_piece(piece: CharacterBody2D, grid_pos: Vector2i,containerNode:Node2D):
-	# 在指定格子添加棋子
-	if not _is_valid_grid_position(grid_pos):
-		push_error("无效的棋盘坐标: ", grid_pos)
-		return
-	var cell = _grid_cells[grid_pos.x][grid_pos.y] as Cell
-	if not cell.is_visible:
-		push_error("目标格子不可用: ", grid_pos)
-		return
-	if not cell.container.is_empty():
-		push_error("目标格子已有棋子: ", grid_pos)
-		return
-	cell.container.push_back(piece)
-	piece.global_position = _grid_to_pixel_position(grid_pos)
-	containerNode.add_child(piece)
-	piece.z_index = 99
-	# 初始化棋子，传递棋盘信息
-	#if piece.has_method("initialize"):
-		#piece.initialize(grid_cells, grid_size)
-		#piece.set_piece_position(grid_pos)
+##piece 棋子
+##grid_pos 棋盘坐标
+##containerNode 棋子的父节点
+##layer 棋子grid坐标转化成全局坐标的参考系
+#func add_piece(piece: CharacterBody2D, grid_pos: Vector2i,containerNode:Node2D,layer:TileMapLayer):
+	## 在指定格子添加棋子
+	#if not _is_valid_grid_position(grid_pos):
+		#push_error("无效的棋盘坐标: ", grid_pos)
+		#return
+	#var cell = _grid_cells[grid_pos.x][grid_pos.y] as Cell
+	#if not cell.is_visible:
+		#push_error("目标格子不可用: ", grid_pos)
+		#return
+	#if not cell.container.is_empty():
+		#push_error("目标格子已有棋子: ", grid_pos)
+		#return
+	#cell.container.push_back(piece)
+	#piece.global_position = _grid_to_global_pixel_position(layer,grid_pos)
+	#containerNode.add_child(piece)
+	#piece.z_index = 99
 		
 #func handle_input(mouse_pos: Vector2):
 	## 处理鼠标点击，转换为棋盘坐标

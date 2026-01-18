@@ -7,7 +7,8 @@ extends Node2D
 #不受玩家和敌人控制的棋子 比如npc
 @onready var other_unit_container_node = $Units/OtherUnits
 
-var grid_chess:Chess_Instance;
+var chessboard_instance:Chessboard;
+var grid_piece_mapping_manager_instance:GridPieceMappingManager
 
 func setup_camera(pointer:Vector2):
 	var camera = Camera2D.new()
@@ -32,40 +33,84 @@ var json = [
 
 #封装外部功能方法
 func add_player_unit(piece: CharacterBody2D, grid_pos: Vector2i):
-	grid_chess.add_piece(piece,grid_pos,player_unit_container_node)
+	if not chessboard_instance:
+		push_error('当前不存在棋盘')
+		return
+	if not grid_piece_mapping_manager_instance:
+		push_error('当前不存在棋盘映射实例')
+		return
+	grid_piece_mapping_manager_instance.add_piece(piece,grid_pos,player_unit_container_node,ground_layer,chessboard_instance)
 	pass
 func add_enemy_unit(piece: CharacterBody2D, grid_pos: Vector2i):
-	grid_chess.add_piece(piece,grid_pos,enemy_unit_container_node)
+	if not chessboard_instance:
+		push_error('当前不存在棋盘')
+		return
+	if not grid_piece_mapping_manager_instance:
+		push_error('当前不存在棋盘映射实例')
+		return
+	grid_piece_mapping_manager_instance.add_piece(piece,grid_pos,enemy_unit_container_node,ground_layer,chessboard_instance)
 	pass
 func add_other_unit(piece: CharacterBody2D, grid_pos: Vector2i):
-	grid_chess.add_piece(piece,grid_pos,other_unit_container_node)
+	if not chessboard_instance:
+		push_error('当前不存在棋盘')
+		return
+	if not grid_piece_mapping_manager_instance:
+		push_error('当前不存在棋盘映射实例')
+		return
+	grid_piece_mapping_manager_instance.add_piece(piece,grid_pos,other_unit_container_node,ground_layer,chessboard_instance)
 	pass
 
 func init_map():
 	# 初始化 Chess 对象并传入 JSON 数据
-	grid_chess = Chess_Instance.new(64,container,ground_layer)
+	chessboard_instance = Chessboard.new(64,container,ground_layer)
 	# 根据 JSON 数据生成地图 container 用于新增线条
-	grid_chess.create_map_from_json(json,container)
-	grid_chess.set_grid_line_highlight(Vector2i(2,2))
+	chessboard_instance.create_map_from_json(json,container)
+	# 创建映射类
+	grid_piece_mapping_manager_instance = GridPieceMappingManager.new()
 
-var _current_selected_node # 当前选中的人物
+var _current_selected_node_grid_position:Vector2i=Vector2i(-1, -1) # 当前选中的棋子的位置 -1,-1为非法值
 
 
 	
 func _input(event: InputEvent) -> void:
-	print(event)
+	#print(event)
 	if event is InputEventMouseMotion:
 		#鼠标移动时高亮对应格子的线条
 		var mouse_pos = get_global_mouse_position()
-		var grid_pos=grid_chess.pixel_to_grid_position(mouse_pos)
+		var grid_pos=chessboard_instance.global_pixel_position_to_grid_position(mouse_pos,ground_layer)
 		#print('棋盘坐标是 ',grid_pos)
-		if grid_pos == null:
+		if TypesTools.is_null(grid_pos):
 			#非法坐标直接排除 清空高亮
-			grid_chess.clear_grid_line_highlight()
+			chessboard_instance.clear_grid_line_highlight()
 			return
-		grid_chess.set_grid_line_highlight(grid_pos)
+		chessboard_instance.set_grid_line_highlight(grid_pos)
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		var _grid_pos = grid_chess.pixel_to_grid_position(event.position)
+		var mouse_pos = get_global_mouse_position()
+		var _grid_pos = chessboard_instance.global_pixel_position_to_grid_position(mouse_pos,ground_layer)
+		
+		if TypesTools.is_null(_grid_pos):
+			#排除掉棋盘外的坐标
+			return
+		if _current_selected_node_grid_position !=Vector2i(-1,-1):
+			#已经选中 只是移动
+			var is_exist_piece=grid_piece_mapping_manager_instance.is_exist_piece_in_current_grid_pos(_grid_pos)
+			if not is_exist_piece:
+				grid_piece_mapping_manager_instance.move_piece(_current_selected_node_grid_position,_grid_pos,ground_layer,chessboard_instance)
+				_current_selected_node_grid_position =Vector2i(-1,-1)
+			else:
+				_current_selected_node_grid_position = _grid_pos
+			return
+			
+		#开始选中
+		var cur_piece=grid_piece_mapping_manager_instance.query_piece_in_current_grid_pos(_grid_pos)
+		if TypesTools.is_null(cur_piece):
+			print("当前位置暂无映射的棋子")
+			return
+			
+		_current_selected_node_grid_position = _grid_pos
+		
+		
+			
 		#pass
 		
 		#var mouse_pos = get_global_mouse_position()
@@ -79,8 +124,10 @@ func _input(event: InputEvent) -> void:
 func _ready():
 	init_map()
 	
+	chessboard_instance.set_grid_line_highlight(Vector2i(2,2))
+	
 	# 设置相机，居中显示地图
-	setup_camera(grid_chess.get_grid_center_position())
+	setup_camera(chessboard_instance.get_grid_center_global_position(ground_layer))
 	
 	add_player_unit(npc1.instantiate(),Vector2i(3,3))
 	
