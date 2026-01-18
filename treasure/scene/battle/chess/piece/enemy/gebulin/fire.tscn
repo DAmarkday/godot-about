@@ -1,0 +1,74 @@
+[gd_scene load_steps=11 format=3 uid="uid://dd3w0wexinu36"]
+
+[ext_resource type="PackedScene" uid="uid://dprdx63olkvba" path="res://scene/battle/chess/piece/template/template.tscn" id="1_boqnh"]
+[ext_resource type="Texture2D" uid="uid://bumocb8yweejs" path="res://texture/enemy/Torch_Blue.png" id="2_jmohy"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ow61d"]
+atlas = ExtResource("2_jmohy")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0vvui"]
+atlas = ExtResource("2_jmohy")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_chgjb"]
+atlas = ExtResource("2_jmohy")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3s8r4"]
+atlas = ExtResource("2_jmohy")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3es51"]
+atlas = ExtResource("2_jmohy")
+region = Rect2(768, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qdw4a"]
+atlas = ExtResource("2_jmohy")
+region = Rect2(960, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l0d4x"]
+atlas = ExtResource("2_jmohy")
+region = Rect2(1152, 0, 192, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_seiur"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ow61d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0vvui")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_chgjb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3s8r4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3es51")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qdw4a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l0d4x")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Template" instance=ExtResource("1_boqnh")]
+outline_color_high_light = Color(1, 0.101961, 0.329412, 1)
+
+[node name="AnimatedSprite2D" parent="." index="0"]
+sprite_frames = SubResource("SpriteFrames_seiur")
+autoplay = "default"
+frame_progress = 0.00187343
+offset = Vector2(0, -14)
+
+[node name="Health" parent="." index="1"]
+max_health = 4
+current_health = 3

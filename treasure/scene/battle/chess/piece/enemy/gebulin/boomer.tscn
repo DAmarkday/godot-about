@@ -1,7 +1,14 @@
-[gd_scene load_steps=10 format=3 uid="uid://c8or4ritcws3m"]
+[gd_scene load_steps=12 format=3 uid="uid://c8or4ritcws3m"]
 
 [ext_resource type="PackedScene" uid="uid://dprdx63olkvba" path="res://scene/battle/chess/piece/template/template.tscn" id="1_q72rx"]
+[ext_resource type="Shader" uid="uid://hjjkohihl1ex" path="res://scene/battle/chess/shader/outline.gdshader" id="2_iebwo"]
 [ext_resource type="Texture2D" uid="uid://w88igy4t10hp" path="res://texture/enemy/TNT_Blue.png" id="2_whrn6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gsot3"]
+resource_local_to_scene = true
+shader = ExtResource("2_iebwo")
+shader_parameter/line_color = Color(1, 1, 0, 1)
+shader_parameter/outline_width = 2.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_iebwo"]
 atlas = ExtResource("2_whrn6")
@@ -54,11 +61,13 @@ animations = [{
 }]
 
 [node name="Template" instance=ExtResource("1_q72rx")]
+outline_color_high_light = Color(1, 0.101961, 0.329412, 1)
 
 [node name="AnimatedSprite2D" parent="." index="0"]
+material = SubResource("ShaderMaterial_gsot3")
 sprite_frames = SubResource("SpriteFrames_3n141")
 autoplay = "default"
-frame_progress = 0.8372364
+frame_progress = 0.837236
 offset = Vector2(2, -16)
 
 [node name="Health" parent="." index="1"]
