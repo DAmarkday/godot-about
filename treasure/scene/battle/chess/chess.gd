@@ -13,7 +13,7 @@ var grid_piece_mapping_manager_instance:GridPieceMappingManager
 
 func setup_camera(pointer:Vector2):
 	var camera = Camera2D.new()
-	camera.position = pointer
+	camera.global_position = Vector2(pointer.x,pointer.y + 121)
 	camera.zoom = Vector2(1, 1)
 	add_child(camera)
 	# #关键：使用 call_deferred 等待一帧，确保布局完成后再精确居中

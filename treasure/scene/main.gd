@@ -1,7 +1,7 @@
 extends Node2D
-@onready var battle_chess:Node2D =$BattleChess
-@onready var canvas_layer:CanvasLayer =$CanvasLayer
-@onready var turn_label:Control =$TurnLabel
+#@onready var battle_chess:Node2D =$BattleChess
+#@onready var canvas_layer:CanvasLayer =$CanvasLayer
+#@onready var turn_label:Control =$TurnLabel
 
 #func _ready():
 	##pass

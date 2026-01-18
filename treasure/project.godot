@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="treasure"
-run/main_scene="res://scene/battle/chess/chess.tscn"
+run/main_scene="uid://dek3d8vkbrnn2"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
