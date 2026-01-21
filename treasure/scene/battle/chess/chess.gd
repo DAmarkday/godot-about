@@ -85,6 +85,8 @@ func _input(event: InputEvent) -> void:
 			chessboard_instance.clear_grid_line_highlight()
 			return
 		chessboard_instance.set_grid_line_highlight(grid_pos)
+		return
+		
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		var mouse_pos = get_global_mouse_position()
 		var _grid_pos = chessboard_instance.global_pixel_position_to_grid_position(mouse_pos,ground_layer)
@@ -98,6 +100,9 @@ func _input(event: InputEvent) -> void:
 			if not is_exist_piece:
 				grid_piece_mapping_manager_instance.move_piece(_current_selected_node_grid_position,_grid_pos,ground_layer,chessboard_instance)
 				_current_selected_node_grid_position =Vector2i(-1,-1)
+				var piece = grid_piece_mapping_manager_instance.query_piece_in_current_grid_pos(_grid_pos)
+				clear_hight_light_piece(piece)
+				
 			else:
 				#高亮当前棋子
 				_current_selected_node_grid_position = _grid_pos

@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://dek3d8vkbrnn2"]
+[gd_scene load_steps=9 format=3 uid="uid://dek3d8vkbrnn2"]
 
 [ext_resource type="Script" uid="uid://clb8cioawthwd" path="res://scene/main.gd" id="1_ge7cc"]
 [ext_resource type="PackedScene" uid="uid://d3mxsofn8br7t" path="res://scene/battle/chess/chess.tscn" id="2_wp4xf"]
 [ext_resource type="PackedScene" uid="uid://bhrg5axqlfax1" path="res://scene/battle/chess/gui/unitPanel.tscn" id="3_brvut"]
 [ext_resource type="PackedScene" uid="uid://bbragij2xisgf" path="res://scene/battle/chess/gui/turnPanel.tscn" id="4_0ha60"]
 [ext_resource type="PackedScene" uid="uid://j5mp0stvxmje" path="res://scene/battle/chess/gui/handlePanel.tscn" id="4_brvut"]
+[ext_resource type="PackedScene" uid="uid://c04vs7vy40bc6" path="res://scene/battle/chess/gui/informationPanel.tscn" id="4_of57s"]
 [ext_resource type="PackedScene" uid="uid://cwjw1ii30ovbp" path="res://scene/battle/chess/gui/taskPanel.tscn" id="4_p1hux"]
 [ext_resource type="PackedScene" uid="uid://bc1ko4ss7th6b" path="res://scene/battle/chess/gui/playerPanel.tscn" id="6_4j5ol"]
 
@@ -14,6 +15,8 @@ script = ExtResource("1_ge7cc")
 [node name="UnitPanel" parent="." instance=ExtResource("3_brvut")]
 
 [node name="Chess" parent="." instance=ExtResource("2_wp4xf")]
+
+[node name="informationPanel" parent="." instance=ExtResource("4_of57s")]
 
 [node name="TaskPanel" parent="." instance=ExtResource("4_p1hux")]
 
