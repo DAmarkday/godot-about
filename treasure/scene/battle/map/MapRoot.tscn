@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://map_root_scene"]
+
+[ext_resource type="Script" path="res://scene/battle/map/MapRoot.gd" id="1"]
+[ext_resource type="Script" path="res://scene/battle/map/HighlightLayer.gd" id="2"]
+
+[node name="MapRoot" type="Node2D"]
+script = ExtResource("1")
+
+[node name="TileMapLayer0" type="TileMapLayer" parent="."]
+z_index = 0
+tile_set = null
+
+[node name="TileMapLayer1" type="TileMapLayer" parent="."]
+z_index = 1
+tile_set = null
+
+[node name="UnitsContainer" type="Node2D" parent="."]
+z_index = 2
+
+[node name="HighlightLayer" type="TileMapLayer" parent="."]
+z_index = 10
+tile_set = null
+script = ExtResource("2")

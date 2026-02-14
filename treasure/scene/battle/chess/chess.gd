@@ -20,6 +20,17 @@ func setup_camera(pointer:Vector2):
 	#await get_tree().process_frame
 	camera.make_current()
 
+enum TILE_TYPE {
+	空地块=0,
+	平面=1,
+	森林=2,
+	海=3,
+	山脉=4,
+	村庄=5,
+}
+
+#0 为 空 1为地面
+#2为水面
 var json = [
 	[0,1,1,1,1,1,1,1,0],
 	[0,1,1,1,1,1,1,1,0],
