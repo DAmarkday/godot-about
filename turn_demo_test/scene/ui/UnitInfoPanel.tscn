@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://script/ui/UnitInfoPanel.gd" id="1_unitinfo"]
+
+[node name="UnitInfoPanel" type="PanelContainer"]
+script = ExtResource("1_unitinfo")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+
+[node name="NameLabel" type="Label" parent="VBox"]
+text = "棋子名称"
+
+[node name="HpLabel" type="Label" parent="VBox"]
+text = "血量：-"
+
+[node name="MoveLabel" type="Label" parent="VBox"]
+text = "移动力：-"
+
+[node name="AtkLabel" type="Label" parent="VBox"]
+text = "攻击力：-"
+
+[node name="DefLabel" type="Label" parent="VBox"]
+text = "防御力：-"

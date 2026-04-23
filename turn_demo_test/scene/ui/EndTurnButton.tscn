@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://script/ui/EndTurnButton.gd" id="1_endturn"]
+
+[node name="EndTurnButton" type="Button"]
+script = ExtResource("1_endturn")
+text = "结束回合"
+custom_minimum_size = Vector2(120, 40)

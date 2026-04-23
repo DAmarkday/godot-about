@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bqvvs34a0ickb"]
+
+[ext_resource type="Shader" uid="uid://hjjkohihl1ex" path="res://scene/battle/chess/shader/outline.gdshader" id="1_uu8k3"]
+
+[resource]
+shader = ExtResource("1_uu8k3")
+shader_parameter/line_color = Color(1, 0.2, 0.8, 1)
+shader_parameter/outline_width = 0.005

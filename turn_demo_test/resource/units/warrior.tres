@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="UnitData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://script/data/UnitData.gd" id="1_warrior"]
+
+[resource]
+script = ExtResource("1_warrior")
+unit_name = "战士"
+max_hp = 10
+movement = 3
+attack_power = 4
+defense = 2
+attack_range = 1
+team = 0

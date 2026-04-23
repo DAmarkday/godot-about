@@ -1,0 +1,104 @@
+[gd_scene load_steps=14 format=3]
+
+[ext_resource type="Script" path="res://scene/battle/BattleScene.gd" id="1_battle"]
+[ext_resource type="Script" path="res://scene/battle/map/MapLoader.gd" id="2_maploader"]
+[ext_resource type="Script" path="res://script/map/HighlightLayer.gd" id="3_highlight"]
+[ext_resource type="Script" path="res://script/systems/UnitManager.gd" id="4_unitmanager"]
+[ext_resource type="Script" path="res://script/systems/TurnManager.gd" id="5_turnmanager"]
+[ext_resource type="Script" path="res://script/systems/MovementSystem.gd" id="6_movement"]
+[ext_resource type="Script" path="res://script/systems/CombatSystem.gd" id="7_combat"]
+[ext_resource type="Script" path="res://script/systems/AIController.gd" id="8_ai"]
+[ext_resource type="Script" path="res://script/ui/TurnPanel.gd" id="9_turnpanel"]
+[ext_resource type="Script" path="res://script/ui/UnitInfoPanel.gd" id="10_unitinfo"]
+[ext_resource type="Script" path="res://script/ui/EndTurnButton.gd" id="11_endturn"]
+[ext_resource type="Script" path="res://script/ui/GameResultPanel.gd" id="12_gameresult"]
+[ext_resource type="Script" path="res://script/ui/UnitStateVisual.gd" id="13_statevisual"]
+
+[node name="BattleScene" type="Node2D"]
+script = ExtResource("1_battle")
+
+[node name="BattleMap" type="Node2D" parent="."]
+
+[node name="MapLoader" type="Node" parent="BattleMap"]
+script = ExtResource("2_maploader")
+
+[node name="HighlightLayer" type="Node2D" parent="BattleMap"]
+script = ExtResource("3_highlight")
+
+[node name="UnitsContainer" type="Node2D" parent="BattleMap"]
+
+[node name="Systems" type="Node" parent="."]
+
+[node name="UnitManager" type="Node" parent="Systems"]
+script = ExtResource("4_unitmanager")
+
+[node name="TurnManager" type="Node" parent="Systems"]
+script = ExtResource("5_turnmanager")
+
+[node name="MovementSystem" type="Node" parent="Systems"]
+script = ExtResource("6_movement")
+
+[node name="CombatSystem" type="Node" parent="Systems"]
+script = ExtResource("7_combat")
+
+[node name="AIController" type="Node" parent="Systems"]
+script = ExtResource("8_ai")
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+
+[node name="TurnPanel" type="Label" parent="UILayer"]
+script = ExtResource("9_turnpanel")
+offset_left = 760.0
+offset_top = 20.0
+text = "第 1 回合 - 玩家回合"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+
+[node name="UnitInfoPanel" type="PanelContainer" parent="UILayer"]
+script = ExtResource("10_unitinfo")
+offset_left = 20.0
+offset_top = 20.0
+
+[node name="VBox" type="VBoxContainer" parent="UILayer/UnitInfoPanel"]
+
+[node name="NameLabel" type="Label" parent="UILayer/UnitInfoPanel/VBox"]
+text = "棋子名称"
+
+[node name="HpLabel" type="Label" parent="UILayer/UnitInfoPanel/VBox"]
+text = "血量：-"
+
+[node name="MoveLabel" type="Label" parent="UILayer/UnitInfoPanel/VBox"]
+text = "移动力：-"
+
+[node name="AtkLabel" type="Label" parent="UILayer/UnitInfoPanel/VBox"]
+text = "攻击力：-"
+
+[node name="DefLabel" type="Label" parent="UILayer/UnitInfoPanel/VBox"]
+text = "防御力：-"
+
+[node name="EndTurnButton" type="Button" parent="UILayer"]
+script = ExtResource("11_endturn")
+offset_left = 1760.0
+offset_top = 980.0
+text = "结束回合"
+custom_minimum_size = Vector2(120, 40)
+
+[node name="GameResultPanel" type="PanelContainer" parent="UILayer"]
+script = ExtResource("12_gameresult")
+offset_left = 760.0
+offset_top = 440.0
+
+[node name="VBox" type="VBoxContainer" parent="UILayer/GameResultPanel"]
+
+[node name="ResultLabel" type="Label" parent="UILayer/GameResultPanel/VBox"]
+text = "结果"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 32
+
+[node name="HintLabel" type="Label" parent="UILayer/GameResultPanel/VBox"]
+text = "提示"
+horizontal_alignment = 1
+
+[node name="UnitStateVisual" type="Node" parent="UILayer"]
+script = ExtResource("13_statevisual")

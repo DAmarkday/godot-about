@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="UnitData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://script/data/UnitData.gd" id="1_troll"]
+
+[resource]
+script = ExtResource("1_troll")
+unit_name = "巨魔"
+max_hp = 12
+movement = 2
+attack_power = 5
+defense = 3
+attack_range = 1
+team = 1
