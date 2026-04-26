@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://dly7ake33dv1l"]
+
+[ext_resource type="Script" uid="uid://dssuxco76kf1c" path="res://scene/battle/battle_scene.gd" id="1_tf57g"]
+
+[node name="BattleScene" type="Node2D" unique_id=1998438921]
+script = ExtResource("1_tf57g")
+
+[node name="BattleMap" type="Node2D" parent="." unique_id=2123896672]
+
+[node name="MapLoader" type="Node" parent="BattleMap" unique_id=1013154676]
+
+[node name="HighlightLayer" type="Node2D" parent="BattleMap" unique_id=166813185]
+
+[node name="GroundLayer" type="Node2D" parent="BattleMap" unique_id=1654333124]
+
+[node name="DecorationLayer" type="Node2D" parent="BattleMap" unique_id=1709063209]
+
+[node name="TerrainLayer" type="Node2D" parent="BattleMap" unique_id=1464376065]
+
+[node name="UnitsContainer" type="Node2D" parent="BattleMap" unique_id=1901674425]
+
+[node name="PlayerUnits" type="Node2D" parent="BattleMap/UnitsContainer" unique_id=1955608583]
+
+[node name="EnemyUnits" type="Node2D" parent="BattleMap/UnitsContainer" unique_id=1124149821]
+
+[node name="OtherUnits" type="Node2D" parent="BattleMap/UnitsContainer" unique_id=2014476633]
+
+[node name="Systems" type="Node" parent="." unique_id=175851685]
+
+[node name="UnitManager" type="Node" parent="Systems" unique_id=1485823696]
+
+[node name="TurnManager" type="Node" parent="Systems" unique_id=1113554352]
+
+[node name="MovementSystem" type="Node" parent="Systems" unique_id=1970764822]
+
+[node name="CombatSystem" type="Node" parent="Systems" unique_id=1450357599]
+
+[node name="AIController" type="Node" parent="Systems" unique_id=2064837269]
+
+[node name="UILayer" type="CanvasLayer" parent="." unique_id=1048350249]
