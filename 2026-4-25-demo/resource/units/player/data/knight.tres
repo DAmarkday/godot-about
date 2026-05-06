@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="UnitData" format=3 uid="uid://ctkst3l7iphw0"]
+
+[ext_resource type="Script" uid="uid://d273ys3jqeram" path="res://script/data/UnitData.gd" id="1_5ix4n"]
+[ext_resource type="SpriteFrames" uid="uid://c3v5jqi4pieir" path="res://resource/units/player/anim/knight.tres" id="2_th0sy"]
+
+[resource]
+script = ExtResource("1_5ix4n")
+unit_name = "骑士"
+max_hp = 3
+sprite_frames = ExtResource("2_th0sy")

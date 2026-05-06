@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://dnxbq7ue2mflf"]
+
+[ext_resource type="Script" uid="uid://c4r1b67nb3v74" path="res://scene/units/unit_template.gd" id="1_hqyf3"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_vyily"]
+
+[node name="Unit" type="CharacterBody2D" unique_id=1709951167]
+script = ExtResource("1_hqyf3")
+
+[node name="Visuals" type="Node2D" parent="." unique_id=1821512354]
+
+[node name="Sprite" type="AnimatedSprite2D" parent="Visuals" unique_id=989132485]
+sprite_frames = SubResource("SpriteFrames_vyily")
+offset = Vector2(0, -20)

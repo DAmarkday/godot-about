@@ -1,0 +1,60 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://dg4xwxsj4pk3j"]
+
+[ext_resource type="Texture2D" uid="uid://bpxnn66tr4mh7" path="res://texture/enemy/Torch_Blue.png" id="1_kkrio"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d1r6o"]
+atlas = ExtResource("1_kkrio")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lhtpy"]
+atlas = ExtResource("1_kkrio")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2rdqc"]
+atlas = ExtResource("1_kkrio")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v1kaw"]
+atlas = ExtResource("1_kkrio")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3erat"]
+atlas = ExtResource("1_kkrio")
+region = Rect2(768, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_826kr"]
+atlas = ExtResource("1_kkrio")
+region = Rect2(960, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p2nf0"]
+atlas = ExtResource("1_kkrio")
+region = Rect2(1152, 0, 192, 192)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d1r6o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lhtpy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2rdqc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v1kaw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3erat")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_826kr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p2nf0")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]

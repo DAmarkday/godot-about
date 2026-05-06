@@ -40,13 +40,13 @@ func load_map(map_data: MapData) -> void:
 		_set_cell_with_terrain(layer0, cell, terrain_type)
 	
 	# 加载 layer1（建筑/装饰）
-	for cell in map_data.layer1_data.keys():
-		var building_type = map_data.layer1_data[cell]
-		_set_cell_with_terrain(layer1, cell, building_type)
+	#for cell in map_data.layer1_data.keys():
+		#var building_type = map_data.layer1_data[cell]
+		#_set_cell_with_terrain(layer1, cell, building_type)
 	
 	# 触发 Terrain peering 自动连接
 	layer0.update_internals()
-	layer1.update_internals()
+	#layer1.update_internals()
 	
 	print("地图加载完成: %d x %d, 种子: %d" % [map_data.width, map_data.height, map_data.seed_value])
 
@@ -58,6 +58,7 @@ func _set_cell_with_terrain(layer: TileMapLayer, cell: Vector2i, terrain_type: i
 	var terrain_set = _get_terrain_set(terrain_type)
 	var terrain = _get_terrain_id(terrain_type)
 	
+	print("terrain_set: ",terrain_set," terrain: ",terrain)
 	if terrain_set >= 0 and terrain >= 0:
 		# 使用 Terrain 自动连接
 		layer.set_cells_terrain_connect([cell], terrain_set, terrain, false)

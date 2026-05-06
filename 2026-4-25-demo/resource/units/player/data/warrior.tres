@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="UnitData" format=3 uid="uid://11lu4jxdo4g8"]
+
+[ext_resource type="Script" uid="uid://d273ys3jqeram" path="res://script/data/UnitData.gd" id="1_i53nq"]
+[ext_resource type="SpriteFrames" uid="uid://dmauorfyyb7if" path="res://resource/units/player/anim/warrior.tres" id="2_6tqmb"]
+
+[resource]
+script = ExtResource("1_i53nq")
+max_hp = 2
+sprite_frames = ExtResource("2_6tqmb")

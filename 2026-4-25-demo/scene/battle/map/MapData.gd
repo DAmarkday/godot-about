@@ -1,9 +1,16 @@
 extends RefCounted
 class_name MapData
 
+
 ## 地图数据管理类 - 使用稀疏 Dictionary 存储
 ## key: Vector2i(x, y)
 ## value: 地形类型 int (1=陆地, 2=河流, 3=山地等)
+
+# 角色类型
+enum TeamType{
+	PLAYER = 0, # 玩家控制的一方
+	ENEMY = 1, # 敌人
+}
 
 # 地形类型常量
 enum TerrainType {
@@ -39,7 +46,7 @@ var layer1_data: Dictionary = {}  # 建筑/装饰层
 var seed_value: int = 0
 
 
-func _init(map_width: int = 50, map_height: int = 50) -> void:
+func _init(map_width: int = 10, map_height: int = 10) -> void:
 	width = map_width
 	height = map_height
 

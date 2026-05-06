@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="UnitData" format=3 uid="uid://dtvwxoes6atxb"]
+
+[ext_resource type="Script" uid="uid://d273ys3jqeram" path="res://script/data/UnitData.gd" id="1_e5ioc"]
+[ext_resource type="SpriteFrames" uid="uid://b02xj7iob6ow2" path="res://resource/units/enemy/anim/boomer.tres" id="2_3ady8"]
+
+[resource]
+script = ExtResource("1_e5ioc")
+unit_name = "炸药哥布林"
+max_hp = 2
+team = 1
+sprite_frames = ExtResource("2_3ady8")
