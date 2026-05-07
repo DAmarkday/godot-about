@@ -9,6 +9,8 @@
 [ext_resource type="Script" uid="uid://byamcjlw4k4fn" path="res://script/system/UnitManager.gd" id="5_23hru"]
 [ext_resource type="Texture2D" uid="uid://dyef415in56qy" path="res://texture/map/highlight.png" id="5_picpo"]
 [ext_resource type="Script" uid="uid://b85y6bvnttovs" path="res://script/system/MovementSystem.gd" id="7_jwc0o"]
+[ext_resource type="Script" uid="uid://dflwu5lierv5p" path="res://script/map/PathVisualizer.gd" id="8_gohy1"]
+[ext_resource type="Texture2D" uid="uid://b4gbvi0m5ujr0" path="res://texture/map/path.png" id="8_pxxgr"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cpv7m"]
 texture = ExtResource("3_swuoe")
@@ -77,6 +79,17 @@ texture_region_size = Vector2i(64, 64)
 tile_size = Vector2i(64, 64)
 sources/0 = SubResource("TileSetAtlasSource_picpo")
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pxxgr"]
+texture = ExtResource("8_pxxgr")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+1:0/0 = 0
+1:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_2y3si"]
+tile_size = Vector2i(64, 64)
+sources/0 = SubResource("TileSetAtlasSource_pxxgr")
+
 [node name="BattleScene" type="Node2D" unique_id=1998438921]
 script = ExtResource("1_tf57g")
 
@@ -98,6 +111,10 @@ tile_set = SubResource("TileSet_tnse1")
 [node name="HighlightLayer" type="TileMapLayer" parent="BattleMap" unique_id=1144184440]
 tile_set = SubResource("TileSet_3q8ks")
 script = ExtResource("4_picpo")
+
+[node name="PathLayer" type="TileMapLayer" parent="BattleMap" unique_id=1325668436]
+tile_set = SubResource("TileSet_2y3si")
+script = ExtResource("8_gohy1")
 
 [node name="UnitsContainer" type="Node2D" parent="BattleMap" unique_id=1901674425]
 y_sort_enabled = true

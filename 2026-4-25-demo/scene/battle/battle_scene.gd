@@ -44,9 +44,11 @@ const MAP_HEIGHT: int = 8
 # 地形层
 @onready var terrain_layer =$BattleMap/TerrainLayer
 
-## 高亮层（显示移动/攻击范围）
+# 高亮层（显示移动/攻击范围）
 @onready var highlight_layer: HighlightLayer = $BattleMap/HighlightLayer
-#
+
+# 路线箭头指引层 
+@onready var path_layer = $BattleMap/PathLayer
 ### 棋子容器节点
 @onready var units_container: Node2D = $BattleMap/UnitsContainer
 #
@@ -136,14 +138,46 @@ func _spawn_unit(data: UnitData, cell: Vector2i) -> void:
 
 ## 处理玩家输入
 func _input(event: InputEvent) -> void:
-		# 只处理鼠标左键点击
-	if not (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT):
-		return
+	# 只处理鼠标移动
+	if event is InputEventMouseMotion:
 		# 将鼠标坐标转换为格子坐标
-	var cell = GridUtils.world_to_cell(terrain_layer,get_global_mouse_position())
-	_handle_cell_click(cell)
-	
+		var cell = GridUtils.world_to_cell(terrain_layer,get_global_mouse_position())
+		_handle_cell_hover(cell)
+		return
+		
+	 #只处理鼠标左键点击
+	if (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT):
+		# 将鼠标坐标转换为格子坐标
+		path_layer.clear()
+		var cell = GridUtils.world_to_cell(terrain_layer,get_global_mouse_position())
+		_handle_cell_click(cell)
+		return
+		
+# ─── 移动逻辑 ────────────────────────────────────────────────
+## 处理鼠标悬浮逻辑
+func _handle_cell_hover(cell: Vector2i) -> void:
+	var hover_unit = unit_manager.get_unit_at(cell)
+	if selected_unit == null:
+		path_layer.clear()
+		return
+	else:
+		if hover_unit != null:
+			# 当前格子存在棋子或障碍物等等
+			path_layer.clear()
+			return
+		else:
+			pass
+			var path=movement_system.query_move_valid_path(selected_unit,cell, map_data, unit_manager)
+			print("path is ",path)
+			path_layer.draw_path_on_layer(path)
+		
+	pass
+
+
+
 # ─── 点击逻辑 ────────────────────────────────────────────────
+
+
 
 ## 处理格子点击逻辑
 func _handle_cell_click(cell: Vector2i) -> void:

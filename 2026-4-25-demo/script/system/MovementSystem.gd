@@ -43,6 +43,39 @@ func calculate_reachable_cells(unit: Unit, map_data: MapData, unit_manager: Unit
 
 	return reachable
 
+# 查询移动有效路径
+func query_move_valid_path(unit: Unit, target_cell: Vector2i, map_data: MapData, unit_manager: UnitManager) -> Array[Vector2i]:
+	# 防御性检查：参数不能为空
+	if unit == null or map_data == null or unit_manager == null:
+		push_warning("MovementSystem.query_move_valid_path: 参数不能为 null。")
+		return []
+#
+	# 校验 1：棋子必须存活
+	#if not unit.is_alive:
+		#return false
+#
+	## 校验 2：本回合未移动
+	#if unit.has_moved:
+		#return false
+	# 校验 3：目标格子在可达范围内
+	var reachable := calculate_reachable_cells(unit, map_data, unit_manager)
+	if not reachable.has(target_cell):
+		return []
+
+	## 校验 4：目标格子未被其他棋子占据
+	var occupant := unit_manager.get_unit_at(target_cell)
+	if occupant != null and occupant != unit:
+		return []
+	
+	var from_cell: Vector2i = unit.grid_position
+	
+	var occupied_cells: Array[Vector2i] = _get_occupied_cells(unit, unit_manager)
+	var calculator := MovementRangeCalculator.new(map_data)
+	var path := calculator.calculate_path(from_cell, target_cell, occupied_cells)
+	return path
+	
+
+
 
 ## 尝试将棋子移动到目标格子（含完整合法性校验）。
 ## 校验顺序：棋子存活 → 本回合未移动 → 目标在可达范围内 → 目标未被其他棋子占据。
@@ -91,15 +124,15 @@ func try_move(unit: Unit, target_cell: Vector2i, map_data: MapData, unit_manager
 	unit_manager.update_unit_position(unit, target_cell)
 	# 标记本回合已移动
 	#unit.has_moved = true
-#
+
 	## 发出移动完成信号
-	##EventBus.unit_moved.emit(unit, from_cell, target_cell)
-#
+	##EventBus.unit_moved.emit(unit, from_cell, target_cell)x
+
 	# 计算移动路径并异步执行动画（不等待，不阻塞逻辑）
 	var occupied_cells: Array[Vector2i] = _get_occupied_cells(unit, unit_manager)
 	var calculator := MovementRangeCalculator.new(map_data)
 	var path := calculator.calculate_path(from_cell, target_cell, occupied_cells)
-#
+
 	if path.size() > 0:
 		unit.face_direction_tweened(target_cell,temp_cell_pos,0.12,
 		func ():
