@@ -95,6 +95,7 @@ script = ExtResource("1_tf57g")
 
 [node name="BattleMap" type="Node2D" parent="." unique_id=2123896672]
 script = ExtResource("2_3q8ks")
+metadata/_edit_lock_ = true
 
 [node name="MapLoader" type="Node" parent="BattleMap" unique_id=1013154676 node_paths=PackedStringArray("layer0", "layer1")]
 script = ExtResource("2_tnse1")
@@ -141,17 +142,170 @@ script = ExtResource("7_jwc0o")
 
 [node name="UILayer" type="CanvasLayer" parent="." unique_id=1048350249]
 
-[node name="TurnLabel" type="Label" parent="UILayer" unique_id=1423738165]
+[node name="UnitInfoPanel" type="PanelContainer" parent="UILayer" unique_id=14421140]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -320.0
+offset_right = 320.0
+offset_bottom = -20.0
+grow_vertical = 0
+size_flags_horizontal = 0
+metadata/_edit_lock_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/UnitInfoPanel" unique_id=1431123330]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBox" type="BoxContainer" parent="UILayer/UnitInfoPanel/MarginContainer" unique_id=859615333]
+layout_mode = 2
+vertical = true
+
+[node name="NameLabel" type="Label" parent="UILayer/UnitInfoPanel/MarginContainer/VBox" unique_id=304696346]
+layout_mode = 2
+text = "棋子:  哥布林"
+
+[node name="HpLabel" type="Label" parent="UILayer/UnitInfoPanel/MarginContainer/VBox" unique_id=1484306952]
+layout_mode = 2
+text = "血量:  5/5"
+
+[node name="DescLabel" type="Label" parent="UILayer/UnitInfoPanel/MarginContainer/VBox" unique_id=712064175]
+layout_mode = 2
+text = "描述: ..."
+
+[node name="UnitControlPanel" type="PanelContainer" parent="UILayer" unique_id=666102993]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = -120.0
+offset_right = 300.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+metadata/_edit_lock_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/UnitControlPanel" unique_id=924828554]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="BoxContainer" type="BoxContainer" parent="UILayer/UnitControlPanel/MarginContainer" unique_id=1445856182]
+layout_mode = 2
+vertical = true
+
+[node name="Label" type="Label" parent="UILayer/UnitControlPanel/MarginContainer/BoxContainer" unique_id=1685862313]
+layout_mode = 2
+text = "控制面板"
+
+[node name="TaskInfoPanel" type="PanelContainer" parent="UILayer" unique_id=1346394978]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -320.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 380.0
+grow_horizontal = 0
+metadata/_edit_lock_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/TaskInfoPanel" unique_id=674793090]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="BoxContainer" type="BoxContainer" parent="UILayer/TaskInfoPanel/MarginContainer" unique_id=84089699]
+layout_mode = 2
+vertical = true
+
+[node name="Label" type="Label" parent="UILayer/TaskInfoPanel/MarginContainer/BoxContainer" unique_id=1856846705]
+layout_mode = 2
+text = "回合情报信息"
+
+[node name="TeamPanel" type="PanelContainer" parent="UILayer" unique_id=34855048]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 320.0
+offset_bottom = 380.0
+metadata/_edit_lock_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/TeamPanel" unique_id=2060923100]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="BoxContainer" type="BoxContainer" parent="UILayer/TeamPanel/MarginContainer" unique_id=1347799066]
+layout_mode = 2
+vertical = true
+
+[node name="Label" type="Label" parent="UILayer/TeamPanel/MarginContainer/BoxContainer" unique_id=727104769]
+layout_mode = 2
+text = "队伍信息"
+
+[node name="TurnInfoPanel" type="PanelContainer" parent="UILayer" unique_id=457878252]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -71.5
-offset_right = 71.5
-offset_bottom = 24.0
+offset_left = -81.5
+offset_top = 20.0
+offset_right = 81.5
+offset_bottom = 64.0
 grow_horizontal = 2
+metadata/_edit_lock_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/TurnInfoPanel" unique_id=1724572892]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="TurnLabel" type="Label" parent="UILayer/TurnInfoPanel/MarginContainer" unique_id=1423738165]
+layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 text = "第 1 回合 - 玩家回合"
+
+[node name="targetInfoPanel" type="PanelContainer" parent="UILayer" unique_id=1364252943]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -320.0
+offset_top = -320.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 0
+grow_vertical = 0
+metadata/_edit_lock_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/targetInfoPanel" unique_id=1813251238]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="BoxContainer" type="BoxContainer" parent="UILayer/targetInfoPanel/MarginContainer" unique_id=323328211]
+layout_mode = 2
+vertical = true
+
+[node name="Label" type="Label" parent="UILayer/targetInfoPanel/MarginContainer/BoxContainer" unique_id=1677217722]
+layout_mode = 2
+text = "主线和任务要求"
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1636234100]
 anchor_mode = 0

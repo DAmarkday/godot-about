@@ -1,5 +1,10 @@
 extends Node2D
 
+# 地图距离顶部的额外间距
+const margin_top:int = -20
+
+
+
 func center_map_with_camera(terrain_layer:TileMapLayer,camera:Camera2D) -> void:
 	if not terrain_layer or not camera:
 		return
@@ -26,7 +31,8 @@ func center_map_with_camera(terrain_layer:TileMapLayer,camera:Camera2D) -> void:
 	var screen_center =get_viewport().get_visible_rect().size / 2.0
 	
 	# 关键：Camera位置 = 屏幕中心 - 地图中心
-	camera.global_position =(map_center  - screen_center) 
+	var pos = map_center  - screen_center - Vector2(0,margin_top)
+	camera.global_position = pos
 	
 	print("✅ 地图中心: ", map_center)
 	print("✅ 屏幕中心: ", screen_center)
