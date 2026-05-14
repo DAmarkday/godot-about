@@ -11,6 +11,9 @@
 [ext_resource type="Script" uid="uid://b85y6bvnttovs" path="res://script/system/MovementSystem.gd" id="7_jwc0o"]
 [ext_resource type="Script" uid="uid://dflwu5lierv5p" path="res://script/map/PathVisualizer.gd" id="8_gohy1"]
 [ext_resource type="Texture2D" uid="uid://b4gbvi0m5ujr0" path="res://texture/map/path.png" id="8_pxxgr"]
+[ext_resource type="Script" uid="uid://dyjrbl874kwyj" path="res://script/system/TurnManager.gd" id="11_h02ku"]
+[ext_resource type="Script" uid="uid://bwt1hy1h1fakl" path="res://script/ui/UnitStateVisual.gd" id="13_2y3si"]
+[ext_resource type="Script" uid="uid://hqo1sdtc4gyh" path="res://script/ui/UnitInfoPanel.gd" id="13_xd5fv"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cpv7m"]
 texture = ExtResource("3_swuoe")
@@ -132,6 +135,7 @@ y_sort_enabled = true
 script = ExtResource("5_23hru")
 
 [node name="TurnManager" type="Node" parent="Systems" unique_id=1113554352]
+script = ExtResource("11_h02ku")
 
 [node name="MovementSystem" type="Node" parent="Systems" unique_id=1970764822]
 script = ExtResource("7_jwc0o")
@@ -152,6 +156,7 @@ offset_right = 320.0
 offset_bottom = -20.0
 grow_vertical = 0
 size_flags_horizontal = 0
+script = ExtResource("13_xd5fv")
 metadata/_edit_lock_ = true
 
 [node name="MarginContainer" type="MarginContainer" parent="UILayer/UnitInfoPanel" unique_id=1431123330]
@@ -306,6 +311,9 @@ vertical = true
 [node name="Label" type="Label" parent="UILayer/targetInfoPanel/MarginContainer/BoxContainer" unique_id=1677217722]
 layout_mode = 2
 text = "主线和任务要求"
+
+[node name="UnitStateVisual" type="Node" parent="UILayer" unique_id=2104315610]
+script = ExtResource("13_2y3si")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1636234100]
 anchor_mode = 0

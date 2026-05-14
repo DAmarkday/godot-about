@@ -33,7 +33,7 @@ const MAP_HEIGHT: int = 8
 #@onready var ai_controller: AIController = $Systems/AIController
 #
 ### 棋子行动状态视觉反馈管理器
-#@onready var unit_state_visual: UnitStateVisual = $UILayer/UnitStateVisual
+@onready var unit_state_visual: UnitStateVisual = $UILayer/UnitStateVisual
 #
 ### 结束回合按钮
 #@onready var end_turn_button: EndTurnButton = $UILayer/EndTurnButton
@@ -228,13 +228,13 @@ func _select_unit(unit: Unit) -> void:
 	highlight_layer.clear_highlights()
 	highlight_layer.show_move_range(reachable_cells)
 	#highlight_layer.show_attack_range(attack_cells)
-	#EventBus.unit_selected.emit(unit)
+	EventBus.unit_selected.emit(unit)
 	
 ## 取消选中棋子，清除所有高亮
 func _deselect_unit() -> void:
 	if selected_unit != null:
 		selected_unit.clear_outline_hight_light()
-		#EventBus.unit_deselected.emit(selected_unit)
+		EventBus.unit_deselected.emit(selected_unit)
 	selected_unit = null
 	reachable_cells = []
 	#attack_cells = []

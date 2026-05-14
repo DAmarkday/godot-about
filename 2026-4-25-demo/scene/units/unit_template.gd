@@ -103,9 +103,9 @@ func _ready() -> void:
 # ─── 回合方法 ────────────────────────────────────────────────
 
 ## 重置本回合行动状态（由 TurnManager 在每回合开始时调用）。
-#func reset_actions() -> void:
-	#has_moved   = false
-	#has_attacked = false
+func reset_actions() -> void:
+	has_moved   = false
+	has_attacked = false
 #
 # ─── 动画方法 ────────────────────────────────────────────────
 func walk():
