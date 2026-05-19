@@ -145,7 +145,8 @@ func _input(event: InputEvent) -> void:
 		_handle_cell_hover(cell)
 		return
 		
-	 #只处理鼠标左键点击
+	#只处理鼠标左键点击
+	# TODO 在棋子移动时动画播放移动动画还没结束时再重新移动棋子时会导致移动动画不能成功播放
 	if (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT):
 		# 将鼠标坐标转换为格子坐标
 		path_layer.clear()
