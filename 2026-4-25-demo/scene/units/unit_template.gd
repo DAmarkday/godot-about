@@ -4,7 +4,7 @@
 class_name Unit extends CharacterBody2D
 
 @onready var HealthBar: PackedScene = preload("res://plugin/health/health.tscn")
-@onready var VisualsNode:Node2D = $Visuals
+@onready var VisualsNode:CanvasGroup = $Visuals
 @onready var SpriteNode:AnimatedSprite2D = $Visuals/Sprite
 
 # ─── 从 UnitData 加载的属性 ──────────────────────────────────

@@ -7,7 +7,9 @@
 [node name="Unit" type="CharacterBody2D" unique_id=1709951167]
 script = ExtResource("1_hqyf3")
 
-[node name="Visuals" type="Node2D" parent="." unique_id=1821512354]
+[node name="Visuals" type="CanvasGroup" parent="." unique_id=512824647]
+fit_margin = 0.0
+clear_margin = 0.0
 
 [node name="Sprite" type="AnimatedSprite2D" parent="Visuals" unique_id=989132485]
 sprite_frames = SubResource("SpriteFrames_vyily")
