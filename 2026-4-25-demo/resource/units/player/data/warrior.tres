@@ -6,4 +6,5 @@
 [resource]
 script = ExtResource("1_i53nq")
 max_hp = 2
+movement = 2
 sprite_frames = ExtResource("2_6tqmb")

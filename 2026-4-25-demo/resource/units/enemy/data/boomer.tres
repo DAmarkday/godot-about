@@ -7,5 +7,6 @@
 script = ExtResource("1_e5ioc")
 unit_name = "炸药哥布林"
 max_hp = 2
+movement = 2
 team = 1
 sprite_frames = ExtResource("2_3ady8")

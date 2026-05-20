@@ -4,7 +4,7 @@
 class_name Unit extends CharacterBody2D
 
 @onready var HealthBar: PackedScene = preload("res://plugin/health/health.tscn")
-@onready var VisualsNode:CanvasGroup = $Visuals
+@onready var VisualsNode:Node2D = $Visuals
 @onready var SpriteNode:AnimatedSprite2D = $Visuals/Sprite
 
 # ─── 从 UnitData 加载的属性 ──────────────────────────────────
@@ -27,6 +27,9 @@ var attack_range: int = 1
 var team: int = 0
 
 var sprite_frames:SpriteFrames
+
+var _outline_color_high_width = 0
+var _outline_color_high_light = Color(0,0,0)
 
 # ─── 运行时状态 ──────────────────────────────────────────────
 
@@ -59,6 +62,8 @@ func setup(data: UnitData) -> void:
 	attack_range = data.attack_range
 	team         = data.team
 	current_hp   = max_hp
+	
+	_outline_color_high_width=MapConfig.outline_color_high_width
 
 	# 若资源携带动画帧，则赋给子节点 AnimatedSprite2D
 	if data.sprite_frames != null:		
@@ -66,8 +71,10 @@ func setup(data: UnitData) -> void:
 			
 	if data.team == MapData.TeamType.PLAYER:
 		health_bar_color = MapConfig.player_health_bar_color
+		_outline_color_high_light=MapConfig.player_outline_color_high_light
 	elif data.team == MapData.TeamType.ENEMY:
 		health_bar_color = MapConfig.enemy_health_bar_color
+		_outline_color_high_light=MapConfig.enemy_outline_color_high_light
 	
 	
 
@@ -79,10 +86,10 @@ func _ready() -> void:
 	var child_instance = HealthBar.instantiate()
 	child_instance.full_health_color =  health_bar_color
 	child_instance.max_health = max_hp
-	
-	VisualsNode.material = MapConfig.outline_material  # 默认应用，但宽度=0无效果
+	#TODO 考虑是否将VisualsNode类型修改为CanvasGroup 将其低下的子节点的所有修改合并为一个节点操作 比如shader影响全部 不过可能会有性能开销 感觉在不调整原来的sprite帧播放数量fps时会有卡顿
 	# 关键：duplicate 成唯一实例
-	VisualsNode.material = VisualsNode.material.duplicate() as ShaderMaterial
+	if MapConfig.outline_material != null:
+		SpriteNode.material = MapConfig.outline_material.duplicate() as ShaderMaterial
 	clear_outline_hight_light()
 	
 	add_child(child_instance)
@@ -169,11 +176,11 @@ func face_direction_tweened(to_cell:Vector2i,from_cell: Vector2i, duration: floa
 	#pass
 # 高亮
 func set_outline_hight_light():
-	VisualsNode.material.set_shader_parameter("outline_width", MapConfig.outline_color_high_width)  # 显示描边
-	VisualsNode.material.set_shader_parameter("line_color", MapConfig.outline_color_high_light)  # 黄色高亮
+	SpriteNode.material.set_shader_parameter("outline_width", _outline_color_high_width)  # 显示描边
+	SpriteNode.material.set_shader_parameter("line_color", _outline_color_high_light)  # 黄色高亮
 	pass
 	
 func clear_outline_hight_light():
-	VisualsNode.material.set_shader_parameter("outline_width", 0)  # 显示描边
+	SpriteNode.material.set_shader_parameter("outline_width", 0)  # 显示描边
 	pass
 	

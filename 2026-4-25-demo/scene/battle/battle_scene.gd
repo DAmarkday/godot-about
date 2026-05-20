@@ -154,22 +154,26 @@ func _input(event: InputEvent) -> void:
 		_handle_cell_click(cell)
 		return
 		
+	if (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT):
+		_deselect_unit()
+		
 # ─── 移动逻辑 ────────────────────────────────────────────────
 ## 处理鼠标悬浮逻辑
 func _handle_cell_hover(cell: Vector2i) -> void:
 	var hover_unit = unit_manager.get_unit_at(cell)
-	if selected_unit == null:
+	if selected_unit == null or selected_unit.team == MapData.TeamType.ENEMY:
+		# 敌人不显示可移动高亮路径
 		path_layer.clear()
 		return
 	else:
+			
 		if hover_unit != null:
 			# 当前格子存在棋子或障碍物等等
 			path_layer.clear()
 			return
 		else:
-			pass
 			var path=movement_system.query_move_valid_path(selected_unit,cell, map_data, unit_manager)
-			print("path is ",path)
+			#print("hover path is ",path)
 			path_layer.draw_path_on_layer(path)
 		
 	pass
@@ -185,23 +189,32 @@ func _handle_cell_click(cell: Vector2i) -> void:
 	var clicked_unit = unit_manager.get_unit_at(cell)
 
 	if selected_unit == null:
-		# 未选中状态：点击己方棋子则选中
-		if clicked_unit != null and clicked_unit.team == MapData.TeamType.PLAYER:
+		# 未选中状态：点击己子则选中
+		if clicked_unit != null:
 			_select_unit(clicked_unit)
 	else:
 		# 已选中状态
+		
 		if selected_unit == clicked_unit:
 			return
-		if clicked_unit != null and clicked_unit.team == MapData.TeamType.PLAYER:
+			
+		if clicked_unit != null:
+			# 切换角色 
+			reachable_cells = []
 			selected_unit.clear_outline_hight_light()
 			_select_unit(clicked_unit)
+			return
+		
+		if selected_unit.team == MapData.TeamType.ENEMY:
+			# 如果是敌人 则为以下要求:
+			# 选中状态下 不能移动
+			# 选中状态下 只显示可移动范围 左键无论是在范围内还是范围外都不能消除选中状态 只有右键才行
 			return
 		
 		if cell in reachable_cells:
 			# 点击可移动格子：执行移动
 			movement_system.try_move(selected_unit, cell, map_data, unit_manager,terrain_layer)
 			## 移动后更新高亮（保留攻击范围）
-			reachable_cells = []
 			#attack_cells = combat_system.calculate_attack_cells(selected_unit)
 			_deselect_unit()
 			#highlight_layer.show_attack_range(attack_cells)
@@ -209,13 +222,9 @@ func _handle_cell_click(cell: Vector2i) -> void:
 			## 点击攻击范围内的敌方棋子：执行攻击
 			#combat_system.try_attack(selected_unit, cell, unit_manager)
 			#_deselect_unit()
-		#elif clicked_unit != null and clicked_unit.team == 0:
-			## 点击另一个己方棋子：切换选中
-			#_deselect_unit()
-			#_select_unit(clicked_unit)
-		#else:
-			## 点击空白处：取消选中
-			#_deselect_unit()
+		else:
+			# 点击空白处：取消选中
+			_deselect_unit()
 			
 # ─── 选中/取消选中 ───────────────────────────────────────────
 
@@ -239,6 +248,7 @@ func _deselect_unit() -> void:
 	selected_unit = null
 	reachable_cells = []
 	#attack_cells = []
+	path_layer.clear()
 	highlight_layer.clear_highlights()
 	
 	
