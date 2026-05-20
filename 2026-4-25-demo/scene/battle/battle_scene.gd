@@ -191,7 +191,7 @@ func _handle_cell_click(cell: Vector2i) -> void:
 	if selected_unit == null:
 		# 未选中状态：点击己子则选中
 		if clicked_unit != null:
-			_select_unit(clicked_unit)
+			_select_unit(clicked_unit,clicked_unit.team)
 	else:
 		# 已选中状态
 		
@@ -202,7 +202,7 @@ func _handle_cell_click(cell: Vector2i) -> void:
 			# 切换角色 
 			reachable_cells = []
 			selected_unit.clear_outline_hight_light()
-			_select_unit(clicked_unit)
+			_select_unit(clicked_unit,clicked_unit.team)
 			return
 		
 		if selected_unit.team == MapData.TeamType.ENEMY:
@@ -229,14 +229,14 @@ func _handle_cell_click(cell: Vector2i) -> void:
 # ─── 选中/取消选中 ───────────────────────────────────────────
 
 ## 选中棋子，显示移动和攻击范围高亮
-func _select_unit(unit: Unit) -> void:
+func _select_unit(unit: Unit,tileSetNo:int) -> void:
 	selected_unit = unit
 	unit.set_outline_hight_light()
 	
 	reachable_cells = movement_system.calculate_reachable_cells(unit, map_data, unit_manager)
 	#attack_cells = combat_system.calculate_attack_cells(unit)
 	highlight_layer.clear_highlights()
-	highlight_layer.show_move_range(reachable_cells)
+	highlight_layer.show_move_range(reachable_cells,tileSetNo)
 	#highlight_layer.show_attack_range(attack_cells)
 	EventBus.unit_selected.emit(unit)
 	

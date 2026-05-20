@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dly7ake33dv1l"]
 
 [ext_resource type="Script" uid="uid://dssuxco76kf1c" path="res://scene/battle/battle_scene.gd" id="1_tf57g"]
-[ext_resource type="Script" path="res://scene/battle/map/MapManager.gd" id="2_3q8ks"]
+[ext_resource type="Script" uid="uid://boc3t4qt3uux3" path="res://scene/battle/map/MapManager.gd" id="2_3q8ks"]
 [ext_resource type="Script" uid="uid://cr8s35tvc0rph" path="res://scene/battle/map/MapLoader.gd" id="2_tnse1"]
 [ext_resource type="Texture2D" uid="uid://dhitgs6pqiiby" path="res://texture/map/Tilemap_Flat.png" id="3_swuoe"]
 [ext_resource type="Texture2D" uid="uid://dl88mvtoa280g" path="res://texture/map/Tilemap_Flat-export.png" id="4_23hru"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://byamcjlw4k4fn" path="res://script/system/UnitManager.gd" id="5_23hru"]
 [ext_resource type="Texture2D" uid="uid://dyef415in56qy" path="res://texture/map/highlight.png" id="5_picpo"]
 [ext_resource type="Script" uid="uid://b85y6bvnttovs" path="res://script/system/MovementSystem.gd" id="7_jwc0o"]
+[ext_resource type="Texture2D" uid="uid://deqh161p53dxj" path="res://texture/map/enemy_hightlight.png" id="7_pavgh"]
 [ext_resource type="Script" uid="uid://dflwu5lierv5p" path="res://script/map/PathVisualizer.gd" id="8_gohy1"]
 [ext_resource type="Texture2D" uid="uid://b4gbvi0m5ujr0" path="res://texture/map/path.png" id="8_pxxgr"]
 [ext_resource type="Script" uid="uid://dyjrbl874kwyj" path="res://script/system/TurnManager.gd" id="11_h02ku"]
@@ -78,9 +79,20 @@ texture_region_size = Vector2i(64, 64)
 4:4/0 = 0
 5:5/0 = 0
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fof2v"]
+texture = ExtResource("7_pavgh")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+1:1/0 = 0
+2:2/0 = 0
+3:3/0 = 0
+4:4/0 = 0
+5:5/0 = 0
+
 [sub_resource type="TileSet" id="TileSet_3q8ks"]
 tile_size = Vector2i(64, 64)
 sources/0 = SubResource("TileSetAtlasSource_picpo")
+sources/1 = SubResource("TileSetAtlasSource_fof2v")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pxxgr"]
 texture = ExtResource("8_pxxgr")

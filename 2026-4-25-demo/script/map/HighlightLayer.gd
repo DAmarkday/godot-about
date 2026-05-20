@@ -23,7 +23,7 @@ const ROT_180 = TileSetAtlasSource.TRANSFORM_FLIP_H | TileSetAtlasSource.TRANSFO
 const ROT_270 = TileSetAtlasSource.TRANSFORM_TRANSPOSE | TileSetAtlasSource.TRANSFORM_FLIP_V
 
 # ==================== 高亮函数 ====================
-func show_move_range(cells: Array[Vector2i]):
+func show_move_range(cells: Array[Vector2i],tileSetNo:int=0):
 	clear()
 	if cells.is_empty(): return
 	
@@ -99,7 +99,7 @@ func show_move_range(cells: Array[Vector2i]):
 			_:
 				atlas_coords = Vector2i(-1, -1)   # 兜底
 		
-		set_cell(cell, 0, atlas_coords, alt)
+		set_cell(cell, tileSetNo, atlas_coords, alt)
 
 
 #func show_movement_range(cells: Array[Vector2i]):
