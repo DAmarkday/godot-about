@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dly7ake33dv1l"]
 
 [ext_resource type="Script" uid="uid://dssuxco76kf1c" path="res://scene/battle/battle_scene.gd" id="1_tf57g"]
-[ext_resource type="Script" uid="uid://boc3t4qt3uux3" path="res://scene/battle/map/MapManager.gd" id="2_3q8ks"]
+[ext_resource type="Script" path="res://scene/battle/map/MapManager.gd" id="2_3q8ks"]
 [ext_resource type="Script" uid="uid://cr8s35tvc0rph" path="res://scene/battle/map/MapLoader.gd" id="2_tnse1"]
 [ext_resource type="Texture2D" uid="uid://dhitgs6pqiiby" path="res://texture/map/Tilemap_Flat.png" id="3_swuoe"]
 [ext_resource type="Texture2D" uid="uid://dl88mvtoa280g" path="res://texture/map/Tilemap_Flat-export.png" id="4_23hru"]
@@ -162,14 +162,13 @@ script = ExtResource("7_jwc0o")
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 20.0
-offset_top = -320.0
-offset_right = 320.0
+offset_left = 354.0
+offset_top = -151.0
+offset_right = 471.0
 offset_bottom = -20.0
 grow_vertical = 0
 size_flags_horizontal = 0
 script = ExtResource("13_xd5fv")
-metadata/_edit_lock_ = true
 
 [node name="MarginContainer" type="MarginContainer" parent="UILayer/UnitInfoPanel" unique_id=1431123330]
 layout_mode = 2
@@ -200,13 +199,12 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -300.0
-offset_top = -120.0
-offset_right = 300.0
+offset_left = -160.0
+offset_top = -86.0
+offset_right = 71.0
 offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 0
-metadata/_edit_lock_ = true
 
 [node name="MarginContainer" type="MarginContainer" parent="UILayer/UnitControlPanel" unique_id=924828554]
 layout_mode = 2
@@ -217,11 +215,32 @@ theme_override_constants/margin_bottom = 10
 
 [node name="BoxContainer" type="BoxContainer" parent="UILayer/UnitControlPanel/MarginContainer" unique_id=1445856182]
 layout_mode = 2
-vertical = true
 
 [node name="Label" type="Label" parent="UILayer/UnitControlPanel/MarginContainer/BoxContainer" unique_id=1685862313]
+visible = false
 layout_mode = 2
 text = "控制面板"
+
+[node name="Panel" type="Panel" parent="UILayer/UnitControlPanel/MarginContainer/BoxContainer" unique_id=132745813]
+visible = false
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="AtkBtn" type="Button" parent="UILayer/UnitControlPanel/MarginContainer/BoxContainer" unique_id=641781586]
+layout_mode = 2
+text = "攻击"
+
+[node name="MeleeBtn" type="Button" parent="UILayer/UnitControlPanel/MarginContainer/BoxContainer" unique_id=55868038]
+layout_mode = 2
+text = "近战"
+
+[node name="ViewBtn" type="Button" parent="UILayer/UnitControlPanel/MarginContainer/BoxContainer" unique_id=1733837842]
+layout_mode = 2
+text = "监视/压制"
+
+[node name="HealBtn" type="Button" parent="UILayer/UnitControlPanel/MarginContainer/BoxContainer" unique_id=1381242445]
+layout_mode = 2
+text = "包扎"
 
 [node name="TaskInfoPanel" type="PanelContainer" parent="UILayer" unique_id=1346394978]
 anchors_preset = 1
@@ -230,9 +249,8 @@ anchor_right = 1.0
 offset_left = -320.0
 offset_top = 20.0
 offset_right = -20.0
-offset_bottom = 380.0
+offset_bottom = 213.0
 grow_horizontal = 0
-metadata/_edit_lock_ = true
 
 [node name="MarginContainer" type="MarginContainer" parent="UILayer/TaskInfoPanel" unique_id=674793090]
 layout_mode = 2
@@ -251,10 +269,9 @@ text = "回合情报信息"
 
 [node name="TeamPanel" type="PanelContainer" parent="UILayer" unique_id=34855048]
 offset_left = 20.0
-offset_top = 20.0
-offset_right = 320.0
-offset_bottom = 380.0
-metadata/_edit_lock_ = true
+offset_top = 569.0
+offset_right = 276.0
+offset_bottom = 698.0
 
 [node name="MarginContainer" type="MarginContainer" parent="UILayer/TeamPanel" unique_id=2060923100]
 layout_mode = 2
@@ -301,13 +318,12 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -320.0
-offset_top = -320.0
-offset_right = -20.0
-offset_bottom = -20.0
+offset_left = -1261.0
+offset_top = -627.0
+offset_right = -1005.0
+offset_bottom = -415.0
 grow_horizontal = 0
 grow_vertical = 0
-metadata/_edit_lock_ = true
 
 [node name="MarginContainer" type="MarginContainer" parent="UILayer/targetInfoPanel" unique_id=1813251238]
 layout_mode = 2
@@ -323,6 +339,53 @@ vertical = true
 [node name="Label" type="Label" parent="UILayer/targetInfoPanel/MarginContainer/BoxContainer" unique_id=1677217722]
 layout_mode = 2
 text = "主线和任务要求"
+
+[node name="BagInfoPanel" type="PanelContainer" parent="UILayer" unique_id=1970764015]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 184.0
+offset_top = -90.0
+offset_right = 621.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/BagInfoPanel" unique_id=965138701]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="BoxContainer" type="BoxContainer" parent="UILayer/BagInfoPanel/MarginContainer" unique_id=236018950]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UILayer/BagInfoPanel/MarginContainer/BoxContainer" unique_id=543139172]
+layout_mode = 2
+text = "武器界面"
+
+[node name="TurnOverPanel" type="PanelContainer" parent="UILayer" unique_id=650017282]
+offset_left = 19.0
+offset_top = 15.0
+offset_right = 274.0
+offset_bottom = 81.0
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/TurnOverPanel" unique_id=1121952522]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="BoxContainer" type="BoxContainer" parent="UILayer/TurnOverPanel/MarginContainer" unique_id=1551963676]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UILayer/TurnOverPanel/MarginContainer/BoxContainer" unique_id=1821904866]
+layout_mode = 2
+text = "回合结束"
 
 [node name="UnitStateVisual" type="Node" parent="UILayer" unique_id=2104315610]
 script = ExtResource("13_2y3si")
