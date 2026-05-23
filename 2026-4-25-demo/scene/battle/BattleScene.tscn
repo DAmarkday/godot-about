@@ -15,6 +15,8 @@
 [ext_resource type="Script" uid="uid://dyjrbl874kwyj" path="res://script/system/TurnManager.gd" id="11_h02ku"]
 [ext_resource type="Script" uid="uid://bwt1hy1h1fakl" path="res://script/ui/UnitStateVisual.gd" id="13_2y3si"]
 [ext_resource type="Script" uid="uid://hqo1sdtc4gyh" path="res://script/ui/UnitInfoPanel.gd" id="13_xd5fv"]
+[ext_resource type="Script" uid="uid://biv7er221ukco" path="res://script/ui/UnitControlPanel.gd" id="15_fof2v"]
+[ext_resource type="Script" uid="uid://dqjc3uf526eap" path="res://script/ui/WeaponInfoPanel.gd" id="16_kgt50"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cpv7m"]
 texture = ExtResource("3_swuoe")
@@ -162,9 +164,9 @@ script = ExtResource("7_jwc0o")
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 354.0
+offset_left = 387.0
 offset_top = -151.0
-offset_right = 471.0
+offset_right = 531.0
 offset_bottom = -20.0
 grow_vertical = 0
 size_flags_horizontal = 0
@@ -199,12 +201,13 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -160.0
+offset_left = -100.0
 offset_top = -86.0
-offset_right = 71.0
+offset_right = 131.0
 offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 0
+script = ExtResource("15_fof2v")
 
 [node name="MarginContainer" type="MarginContainer" parent="UILayer/UnitControlPanel" unique_id=924828554]
 layout_mode = 2
@@ -213,32 +216,32 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="BoxContainer" type="BoxContainer" parent="UILayer/UnitControlPanel/MarginContainer" unique_id=1445856182]
+[node name="VBox" type="BoxContainer" parent="UILayer/UnitControlPanel/MarginContainer" unique_id=1445856182]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="UILayer/UnitControlPanel/MarginContainer/BoxContainer" unique_id=1685862313]
+[node name="Label" type="Label" parent="UILayer/UnitControlPanel/MarginContainer/VBox" unique_id=1685862313]
 visible = false
 layout_mode = 2
 text = "控制面板"
 
-[node name="Panel" type="Panel" parent="UILayer/UnitControlPanel/MarginContainer/BoxContainer" unique_id=132745813]
+[node name="Panel" type="Panel" parent="UILayer/UnitControlPanel/MarginContainer/VBox" unique_id=132745813]
 visible = false
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 
-[node name="AtkBtn" type="Button" parent="UILayer/UnitControlPanel/MarginContainer/BoxContainer" unique_id=641781586]
+[node name="AtkBtn" type="Button" parent="UILayer/UnitControlPanel/MarginContainer/VBox" unique_id=641781586]
 layout_mode = 2
 text = "攻击"
 
-[node name="MeleeBtn" type="Button" parent="UILayer/UnitControlPanel/MarginContainer/BoxContainer" unique_id=55868038]
+[node name="MeleeBtn" type="Button" parent="UILayer/UnitControlPanel/MarginContainer/VBox" unique_id=55868038]
 layout_mode = 2
 text = "近战"
 
-[node name="ViewBtn" type="Button" parent="UILayer/UnitControlPanel/MarginContainer/BoxContainer" unique_id=1733837842]
+[node name="ViewBtn" type="Button" parent="UILayer/UnitControlPanel/MarginContainer/VBox" unique_id=1733837842]
 layout_mode = 2
 text = "监视/压制"
 
-[node name="HealBtn" type="Button" parent="UILayer/UnitControlPanel/MarginContainer/BoxContainer" unique_id=1381242445]
+[node name="HealBtn" type="Button" parent="UILayer/UnitControlPanel/MarginContainer/VBox" unique_id=1381242445]
 layout_mode = 2
 text = "包扎"
 
@@ -247,9 +250,9 @@ anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
 offset_left = -320.0
-offset_top = 20.0
+offset_top = 15.0
 offset_right = -20.0
-offset_bottom = 213.0
+offset_bottom = 172.0
 grow_horizontal = 0
 
 [node name="MarginContainer" type="MarginContainer" parent="UILayer/TaskInfoPanel" unique_id=674793090]
@@ -319,9 +322,9 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -1261.0
-offset_top = -627.0
+offset_top = -632.0
 offset_right = -1005.0
-offset_bottom = -415.0
+offset_bottom = -422.0
 grow_horizontal = 0
 grow_vertical = 0
 
@@ -340,7 +343,7 @@ vertical = true
 layout_mode = 2
 text = "主线和任务要求"
 
-[node name="BagInfoPanel" type="PanelContainer" parent="UILayer" unique_id=1970764015]
+[node name="WeaponInfoPanel" type="PanelContainer" parent="UILayer" unique_id=1970764015]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -352,26 +355,27 @@ offset_right = 621.0
 offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 0
+script = ExtResource("16_kgt50")
 
-[node name="MarginContainer" type="MarginContainer" parent="UILayer/BagInfoPanel" unique_id=965138701]
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/WeaponInfoPanel" unique_id=965138701]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="BoxContainer" type="BoxContainer" parent="UILayer/BagInfoPanel/MarginContainer" unique_id=236018950]
+[node name="VBox" type="BoxContainer" parent="UILayer/WeaponInfoPanel/MarginContainer" unique_id=236018950]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="UILayer/BagInfoPanel/MarginContainer/BoxContainer" unique_id=543139172]
+[node name="Label" type="Label" parent="UILayer/WeaponInfoPanel/MarginContainer/VBox" unique_id=543139172]
 layout_mode = 2
 text = "武器界面"
 
 [node name="TurnOverPanel" type="PanelContainer" parent="UILayer" unique_id=650017282]
-offset_left = 19.0
-offset_top = 15.0
-offset_right = 274.0
-offset_bottom = 81.0
+offset_left = 1050.0
+offset_top = 554.0
+offset_right = 1259.0
+offset_bottom = 620.0
 
 [node name="MarginContainer" type="MarginContainer" parent="UILayer/TurnOverPanel" unique_id=1121952522]
 layout_mode = 2
@@ -380,12 +384,26 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="BoxContainer" type="BoxContainer" parent="UILayer/TurnOverPanel/MarginContainer" unique_id=1551963676]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="UILayer/TurnOverPanel/MarginContainer/BoxContainer" unique_id=1821904866]
+[node name="Button" type="Button" parent="UILayer/TurnOverPanel/MarginContainer" unique_id=1896992309]
 layout_mode = 2
 text = "回合结束"
+
+[node name="ExitPanel" type="PanelContainer" parent="UILayer" unique_id=963143918]
+offset_left = 19.0
+offset_top = 15.0
+offset_right = 274.0
+offset_bottom = 77.0
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/ExitPanel" unique_id=1534757066]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Button" type="Button" parent="UILayer/ExitPanel/MarginContainer" unique_id=766423084]
+layout_mode = 2
+text = "撤离"
 
 [node name="UnitStateVisual" type="Node" parent="UILayer" unique_id=2104315610]
 script = ExtResource("13_2y3si")

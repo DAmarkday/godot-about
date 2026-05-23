@@ -238,11 +238,14 @@ func _select_unit(unit: Unit,tileSetNo:int) -> void:
 	highlight_layer.clear_highlights()
 	highlight_layer.show_move_range(reachable_cells,tileSetNo)
 	#highlight_layer.show_attack_range(attack_cells)
-	EventBus.unit_selected.emit(unit)
+	# 这里做判断 其他地方不需要去考虑是否是玩家所控制的逻辑
+	var isPlayerControl = unit.team == MapData.TeamType.PLAYER
+	EventBus.unit_selected.emit(unit,isPlayerControl)
 	
 ## 取消选中棋子，清除所有高亮
 func _deselect_unit() -> void:
 	if selected_unit != null:
+		#var isPlayerControl = selected_unit.team == MapData.TeamType.PLAYER
 		selected_unit.clear_outline_hight_light()
 		EventBus.unit_deselected.emit(selected_unit)
 	selected_unit = null

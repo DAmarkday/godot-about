@@ -7,28 +7,28 @@ extends Node
 
 ## 棋子被选中
 ## unit: 被选中的棋子节点
-signal unit_selected(unit)
+signal unit_selected(unit:Unit,isPlayerControl:bool)
 
 ## 棋子取消选中
 ## unit: 取消选中的棋子节点
-signal unit_deselected(unit)
+signal unit_deselected(unit:Unit)
 
 ## 棋子移动完成
 ## unit: 移动的棋子节点
 ## from: 起始格子坐标 (Vector2i)
 ## to:   目标格子坐标 (Vector2i)
-signal unit_moved(unit, from, to)
+signal unit_moved(unit:Unit, from:Vector2i, to:Vector2i)
 
 ## 棋子受到伤害
 ## unit:         受伤的棋子节点
 ## damage:       本次伤害值
 ## remaining_hp: 受伤后剩余血量
-signal unit_damaged(unit, damage, remaining_hp)
+signal unit_damaged(unit:Unit, damage, remaining_hp)
 
 ## 棋子死亡
 ## unit: 死亡的棋子节点
 ## team: 所属阵营（0=玩家，1=敌方）
-signal unit_died(unit, team)
+signal unit_died(unit:Unit, team)
 
 # ─── 战斗相关信号 ───────────────────────────────────────────
 
