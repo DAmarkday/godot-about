@@ -107,6 +107,7 @@ func _spawn_initial_units() -> void:
 	# 玩家棋子：战士在 (1,8)，弓手在 (2,8)
 	_spawn_unit(preload("res://resource/units/player/data/warrior.tres"), Vector2i(1, 2))
 	_spawn_unit(preload("res://resource/units/player/data/knight.tres"), Vector2i(2, 3))
+	_spawn_unit(preload("res://resource/units/player/data/archer.tres"), Vector2i(1, 4))
 	# 敌方棋子：哥布林在 (7,1)，巨魔在 (8,1)
 	_spawn_unit(preload("res://resource/units/enemy/data/boomer.tres"), Vector2i(4, 5))
 	_spawn_unit(preload("res://resource/units/enemy/data/firer.tres"), Vector2i(5, 2))

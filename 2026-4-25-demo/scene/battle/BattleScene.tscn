@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dly7ake33dv1l"]
 
 [ext_resource type="Script" uid="uid://dssuxco76kf1c" path="res://scene/battle/battle_scene.gd" id="1_tf57g"]
-[ext_resource type="Script" path="res://scene/battle/map/MapManager.gd" id="2_3q8ks"]
+[ext_resource type="Script" uid="uid://boc3t4qt3uux3" path="res://scene/battle/map/MapManager.gd" id="2_3q8ks"]
 [ext_resource type="Script" uid="uid://cr8s35tvc0rph" path="res://scene/battle/map/MapLoader.gd" id="2_tnse1"]
 [ext_resource type="Texture2D" uid="uid://dhitgs6pqiiby" path="res://texture/map/Tilemap_Flat.png" id="3_swuoe"]
 [ext_resource type="Texture2D" uid="uid://dl88mvtoa280g" path="res://texture/map/Tilemap_Flat-export.png" id="4_23hru"]
