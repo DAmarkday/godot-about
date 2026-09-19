@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="UnitData" format=3 uid="uid://dik88akjhftwi"]
+
+[ext_resource type="Script" uid="uid://d273ys3jqeram" path="res://script/data/UnitData.gd" id="1_mc5t5"]
+[ext_resource type="SpriteFrames" uid="uid://p8p2qy1hxisv" path="res://resource/units/player/anim/archer.tres" id="2_t4qfl"]
+
+[resource]
+script = ExtResource("1_mc5t5")
+unit_name = "弓箭手"
+max_hp = 2
+movement = 2
+sprite_frames = ExtResource("2_t4qfl")

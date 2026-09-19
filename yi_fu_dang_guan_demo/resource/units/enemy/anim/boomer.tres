@@ -1,0 +1,53 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://b02xj7iob6ow2"]
+
+[ext_resource type="Texture2D" uid="uid://bwwsmbl68kcw0" path="res://texture/enemy/TNT_Blue.png" id="1_25scw"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r3c2n"]
+atlas = ExtResource("1_25scw")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pn3se"]
+atlas = ExtResource("1_25scw")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i2usf"]
+atlas = ExtResource("1_25scw")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lu5yj"]
+atlas = ExtResource("1_25scw")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xw1eh"]
+atlas = ExtResource("1_25scw")
+region = Rect2(768, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iok03"]
+atlas = ExtResource("1_25scw")
+region = Rect2(960, 0, 192, 192)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r3c2n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pn3se")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i2usf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lu5yj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xw1eh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iok03")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]

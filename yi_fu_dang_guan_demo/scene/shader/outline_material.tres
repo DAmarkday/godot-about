@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://t5ooucm6p8ae"]
+
+[ext_resource type="Shader" uid="uid://c40mh1by81nx6" path="res://scene/shader/outline.gdshader" id="1_xbfac"]
+
+[resource]
+shader = ExtResource("1_xbfac")
+shader_parameter/line_color = Color(1, 1, 0, 1)
+shader_parameter/outline_width = 2.0

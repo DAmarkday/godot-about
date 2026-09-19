@@ -1,0 +1,412 @@
+[gd_scene format=3 uid="uid://dly7ake33dv1l"]
+
+[ext_resource type="Script" uid="uid://dssuxco76kf1c" path="res://scene/battle/battle_scene.gd" id="1_tf57g"]
+[ext_resource type="Script" uid="uid://boc3t4qt3uux3" path="res://scene/battle/map/MapManager.gd" id="2_3q8ks"]
+[ext_resource type="Script" uid="uid://cr8s35tvc0rph" path="res://scene/battle/map/MapLoader.gd" id="2_tnse1"]
+[ext_resource type="Texture2D" uid="uid://dhitgs6pqiiby" path="res://texture/map/Tilemap_Flat.png" id="3_swuoe"]
+[ext_resource type="Texture2D" uid="uid://dl88mvtoa280g" path="res://texture/map/Tilemap_Flat-export.png" id="4_23hru"]
+[ext_resource type="Script" uid="uid://dln0vajh8k55n" path="res://script/map/HighlightLayer.gd" id="4_picpo"]
+[ext_resource type="Script" uid="uid://byamcjlw4k4fn" path="res://script/system/UnitManager.gd" id="5_23hru"]
+[ext_resource type="Texture2D" uid="uid://dyef415in56qy" path="res://texture/map/highlight.png" id="5_picpo"]
+[ext_resource type="Script" uid="uid://b85y6bvnttovs" path="res://script/system/MovementSystem.gd" id="7_jwc0o"]
+[ext_resource type="Texture2D" uid="uid://deqh161p53dxj" path="res://texture/map/enemy_hightlight.png" id="7_pavgh"]
+[ext_resource type="Script" uid="uid://dflwu5lierv5p" path="res://script/map/PathVisualizer.gd" id="8_gohy1"]
+[ext_resource type="Texture2D" uid="uid://b4gbvi0m5ujr0" path="res://texture/map/path.png" id="8_pxxgr"]
+[ext_resource type="Script" uid="uid://dyjrbl874kwyj" path="res://script/system/TurnManager.gd" id="11_h02ku"]
+[ext_resource type="Script" uid="uid://bwt1hy1h1fakl" path="res://script/ui/UnitStateVisual.gd" id="13_2y3si"]
+[ext_resource type="Script" uid="uid://hqo1sdtc4gyh" path="res://script/ui/UnitInfoPanel.gd" id="13_xd5fv"]
+[ext_resource type="Script" uid="uid://biv7er221ukco" path="res://script/ui/UnitControlPanel.gd" id="15_fof2v"]
+[ext_resource type="Script" uid="uid://dqjc3uf526eap" path="res://script/ui/WeaponInfoPanel.gd" id="16_kgt50"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cpv7m"]
+texture = ExtResource("3_swuoe")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+8:0/0 = 0
+9:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+5:1/0 = 0
+6:1/0 = 0
+7:1/0 = 0
+8:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+5:2/0 = 0
+6:2/0 = 0
+7:2/0 = 0
+8:2/0 = 0
+0:3/0 = 0
+1:3/0 = 0
+2:3/0 = 0
+3:3/0 = 0
+5:3/0 = 0
+6:3/0 = 0
+7:3/0 = 0
+8:3/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jwc0o"]
+texture = ExtResource("4_23hru")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+0:0/0/terrain_set = 0
+0:0/0/terrain = 0
+
+[sub_resource type="TileSet" id="TileSet_tnse1"]
+tile_size = Vector2i(64, 64)
+terrain_set_0/mode = 0
+terrain_set_0/terrain_0/name = "ground"
+terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
+sources/0 = SubResource("TileSetAtlasSource_cpv7m")
+sources/1 = SubResource("TileSetAtlasSource_jwc0o")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_picpo"]
+texture = ExtResource("5_picpo")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+1:1/0 = 0
+2:2/0 = 0
+3:3/0 = 0
+4:4/0 = 0
+5:5/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fof2v"]
+texture = ExtResource("7_pavgh")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+1:1/0 = 0
+2:2/0 = 0
+3:3/0 = 0
+4:4/0 = 0
+5:5/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_3q8ks"]
+tile_size = Vector2i(64, 64)
+sources/0 = SubResource("TileSetAtlasSource_picpo")
+sources/1 = SubResource("TileSetAtlasSource_fof2v")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pxxgr"]
+texture = ExtResource("8_pxxgr")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+1:0/0 = 0
+1:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_2y3si"]
+tile_size = Vector2i(64, 64)
+sources/0 = SubResource("TileSetAtlasSource_pxxgr")
+
+[node name="BattleScene" type="Node2D" unique_id=1998438921]
+script = ExtResource("1_tf57g")
+
+[node name="BattleMap" type="Node2D" parent="." unique_id=2123896672]
+script = ExtResource("2_3q8ks")
+metadata/_edit_lock_ = true
+
+[node name="MapLoader" type="Node" parent="BattleMap" unique_id=1013154676 node_paths=PackedStringArray("layer0", "layer1")]
+script = ExtResource("2_tnse1")
+layer0 = NodePath("../TerrainLayer")
+layer1 = NodePath("../BuildingLayer")
+
+[node name="BuildingLayer" type="TileMapLayer" parent="BattleMap" unique_id=182296143]
+
+[node name="DecorationLayer" type="TileMapLayer" parent="BattleMap" unique_id=1234764641]
+
+[node name="TerrainLayer" type="TileMapLayer" parent="BattleMap" unique_id=659476996]
+tile_set = SubResource("TileSet_tnse1")
+
+[node name="HighlightLayer" type="TileMapLayer" parent="BattleMap" unique_id=1144184440]
+tile_set = SubResource("TileSet_3q8ks")
+script = ExtResource("4_picpo")
+
+[node name="PathLayer" type="TileMapLayer" parent="BattleMap" unique_id=1325668436]
+tile_set = SubResource("TileSet_2y3si")
+script = ExtResource("8_gohy1")
+
+[node name="UnitsContainer" type="Node2D" parent="BattleMap" unique_id=1901674425]
+y_sort_enabled = true
+
+[node name="PlayerUnits" type="Node2D" parent="BattleMap/UnitsContainer" unique_id=1955608583]
+
+[node name="EnemyUnits" type="Node2D" parent="BattleMap/UnitsContainer" unique_id=1124149821]
+
+[node name="OtherUnits" type="Node2D" parent="BattleMap/UnitsContainer" unique_id=2014476633]
+
+[node name="Systems" type="Node" parent="." unique_id=175851685]
+
+[node name="UnitManager" type="Node" parent="Systems" unique_id=1485823696]
+script = ExtResource("5_23hru")
+
+[node name="TurnManager" type="Node" parent="Systems" unique_id=1113554352]
+script = ExtResource("11_h02ku")
+
+[node name="MovementSystem" type="Node" parent="Systems" unique_id=1970764822]
+script = ExtResource("7_jwc0o")
+
+[node name="CombatSystem" type="Node" parent="Systems" unique_id=1450357599]
+
+[node name="AIController" type="Node" parent="Systems" unique_id=2064837269]
+
+[node name="UILayer" type="CanvasLayer" parent="." unique_id=1048350249]
+
+[node name="UnitInfoPanel" type="PanelContainer" parent="UILayer" unique_id=14421140]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 387.0
+offset_top = -151.0
+offset_right = 531.0
+offset_bottom = -20.0
+grow_vertical = 0
+size_flags_horizontal = 0
+script = ExtResource("13_xd5fv")
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/UnitInfoPanel" unique_id=1431123330]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBox" type="BoxContainer" parent="UILayer/UnitInfoPanel/MarginContainer" unique_id=859615333]
+layout_mode = 2
+vertical = true
+
+[node name="NameLabel" type="Label" parent="UILayer/UnitInfoPanel/MarginContainer/VBox" unique_id=304696346]
+layout_mode = 2
+text = "棋子:  哥布林"
+
+[node name="HpLabel" type="Label" parent="UILayer/UnitInfoPanel/MarginContainer/VBox" unique_id=1484306952]
+layout_mode = 2
+text = "血量:  5/5"
+
+[node name="DescLabel" type="Label" parent="UILayer/UnitInfoPanel/MarginContainer/VBox" unique_id=712064175]
+layout_mode = 2
+text = "描述: ..."
+
+[node name="UnitControlPanel" type="PanelContainer" parent="UILayer" unique_id=666102993]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -86.0
+offset_right = 131.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("15_fof2v")
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/UnitControlPanel" unique_id=924828554]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBox" type="BoxContainer" parent="UILayer/UnitControlPanel/MarginContainer" unique_id=1445856182]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UILayer/UnitControlPanel/MarginContainer/VBox" unique_id=1685862313]
+visible = false
+layout_mode = 2
+text = "控制面板"
+
+[node name="Panel" type="Panel" parent="UILayer/UnitControlPanel/MarginContainer/VBox" unique_id=132745813]
+visible = false
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="AtkBtn" type="Button" parent="UILayer/UnitControlPanel/MarginContainer/VBox" unique_id=641781586]
+layout_mode = 2
+text = "攻击"
+
+[node name="MeleeBtn" type="Button" parent="UILayer/UnitControlPanel/MarginContainer/VBox" unique_id=55868038]
+layout_mode = 2
+text = "近战"
+
+[node name="ViewBtn" type="Button" parent="UILayer/UnitControlPanel/MarginContainer/VBox" unique_id=1733837842]
+layout_mode = 2
+text = "监视/压制"
+
+[node name="HealBtn" type="Button" parent="UILayer/UnitControlPanel/MarginContainer/VBox" unique_id=1381242445]
+layout_mode = 2
+text = "包扎"
+
+[node name="TaskInfoPanel" type="PanelContainer" parent="UILayer" unique_id=1346394978]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -320.0
+offset_top = 15.0
+offset_right = -20.0
+offset_bottom = 172.0
+grow_horizontal = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/TaskInfoPanel" unique_id=674793090]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="BoxContainer" type="BoxContainer" parent="UILayer/TaskInfoPanel/MarginContainer" unique_id=84089699]
+layout_mode = 2
+vertical = true
+
+[node name="Label" type="Label" parent="UILayer/TaskInfoPanel/MarginContainer/BoxContainer" unique_id=1856846705]
+layout_mode = 2
+text = "回合情报信息"
+
+[node name="TeamPanel" type="PanelContainer" parent="UILayer" unique_id=34855048]
+offset_left = 20.0
+offset_top = 569.0
+offset_right = 276.0
+offset_bottom = 698.0
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/TeamPanel" unique_id=2060923100]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="BoxContainer" type="BoxContainer" parent="UILayer/TeamPanel/MarginContainer" unique_id=1347799066]
+layout_mode = 2
+vertical = true
+
+[node name="Label" type="Label" parent="UILayer/TeamPanel/MarginContainer/BoxContainer" unique_id=727104769]
+layout_mode = 2
+text = "队伍信息"
+
+[node name="TurnInfoPanel" type="PanelContainer" parent="UILayer" unique_id=457878252]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -81.5
+offset_top = 20.0
+offset_right = 81.5
+offset_bottom = 64.0
+grow_horizontal = 2
+metadata/_edit_lock_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/TurnInfoPanel" unique_id=1724572892]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="TurnLabel" type="Label" parent="UILayer/TurnInfoPanel/MarginContainer" unique_id=1423738165]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "第 1 回合 - 玩家回合"
+
+[node name="targetInfoPanel" type="PanelContainer" parent="UILayer" unique_id=1364252943]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1261.0
+offset_top = -632.0
+offset_right = -1005.0
+offset_bottom = -422.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/targetInfoPanel" unique_id=1813251238]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="BoxContainer" type="BoxContainer" parent="UILayer/targetInfoPanel/MarginContainer" unique_id=323328211]
+layout_mode = 2
+vertical = true
+
+[node name="Label" type="Label" parent="UILayer/targetInfoPanel/MarginContainer/BoxContainer" unique_id=1677217722]
+layout_mode = 2
+text = "主线和任务要求"
+
+[node name="WeaponInfoPanel" type="PanelContainer" parent="UILayer" unique_id=1970764015]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 184.0
+offset_top = -90.0
+offset_right = 621.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("16_kgt50")
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/WeaponInfoPanel" unique_id=965138701]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBox" type="BoxContainer" parent="UILayer/WeaponInfoPanel/MarginContainer" unique_id=236018950]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UILayer/WeaponInfoPanel/MarginContainer/VBox" unique_id=543139172]
+layout_mode = 2
+text = "武器界面"
+
+[node name="TurnOverPanel" type="PanelContainer" parent="UILayer" unique_id=650017282]
+offset_left = 1050.0
+offset_top = 554.0
+offset_right = 1259.0
+offset_bottom = 620.0
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/TurnOverPanel" unique_id=1121952522]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Button" type="Button" parent="UILayer/TurnOverPanel/MarginContainer" unique_id=1896992309]
+layout_mode = 2
+text = "回合结束"
+
+[node name="ExitPanel" type="PanelContainer" parent="UILayer" unique_id=963143918]
+offset_left = 19.0
+offset_top = 15.0
+offset_right = 274.0
+offset_bottom = 77.0
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/ExitPanel" unique_id=1534757066]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Button" type="Button" parent="UILayer/ExitPanel/MarginContainer" unique_id=766423084]
+layout_mode = 2
+text = "撤离"
+
+[node name="UnitStateVisual" type="Node" parent="UILayer" unique_id=2104315610]
+script = ExtResource("13_2y3si")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1636234100]
+anchor_mode = 0

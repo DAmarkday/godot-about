@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="UnitData" format=3 uid="uid://d1wept2wakb30"]
+
+[ext_resource type="Script" uid="uid://d273ys3jqeram" path="res://script/data/UnitData.gd" id="1_1rn4q"]
+[ext_resource type="SpriteFrames" uid="uid://dg4xwxsj4pk3j" path="res://resource/units/enemy/anim/firer.tres" id="2_qe1gr"]
+
+[resource]
+script = ExtResource("1_1rn4q")
+unit_name = "火焰哥布林"
+max_hp = 3
+team = 1
+sprite_frames = ExtResource("2_qe1gr")
