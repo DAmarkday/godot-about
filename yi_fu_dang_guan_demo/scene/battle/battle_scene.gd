@@ -111,7 +111,7 @@ func _spawn_initial_units() -> void:
 	# 敌方棋子：哥布林在 (7,1)，巨魔在 (8,1)
 	_spawn_unit(preload("res://resource/units/enemy/data/boomer.tres"), Vector2i(4, 5))
 	_spawn_unit(preload("res://resource/units/enemy/data/firer.tres"), Vector2i(5, 2))
-	#_spawn_unit(preload("res://resource/units/troll.tres"), Vector2i(8, 1))
+	_spawn_unit(preload("res://resource/units/enemy/data/barrel.tres"), Vector2i(3, 6))
 	
 ## 生成单个棋子并注册到管理器
 func _spawn_unit(data: UnitData, cell: Vector2i) -> void:

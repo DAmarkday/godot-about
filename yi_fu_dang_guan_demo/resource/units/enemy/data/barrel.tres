@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="UnitData" format=3 uid="uid://0an2txnt4okx"]
+
+[ext_resource type="Script" uid="uid://d273ys3jqeram" path="res://script/data/UnitData.gd" id="1_v16ui"]
+[ext_resource type="SpriteFrames" uid="uid://oil8p2qo2kb1" path="res://resource/units/enemy/anim/barrel.tres" id="2_v62gu"]
+
+[resource]
+script = ExtResource("1_v16ui")
+unit_name = "炸药"
+team = 1
+sprite_frames = ExtResource("2_v62gu")

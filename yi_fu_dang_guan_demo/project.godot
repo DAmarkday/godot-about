@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="2026_4_25_demo"
+config/name="yi_fu_dang_guan"
 run/main_scene="uid://dly7ake33dv1l"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
